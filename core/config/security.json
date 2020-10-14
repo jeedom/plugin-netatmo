@@ -1,0 +1,112 @@
+{
+  "NOC" :{
+    "type" : "présence",
+    "cmd" : ["lighton","lightoff","lightintensity","state","stateSd","stateAlim","monitoringOn","monitoringOff","lastEvent","lastOneEvent"]
+  },
+  "NACamera" :{
+    "type" : "welcome",
+    "cmd" : ["state","stateSd","stateAlim","monitoringOn","monitoringOff","lastEvent","lastOneEvent"]
+  },
+  "NACamDoorTag" :{
+    "type" : "Door tag",
+    "cmd" : ["state","lastEvent","lastOneEvent"]
+  },
+  "NIS" :{
+    "type" : "Siren",
+    "cmd" : ["state","stateAlim","monitoring","lastEvent","lastOneEvent"]
+  },
+  "NSD" :{
+    "type" : "Smoke detector",
+    "cmd" : ["lastEvent","lastOneEvent"]
+  },
+  "NAHome" :{
+    "type" : "Home",
+    "cmd" : ["lastEvent","lastOneEvent"]
+  },
+  "commands": {
+    "lastEvent" : {
+      "name":"Derniers évènements",
+      "logicalId" : "lastEvent",
+      "type":"info",
+      "subType":"string"
+    },
+    "lastOneEvent" : {
+      "name":"Evènement",
+      "logicalId" : "lastOneEvent",
+      "type":"info",
+      "subType":"string"
+    },
+    "lighton" :   {
+      "name":"Lumière On",
+      "logicalId" : "lighton",
+      "type":"action",
+      "subType":"other",
+      "configuration":{
+        "mode" : "on"
+      }
+    },
+    "lightoff" :   {
+      "name":"Lumière Off",
+      "logicalId" : "lightoff",
+      "type":"action",
+      "subType":"other",
+      "configuration":{
+        "mode" : "off"
+      }
+    },
+    "lightauto" :   {
+      "name":"Lumière Auto",
+      "logicalId" : "lightauto",
+      "type":"action",
+      "subType":"other",
+      "configuration":{
+        "mode" : "auto"
+      }
+    },
+    "lightintensity" :   {
+      "name":"Lumière Variation",
+      "logicalId" : "lightintensity",
+      "type":"action",
+      "subType":"slider",
+      "configuration":{
+        "action" : "on"
+      }
+    },
+    "state" : {
+      "name":"Status",
+      "logicalId" : "state",
+      "type":"info",
+      "subType":"binary"
+    },
+    "stateSd" : {
+      "name":"Status SD",
+      "logicalId" : "stateSd",
+      "type":"info",
+      "subType":"binary"
+    },
+    "stateAlim" : {
+      "name":"Status alimentation",
+      "logicalId" : "stateAlim",
+      "type":"info",
+      "subType":"binary"
+    },
+    "monitoringOn" :   {
+      "name":"Activer surveillance",
+      "logicalId" : "monitoringOn",
+      "type":"action",
+      "subType":"other"
+    },
+    "monitoringOff" :   {
+      "name":"Désactiver surveillance",
+      "logicalId" : "monitoringOff",
+      "type":"action",
+      "subType":"other"
+    },
+    "monitoring" : {
+      "name":"Surveillance",
+      "logicalId" : "monitoring",
+      "type":"info",
+      "subType":"binary"
+    }
+  }
+}

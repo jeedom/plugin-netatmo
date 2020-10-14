@@ -109,6 +109,12 @@ $eqLogics = eqLogic::byType($plugin->getId());
 											<option value="NAModule4">{{Module intérieur}}</option>
 											<option value="NAModule3">{{Module pluie}}</option>
 											<option value="NAModule2">{{Anémomètre}}</option>
+											<option value="NACamera">{{Welcome}}</option>
+											<option value="NOC">{{Presence}}</option>
+											<option value="NSD">{{Detecteur de fumée}}</option>
+											<option value="NIS">{{Sirène}}</option>
+											<option value="NACamDoorTag">{{Capteur de porte}}</option>
+											<option value="NAHome">{{Maison}}</option>
 										</select>
 									</div>
 								</div>

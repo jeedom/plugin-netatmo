@@ -33,7 +33,7 @@ if (!isConnect()) {
     <div class="form-group">
       <label class="col-lg-2 control-label">{{Synchronisation}}</label>
       <div class="col-lg-4">
-        <a class="btn btn-success" id="bt_syncWithNetatmo"><i class="fas fa-sync"></i> {{Synchroniser mes équipements}}</a>
+        <a class="btn btn-default" id="bt_syncWithNetatmo"><i class="fas fa-sync"></i> {{Synchroniser mes équipements}}</a>
       </div>
     </div>
   </fieldset>

@@ -22,145 +22,202 @@ require_once __DIR__  . '/../../../../core/php/core.inc.php';
 class netatmo extends eqLogic {
   /*     * *************************Attributs****************************** */
   
-  /*
-  * Permet de définir les possibilités de personnalisation du widget (en cas d'utilisation de la fonction 'toHtml' par exemple)
-  * Tableau multidimensionnel - exemple: array('custom' => true, 'custom::layout' => false)
-  public static $_widgetPossibility = array();
-  */
-  
   /*     * ***********************Methode static*************************** */
   
-  /*
-  * Fonction exécutée automatiquement toutes les minutes par Jeedom
-  public static function cron() {
-}
-*/
-
-/*
-* Fonction exécutée automatiquement toutes les 5 minutes par Jeedom
-public static function cron5() {
-}
-*/
-
-/*
-* Fonction exécutée automatiquement toutes les 10 minutes par Jeedom
-public static function cron10() {
-}
-*/
-
-/*
-* Fonction exécutée automatiquement toutes les 15 minutes par Jeedom
-public static function cron15() {
-}
-*/
-
-/*
-* Fonction exécutée automatiquement toutes les 30 minutes par Jeedom
-public static function cron30() {
-}
-*/
-
-/*
-* Fonction exécutée automatiquement toutes les heures par Jeedom
-public static function cronHourly() {
-}
-*/
-
-/*
-* Fonction exécutée automatiquement tous les jours par Jeedom
-public static function cronDaily() {
-}
-*/
-
-
-
-/*     * *********************Méthodes d'instance************************* */
-
-// Fonction exécutée automatiquement avant la création de l'équipement
-public function preInsert() {
+  public static function cron15(){
+    sleep(rand(0,120));
+    try {
+      self::refresh_weather();
+    } catch (\Exception $e) {
+      
+    }
+  }
   
-}
-
-// Fonction exécutée automatiquement après la création de l'équipement
-public function postInsert() {
+  public static function request($_path,$_data = null,$_type='GET'){
+    $url = config::byKey('service::cloud::url').'/service/netatmo';
+    $url .='?path='.urlencode($_path);
+    if($_data !== null && $_type == 'GET'){
+      $url .='&options='.urlencode(json_encode($_data));
+    }
+    $request_http = new com_http($url);
+    $request_http->setHeader(array(
+      'Autorization: '.sha512(mb_strtolower(config::byKey('market::username')).':'.config::byKey('market::password'))
+    ));
+    $datas = json_decode($request_http->exec(30,1),true);
+    if(isset($datas['state']) && $datas['state'] != 'ok'){
+      throw new \Exception(__('Erreur sur la récuperation des données : ',__FILE__).json_encode($datas));
+    }
+    return json_decode($datas,true);
+  }
   
-}
-
-// Fonction exécutée automatiquement avant la mise à jour de l'équipement
-public function preUpdate() {
+  public static function getGConfig($_mode,$_key){
+    $keys = explode('::',$_key);
+    $return = json_decode(file_get_contents(__DIR__.'/../config/'.$_mode.'.json'),true);
+    foreach ($keys as $key) {
+      if(!isset($return[$key])){
+        return '';
+      }
+      $return = $return[$key];
+    }
+    return $return;
+  }
   
-}
-
-// Fonction exécutée automatiquement après la mise à jour de l'équipement
-public function postUpdate() {
+  public static function sync(){
+    log::add('netatmo','debug','Sync weather device');
+    $weather = self::request('/getstationsdata');
+    if(isset($weather['body']['devices']) &&  count($weather['body']['devices']) > 0){
+      foreach ($weather['body']['devices'] as $device) {
+        $eqLogic = eqLogic::byLogicalId($device['_id'], 'netatmo');
+        if (isset($device['read_only']) && $device['read_only'] === true) {
+          continue;
+        }
+        if (!is_object($eqLogic)) {
+          $eqLogic = new netatmo();
+          $eqLogic->setIsVisible(1);
+          $eqLogic->setIsEnable(1);
+          $eqLogic->setName($device['station_name']);
+          $eqLogic->setCategory('heating', 1);
+        }
+        $eqLogic->setConfiguration('mode','weather');
+        $eqLogic->setEqType_name('netatmo');
+        $eqLogic->setLogicalId($device['_id']);
+        $eqLogic->setConfiguration('type', $device['type']);
+        $eqLogic->save();
+        if(isset($device['modules']) &&  count($device['modules']) > 0){
+          foreach ($device['modules'] as $module) {
+            $eqLogic = eqLogic::byLogicalId($module['_id'], 'netatmo');
+            if (!is_object($eqLogic)) {
+              $eqLogic = new netatmo();
+              $eqLogic->setName($module['module_name']);
+              $eqLogic->setIsEnable(1);
+              $eqLogic->setCategory('heating', 1);
+              $eqLogic->setIsVisible(1);
+            }
+            $eqLogic->setConfiguration('mode','weather');
+            $eqLogic->setConfiguration('battery_type', self::getGConfig('weather',$module['type'].'::bat_type'));
+            $eqLogic->setEqType_name('netatmo');
+            $eqLogic->setLogicalId($module['_id']);
+            $eqLogic->setConfiguration('type', $module['type']);
+            $eqLogic->save();
+          }
+        }
+      }
+      self::refresh_weather($weather);
+    }
+  }
   
-}
-
-// Fonction exécutée automatiquement avant la sauvegarde (création ou mise à jour) de l'équipement
-public function preSave() {
   
-}
-
-// Fonction exécutée automatiquement après la sauvegarde (création ou mise à jour) de l'équipement
-public function postSave() {
+  public static function refresh_weather($_weather = null) {
+    if($_weather == null){
+      $weather = self::request('/getstationsdata');
+    }else{
+      $weather = $_weather;
+    }
+    if(isset($weather['body']['devices']) &&  count($weather['body']['devices']) > 0){
+      foreach ($weather['body']['devices'] as $device) {
+        $eqLogic = eqLogic::byLogicalId($device["_id"], 'netatmo');
+        if (!is_object($eqLogic)) {
+          continue;
+        }
+        $eqLogic->setConfiguration('firmware', $device['firmware']);
+        $eqLogic->setConfiguration('wifi_status', $device['wifi_status']);
+        $eqLogic->save(true);
+        if(isset($device['dashboard_data']) && count($device['dashboard_data']) > 0){
+          foreach ($device['dashboard_data'] as $key => $value) {
+            if ($key == 'max_temp') {
+              $collectDate = date('Y-m-d H:i:s', $device['dashboard_data']['date_max_temp']);
+            } else if ($key == 'min_temp') {
+              $collectDate = date('Y-m-d H:i:s', $device['dashboard_data']['date_min_temp']);
+            } else if ($key == 'max_wind_str') {
+              $collectDate = date('Y-m-d H:i:s', $device['dashboard_data']['date_max_wind_str']);
+            } else {
+              $collectDate = date('Y-m-d H:i:s', $device['dashboard_data']['time_utc']);
+            }
+            $eqLogic->checkAndUpdateCmd(strtolower($key),$value,$collectDate);
+          }
+        }
+        if(isset($device['modules']) &&  count($device['modules']) > 0){
+          foreach ($device['modules'] as $module) {
+            $eqLogic = eqLogic::byLogicalId($module["_id"], 'netatmo');
+            if(!is_object($eqLogic)){
+              continue;
+            }
+            $eqLogic->setConfiguration('rf_status', $module['rf_status']);
+            $eqLogic->setConfiguration('firmware', $module['firmware']);
+            $eqLogic->save(true);
+            $eqLogic->batteryStatus(round(($module['battery_vp'] - self::getGConfig('weather',$module['type'].'::bat_min')) / (self::getGConfig('weather',$module['type'].'::bat_max') - self::getGConfig('weather',$module['type'].'::bat_min')) * 100, 0));
+            foreach ($module['dashboard_data'] as $key => $value) {
+              if ($key == 'max_temp') {
+                $collectDate = date('Y-m-d H:i:s', $module['dashboard_data']['date_max_temp']);
+              } else if ($key == 'min_temp') {
+                $collectDate = date('Y-m-d H:i:s', $module['dashboard_data']['date_min_temp']);
+              } else if ($key == 'max_wind_str') {
+                $collectDate = date('Y-m-d H:i:s', $module['dashboard_data']['date_max_wind_str']);
+              } else {
+                $collectDate = date('Y-m-d H:i:s', $module['dashboard_data']['time_utc']);
+              }
+              $eqLogic->checkAndUpdateCmd(strtolower($key),$value,$collectDate);
+            }
+          }
+        }
+      }
+    }
+  }
   
-}
-
-// Fonction exécutée automatiquement avant la suppression de l'équipement
-public function preRemove() {
   
-}
-
-// Fonction exécutée automatiquement après la suppression de l'équipement
-public function postRemove() {
+  public function getImage() {
+    if(file_exists(__DIR__.'/../img/'.  $this->getConfiguration('type').'.png')){
+      return 'plugins/netatmo/core/img/'.  $this->getConfiguration('type').'.png';
+    }
+    return false;
+  }
   
-}
-
-/*
-* Non obligatoire : permet de modifier l'affichage du widget (également utilisable par les commandes)
-public function toHtml($_version = 'dashboard') {
-
-}
-*/
-
-/*
-* Non obligatoire : permet de déclencher une action après modification de variable de configuration
-public static function postConfig_<Variable>() {
-}
-*/
-
-/*
-* Non obligatoire : permet de déclencher une action avant modification de variable de configuration
-public static function preConfig_<Variable>() {
-}
-*/
-
-/*     * **********************Getteur Setteur*************************** */
+  /*     * *********************Méthodes d'instance************************* */
+  
+  
+  public function postSave() {
+    if ($this->getConfiguration('applyType') != $this->getConfiguration('type')) {
+      $this->applyType();
+    }
+    $cmd = $this->getCmd(null, 'refresh');
+    if (!is_object($cmd)) {
+      $cmd = new netatmoWeatherCmd();
+      $cmd->setName(__('Rafraichir', __FILE__));
+    }
+    $cmd->setEqLogic_id($this->getId());
+    $cmd->setLogicalId('refresh');
+    $cmd->setType('action');
+    $cmd->setSubType('other');
+    $cmd->save();
+  }
+  
+  public function applyType(){
+    $this->setConfiguration('applyType', $this->getConfiguration('type'));
+    $supported_commands = self::getGConfig($this->getConfiguration('mode'),$this->getConfiguration('type').'::cmd');
+    $commands = array('commands');
+    foreach ($supported_commands as $supported_command) {
+      $commands['commands'][] = self::getGConfig($this->getConfiguration('mode'),'commands::'.$supported_command);
+    }
+    $this->import($commands);
+  }
+  
+  
+  /*     * **********************Getteur Setteur*************************** */
 }
 
 class netatmoCmd extends cmd {
   /*     * *************************Attributs****************************** */
   
-  /*
-  public static $_widgetPossibility = array();
-  */
   
-  /*     * ***********************Methode static*************************** */
+  // Exécution d'une commande
+  public function execute($_options = array()) {
+    if ($this->getLogicalId() == 'refresh') {
+      if($this->getEqLogic()->getConfiguration('mode') == 'weather'){
+        netatmo::refresh_weather();
+      }
+      
+    }
+  }
   
-  
-  /*     * *********************Methode d'instance************************* */
-  
-  /*
-  * Non obligatoire permet de demander de ne pas supprimer les commandes même si elles ne sont pas dans la nouvelle configuration de l'équipement envoyé en JS
-  public function dontRemoveCmd() {
-  return true;
-}
-*/
-
-// Exécution d'une commande
-public function execute($_options = array()) {
-  
-}
-
-/*     * **********************Getteur Setteur*************************** */
+  /*     * **********************Getteur Setteur*************************** */
 }

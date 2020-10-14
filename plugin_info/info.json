@@ -1,8 +1,7 @@
 {
 	"id" : "netatmo",
-	"name" : "NEtatmo",
-	"description" : "Plugin pour recuperer les équipements N
-	etatmo",
+	"name" : "Netatmo",
+	"description" : "Plugin pour recuperer les équipements Netatmo",
 	"licence" : "AGPL",
 	"author" : "Jeedom SAS",
 	"require" : "4.0",

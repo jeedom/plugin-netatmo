@@ -22,3 +22,42 @@ if (!isConnect()) {
   die();
 }
 ?>
+<form class="form-horizontal">
+  <fieldset>
+    <div class="form-group">
+      <label class="col-lg-2 control-label">{{Association}}</label>
+      <div class="col-lg-4">
+        <a class="btn btn-success" href="<?php echo config::byKey('service::cloud::url').'/frontend/login.html?service=netatmo' ?>" target="__blank"><i class="fas fa-link"></i> {{Liée}}</a>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-lg-2 control-label">{{Synchronisation}}</label>
+      <div class="col-lg-4">
+        <a class="btn btn-success" id="bt_syncWithNetatmo"><i class="fas fa-sync"></i> {{Synchroniser mes équipements}}</a>
+      </div>
+    </div>
+  </fieldset>
+</form>
+
+<script>
+$('#bt_syncWithNetatmo').on('click', function () {
+  $.ajax({
+    type: "POST",
+    url: "plugins/netatmo/core/ajax/netatmo.ajax.php",
+    data: {
+      action: "sync",
+    },
+    dataType: 'json',
+    error: function (request, status, error) {
+      handleAjaxError(request, status, error);
+    },
+    success: function (data) {
+      if (data.state != 'ok') {
+        $('#div_alert').showAlert({message: data.result, level: 'danger'});
+        return;
+      }
+      $('#div_alert').showAlert({message: '{{Synchronisation réussie}}', level: 'success'});
+    }
+  });
+});
+</script>

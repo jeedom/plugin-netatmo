@@ -74,6 +74,15 @@ switch ($data['event_type']) {
     }
   }
   break;
+  case 'human':
+  $eqLogic->checkAndUpdateCmd('lastHuman',$data['snapshot_url']);
+  break;
+  case 'vehicle':
+  $eqLogic->checkAndUpdateCmd('lastVehicle',$data['snapshot_url']);
+  break;
+  case 'animal':
+  $eqLogic->checkAndUpdateCmd('lastAnimal',$data['snapshot_url']);
+  break;
   case 'tag_big_move':
   $eqLogic->checkAndUpdateCmd('state',__('Mouvement',__FILE__));
   break;

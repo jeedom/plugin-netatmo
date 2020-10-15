@@ -15,10 +15,16 @@
 * You should have received a copy of the GNU General Public License
 * along with Jeedom. If not, see <http://www.gnu.org/licenses/>.
 */
-
+require_once dirname(__FILE__) . "/../../../../core/php/core.inc.php";
 header('Content-type: application/json');
+
 $data = json_decode(file_get_contents('php://input'), true);
 if (!isset($data['apikey']) || !jeedom::apiAccess($data['apikey'], 'netatmo')) {
-  die();
+  if(init('apikey') == '' || !jeedom::apiAccess(init('apikey'), 'netatmo')){
+    die();
+  }
+}
+if (isset($data['data']) {
+  $data = $data['data'];
 }
 log::add('netatmo', 'debug','Received : '. json_encode($data));

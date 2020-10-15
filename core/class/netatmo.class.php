@@ -120,6 +120,23 @@ class netatmo extends eqLogic {
   public static function sync(){
     netatmo_weather::sync();
     netatmo_security::sync();
+    self::setWebhook();
+  }
+  
+  public static function setWebhook(){
+    if(config::byKey('mode', 'netatmo') != 'internal'){
+      return;
+    }
+    try {
+      self::getClient()->api('dropwebhook','POST',array('app_types' => 'jeedom'));
+    } catch (\Exception $e) {
+      log::add('netatmo','debug','Webhook drop error : '.print_r($e,true));
+    }
+    try {
+      self::getClient()->api('addwebhook','POST',array('url' => network::getNetworkAccess('external') . '/plugins/netatmo/core/php/jeeNetatmo.php?apikey=' . jeedom::getApiKey('netatmo')));
+    } catch (\Exception $e) {
+      log::add('netatmo','debug','Webhook add error : '.print_r($e,true));
+    }
   }
   
   public function getImage() {

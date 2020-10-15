@@ -142,9 +142,7 @@ class netatmo_security {
         if(!is_object($eqLogic)){
           continue;
         }
-        log::add('netatmo','debug',json_encode($camera));
         $url_parse = parse_url($eqLogic->getCache('vpnUrl'). '/live/snapshot_720.jpg');
-        log::add('netatmo','debug','VPN URL : '.json_encode($url_parse));
         if (!isset($url_parse['host']) || $url_parse['host'] == '') {
           continue;
         }

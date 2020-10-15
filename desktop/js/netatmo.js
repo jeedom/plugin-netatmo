@@ -15,8 +15,8 @@
 * along with Jeedom. If not, see <http://www.gnu.org/licenses/>.
 */
 
-$('.eqLogicAttr[data-l1key=configuration][data-l2key=type]').on('change',function(){
-  $('#img_netatmoModel').attr('src','plugins/netatmo/core/img/'+$(this).value()+'.png');
+$('.eqLogicAttr[data-l1key=configuration][data-l2key=device]').on('change',function(){
+  $('#img_netatmoModel').attr('src','plugins/netatmo/core/config/devices/'+$(this).value()+'.png');
   if ($(this).value()=='station') {
     $('#battery_net_weather').hide();
   } else {

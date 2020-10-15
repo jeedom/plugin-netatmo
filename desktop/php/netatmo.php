@@ -103,7 +103,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
 								<div class="form-group">
 									<label class="col-sm-6 control-label">{{Type}}</label>
 									<div class="col-sm-6">
-										<select disabled class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="type" disabled>
+										<select disabled class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="device" disabled>
 											<option value="NAMain">{{Station}}</option>
 											<option value="NAModule1">{{Module extérieur}}</option>
 											<option value="NAModule4">{{Module intérieur}}</option>
@@ -129,21 +129,6 @@ $eqLogics = eqLogic::byType($plugin->getId());
 									<label class="col-sm-4 control-label">{{Identifiant}}</label>
 									<div class="col-sm-6">
 										<span class="eqLogicAttr label label-info" style="font-size:1em;" data-l1key="logicalId"></span>
-									</div>
-								</div>
-								<div class="form-group">
-									<label class="col-sm-4 control-label">{{Firmware}}</label>
-									<div class="col-sm-6">
-										<span class="eqLogicAttr label label-info" style="font-size:1em;" data-l1key="configuration" data-l2key="firmware"></span>
-									</div>
-								</div>
-								<div class="form-group">
-									<label class="col-sm-4 control-label">{{Réception réseaux}}</label>
-									<div class="col-sm-6">
-										<span class="label label-info" style="font-size:1em;">
-											<span class="eqLogicAttr" data-l1key="configuration" data-l2key="wifi_status"></span>
-											<span class="eqLogicAttr" data-l1key="configuration" data-l2key="rf_status"></span>
-										</span>
 									</div>
 								</div>
 							</fieldset>

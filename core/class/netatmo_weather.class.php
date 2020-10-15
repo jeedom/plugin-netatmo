@@ -39,10 +39,10 @@ class netatmo_weather {
           $eqLogic->setName($device['station_name']);
           $eqLogic->setCategory('heating', 1);
         }
-        $eqLogic->setConfiguration('mode','weather');
+        $eqLogic->setConfiguration('type','weather');
         $eqLogic->setEqType_name('netatmo');
         $eqLogic->setLogicalId($device['_id']);
-        $eqLogic->setConfiguration('type', $device['type']);
+        $eqLogic->setConfiguration('device', $device['type']);
         $eqLogic->save();
         if(isset($device['modules']) &&  count($device['modules']) > 0){
           foreach ($device['modules'] as $module) {
@@ -54,11 +54,10 @@ class netatmo_weather {
               $eqLogic->setCategory('heating', 1);
               $eqLogic->setIsVisible(1);
             }
-            $eqLogic->setConfiguration('mode','weather');
-            $eqLogic->setConfiguration('battery_type', netatmo::getGConfig('weather',$module['type'].'::bat_type'));
+            $eqLogic->setConfiguration('type','weather');
             $eqLogic->setEqType_name('netatmo');
             $eqLogic->setLogicalId($module['_id']);
-            $eqLogic->setConfiguration('type', $module['type']);
+            $eqLogic->setConfiguration('device', $module['type']);
             $eqLogic->save();
           }
         }
@@ -103,7 +102,10 @@ class netatmo_weather {
             $eqLogic->setConfiguration('rf_status', $module['rf_status']);
             $eqLogic->setConfiguration('firmware', $module['firmware']);
             $eqLogic->save(true);
-            $eqLogic->batteryStatus(round(($module['battery_vp'] - netatmo::getGConfig('weather',$module['type'].'::bat_min')) / (netatmo::getGConfig('weather',$module['type'].'::bat_max') - netatmo::getGConfig('weather',$module['type'].'::bat_min')) * 100, 0));
+            $devices = netatmo::devicesParameters($eqLogic->getConfiguration('device'));
+            if(isset($devices['bat_min']) && isset($devices['bat_max'])){
+              $eqLogic->batteryStatus(round(($module['battery_vp'] - $devices['bat_min']) / ($devices['bat_max'] - $devices['bat_min']) * 100, 0));
+            }
             foreach ($module['dashboard_data'] as $key => $value) {
               if ($key == 'max_temp') {
                 $collectDate = date('Y-m-d H:i:s', $module['dashboard_data']['date_max_temp']);

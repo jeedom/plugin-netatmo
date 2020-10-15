@@ -1,0 +1,12 @@
+{
+  "commands" : [
+    {
+      "name": "Etat",
+      "type": "info",
+      "subtype": "string",
+      "isVisible": 1,
+      "isHistorized": 0,
+      "logicalId": "state"
+    }
+  ]
+}

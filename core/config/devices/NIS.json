@@ -1,0 +1,30 @@
+{
+  "commands" : [
+    {
+      "name": "Sirène On",
+      "type": "action",
+      "subtype": "other",
+      "isVisible": 1,
+      "isHistorized": 0,
+      "logicalId": "sirenon",
+      "value" : "Sirène"
+    },
+    {
+      "name": "Sirène Off",
+      "type": "action",
+      "subtype": "other",
+      "isVisible": 1,
+      "isHistorized": 0,
+      "logicalId": "sirenoff",
+      "value" : "Sirène"
+    },
+    {
+      "name": "Sirène",
+      "type": "info",
+      "subtype": "binary",
+      "isVisible": 0,
+      "isHistorized": 0,
+      "logicalId": "siren"
+    }
+  ]
+}

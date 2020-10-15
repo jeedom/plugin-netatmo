@@ -1,0 +1,38 @@
+{
+  "commands" : [
+    {
+      "name": "Monitoring On",
+      "type": "action",
+      "subtype": "other",
+      "isVisible": 1,
+      "isHistorized": 0,
+      "logicalId": "monitoringOn",
+      "value" : "Monitoring"
+    },
+    {
+      "name": "Monitoring Off",
+      "type": "action",
+      "subtype": "other",
+      "isVisible": 1,
+      "isHistorized": 0,
+      "logicalId": "monitoringOff",
+      "value" : "Monitoring"
+    },
+    {
+      "name": "Monitoring",
+      "type": "info",
+      "subtype": "binary",
+      "isVisible": 0,
+      "isHistorized": 0,
+      "logicalId": "monitoring"
+    },
+    {
+      "name": "Mouvement",
+      "type": "info",
+      "subtype": "string",
+      "isVisible": 1,
+      "isHistorized": 0,
+      "logicalId": "movement"
+    }
+  ]
+}

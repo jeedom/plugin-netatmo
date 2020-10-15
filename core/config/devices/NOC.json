@@ -1,0 +1,88 @@
+{
+  "commands" : [
+    {
+      "name": "Lumière On",
+      "type": "action",
+      "subtype": "other",
+      "isVisible": 1,
+      "isHistorized": 0,
+      "logicalId": "lighton",
+      "generic_type" : "LIGHT_ON"
+    },
+    {
+      "name": "Lumière Off",
+      "type": "action",
+      "subtype": "other",
+      "isVisible": 1,
+      "isHistorized": 0,
+      "logicalId": "lightoff",
+      "generic_type" : "LIGHT_OFF"
+    },
+    {
+      "name": "Lumière Auto",
+      "type": "action",
+      "subtype": "other",
+      "isVisible": 1,
+      "isHistorized": 0,
+      "logicalId": "lightauto"
+    },
+    {
+      "name": "Lumière Variation",
+      "type": "action",
+      "subtype": "slider",
+      "isVisible": 1,
+      "isHistorized": 0,
+      "logicalId": "lightintensity"
+    },
+    {
+      "name": "Monitoring On",
+      "type": "action",
+      "subtype": "other",
+      "isVisible": 1,
+      "isHistorized": 0,
+      "logicalId": "monitoringOn",
+      "value" : "Monitoring"
+    },
+    {
+      "name": "Monitoring Off",
+      "type": "action",
+      "subtype": "other",
+      "isVisible": 1,
+      "isHistorized": 0,
+      "logicalId": "monitoringOff",
+      "value" : "Monitoring"
+    },
+    {
+      "name": "Monitoring",
+      "type": "info",
+      "subtype": "binary",
+      "isVisible": 0,
+      "isHistorized": 0,
+      "logicalId": "monitoring"
+    },
+    {
+      "name": "Humain",
+      "type": "info",
+      "subtype": "string",
+      "isVisible": 1,
+      "isHistorized": 0,
+      "logicalId": "lastHuman"
+    },
+    {
+      "name": "Voiture",
+      "type": "info",
+      "subtype": "string",
+      "isVisible": 1,
+      "isHistorized": 0,
+      "logicalId": "lastVehicle"
+    },
+    {
+      "name": "Animal",
+      "type": "info",
+      "subtype": "string",
+      "isVisible": 1,
+      "isHistorized": 0,
+      "logicalId": "lastAnimal"
+    }
+  ]
+}

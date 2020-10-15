@@ -102,21 +102,6 @@ class netatmo extends eqLogic {
     return $return;
   }
   
-  public static function getGConfig($_mode,$_key){
-    $keys = explode('::',$_key);
-    if(!isset(self::$_globalConfig[$_mode])){
-      self::$_globalConfig[$_mode] = json_decode(file_get_contents(__DIR__.'/../config/config.json'),true);
-    }
-    $return = self::$_globalConfig[$_mode];
-    foreach ($keys as $key) {
-      if(!isset($return[$key])){
-        return '';
-      }
-      $return = $return[$key];
-    }
-    return $return;
-  }
-  
   public static function sync(){
     netatmo_weather::sync();
     netatmo_security::sync();
@@ -139,18 +124,30 @@ class netatmo extends eqLogic {
     }
   }
   
-  public function getImage() {
-    if(file_exists(__DIR__.'/../img/'.  $this->getConfiguration('type').'.png')){
-      return 'plugins/netatmo/core/img/'.  $this->getConfiguration('type').'.png';
+  public static function devicesParameters($_device = '') {
+    $return = array();
+    $files = ls(__DIR__.'/../config/devices', '*.json', false, array('files', 'quiet'));
+    foreach ($files as $file) {
+      try {
+        $return[str_replace('.json','',$file)] = is_json(file_get_contents(__DIR__.'/../config/devices/'. $file),false);
+      } catch (Exception $e) {
+        
+      }
     }
-    return false;
+    if (isset($_device) && $_device != '') {
+      if (isset($return[$_device])) {
+        return $return[$_device];
+      }
+      return array();
+    }
+    return $return;
   }
   
   /*     * *********************Méthodes d'instance************************* */
   
   public function postSave() {
-    if ($this->getConfiguration('applyType') != $this->getConfiguration('type')) {
-      $this->applyType();
+    if ($this->getConfiguration('applyDevice') != $this->getConfiguration('device')) {
+      $this->applyModuleConfiguration();
     }
     $cmd = $this->getCmd(null, 'refresh');
     if (!is_object($cmd)) {
@@ -164,16 +161,25 @@ class netatmo extends eqLogic {
     $cmd->save();
   }
   
-  public function applyType(){
-    $this->setConfiguration('applyType', $this->getConfiguration('type'));
-    $supported_commands = self::getGConfig($this->getConfiguration('mode'),$this->getConfiguration('type').'::cmd');
-    $commands = array('commands');
-    foreach ($supported_commands as $supported_command) {
-      $commands['commands'][] = self::getGConfig($this->getConfiguration('mode'),'commands::'.$supported_command);
+  public function applyModuleConfiguration() {
+    $this->setConfiguration('applyDevice', $this->getConfiguration('device'));
+    $this->save();
+    if ($this->getConfiguration('device') == '') {
+      return true;
     }
-    $this->import($commands);
+    $device = self::devicesParameters($this->getConfiguration('device'));
+    if (!is_array($device)) {
+      return true;
+    }
+    $this->import($device,true);
   }
   
+  public function getImage() {
+    if(file_exists(__DIR__.'/../config/devices/'.  $this->getConfiguration('device').'.png')){
+      return 'plugins/netatmo/core/config/devices/'.  $this->getConfiguration('device').'.png';
+    }
+    return false;
+  }
   
   /*     * **********************Getteur Setteur*************************** */
 }
@@ -184,14 +190,14 @@ class netatmoCmd extends cmd {
   public function execute($_options = array()) {
     $eqLogic = $this->getEqLogic();
     if ($this->getLogicalId() == 'refresh') {
-      if($eqLogic->getConfiguration('mode') == 'weather'){
+      if($eqLogic->getConfiguration('type') == 'weather'){
         netatmo_weather::refresh();
       }
-      if($eqLogic->getConfiguration('mode') == 'security'){
+      if($eqLogic->getConfiguration('type') == 'security'){
         netatmo_security::refresh();
       }
     }
-    if($eqLogic->getConfiguration('mode') == 'security'){
+    if($eqLogic->getConfiguration('type') == 'security'){
       netatmo_security::execCmd($this);
     }
     

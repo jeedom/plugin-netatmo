@@ -15,6 +15,17 @@
 * You should have received a copy of the GNU General Public License
 * along with Jeedom. If not, see <http://www.gnu.org/licenses/>.
 */
+
+ob_end_clean();
+ignore_user_abort(true);
+ob_start();
+header('Content-Encoding: none');
+header("Content-Length: " . ob_get_length());
+header("Connection: close");
+ob_end_flush();
+ob_flush();
+flush();
+
 require_once dirname(__FILE__) . "/../../../../core/php/core.inc.php";
 header('Content-type: application/json');
 

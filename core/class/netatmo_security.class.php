@@ -203,7 +203,7 @@ class netatmo_security {
         if(isset($camera['light_mode_status'])){
           $camera_eqLogic->checkAndUpdateCmd('light',$camera['light_mode_status']);
         }
-        if(isset($camera['vpn_url']) && $camera['vpn_url'] == ''){
+        if(isset($camera['vpn_url']) && $camera['vpn_url'] != ''){
           try {
             $request_http = new com_http($camera['vpn_url'] . '/command/ping');
             $camera_eqLogic->setCache('vpnUrl',str_replace(',,','', json_decode(trim($request_http->exec(5, 1)), true)['local_url']));

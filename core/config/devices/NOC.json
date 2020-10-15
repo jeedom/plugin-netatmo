@@ -6,7 +6,7 @@
       "subtype": "string",
       "isVisible": 1,
       "isHistorized": 0,
-      "logicalId": "light",
+      "logicalId": "light"
     },
     {
       "name": "Lumière On",
@@ -15,9 +15,8 @@
       "isVisible": 1,
       "logicalId": "lighton",
       "generic_type" : "LIGHT_ON",
-      "template" : {
-        "dashboard" : "core::light",
-        "mobile" : "core::light"
+      "display":{
+        "icon":"<i class=\"icon jeedom2-lightbulb25\"></i>"
       }
     },
     {
@@ -27,9 +26,8 @@
       "isVisible": 1,
       "logicalId": "lightoff",
       "generic_type" : "LIGHT_OFF",
-      "template" : {
-        "dashboard" : "core::light",
-        "mobile" : "core::light"
+      "display":{
+        "icon":"<i class=\"icon jeedom2-light-bulb7\"></i>"
       }
     },
     {

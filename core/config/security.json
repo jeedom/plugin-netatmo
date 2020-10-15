@@ -1,38 +1,58 @@
 {
   "NOC" :{
     "type" : "présence",
-    "cmd" : ["lighton","lightoff","lightintensity","state","stateSd","stateAlim","monitoringOn","monitoringOff","lastEvent","lastOneEvent"]
+    "cmd" : ["lighton","lightoff","lightintensity","monitoringOn","monitoringOff","lastHuman","lastVehicle","lastAnimal","monitoring"]
   },
   "NACamera" :{
     "type" : "welcome",
-    "cmd" : ["state","stateSd","stateAlim","monitoringOn","monitoringOff","lastEvent","lastOneEvent"]
+    "cmd" : ["movement","monitoring","monitoringOn","monitoringOff"]
   },
   "NACamDoorTag" :{
     "type" : "Door tag",
-    "cmd" : ["state","lastEvent","lastOneEvent"]
+    "cmd" : ["state"]
   },
   "NIS" :{
     "type" : "Siren",
-    "cmd" : ["state","stateAlim","monitoring","lastEvent","lastOneEvent"]
+    "cmd" : ["sirenon","sirenoff","siren"]
   },
   "NSD" :{
     "type" : "Smoke detector",
-    "cmd" : ["lastEvent","lastOneEvent"]
-  },
-  "NAHome" :{
-    "type" : "Home",
-    "cmd" : ["lastEvent","lastOneEvent"]
+    "cmd" : ["smoke"]
   },
   "commands": {
-    "lastEvent" : {
-      "name":"Derniers évènements",
-      "logicalId" : "lastEvent",
+    "state" : {
+      "name":"Etat",
+      "logicalId" : "state",
       "type":"info",
       "subType":"string"
     },
-    "lastOneEvent" : {
-      "name":"Evènement",
-      "logicalId" : "lastOneEvent",
+    "movement" : {
+      "name":"Mouvement",
+      "logicalId" : "movement",
+      "type":"info",
+      "subType":"binary"
+    },
+    "smoke" : {
+      "name":"Fumée",
+      "logicalId" : "smoke",
+      "type":"info",
+      "subType":"binary"
+    },
+    "lastHuman" : {
+      "name":"Dernier humain vu",
+      "logicalId" : "lastHuman",
+      "type":"info",
+      "subType":"string"
+    },
+    "lastVehicle" : {
+      "name":"Derniere voiture vu",
+      "logicalId" : "lastVehicle",
+      "type":"info",
+      "subType":"string"
+    },
+    "lastAnimal" : {
+      "name":"Derniere animal vu",
+      "logicalId" : "lastAnimal",
       "type":"info",
       "subType":"string"
     },
@@ -72,24 +92,6 @@
         "action" : "on"
       }
     },
-    "state" : {
-      "name":"Status",
-      "logicalId" : "state",
-      "type":"info",
-      "subType":"binary"
-    },
-    "stateSd" : {
-      "name":"Status SD",
-      "logicalId" : "stateSd",
-      "type":"info",
-      "subType":"binary"
-    },
-    "stateAlim" : {
-      "name":"Status alimentation",
-      "logicalId" : "stateAlim",
-      "type":"info",
-      "subType":"binary"
-    },
     "monitoringOn" :   {
       "name":"Activer surveillance",
       "logicalId" : "monitoringOn",
@@ -107,6 +109,24 @@
       "logicalId" : "monitoring",
       "type":"info",
       "subType":"binary"
-    }
+    },
+    "sirenon" :   {
+      "name":"Sirène On",
+      "logicalId" : "sirenon",
+      "type":"action",
+      "subType":"other"
+    },
+    "sirenoff" :   {
+      "name":"Sirène Off",
+      "logicalId" : "sirenoff",
+      "type":"action",
+      "subType":"other"
+    },
+    "siren" :   {
+      "name":"Sirène",
+      "logicalId" : "siren",
+      "type":"info",
+      "subType":"binary"
+    },
   }
 }

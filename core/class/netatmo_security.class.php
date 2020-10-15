@@ -205,7 +205,7 @@ class netatmo_security {
       
     }
     foreach ($security['homes'] as $home) {
-      log::add('netatmo','debug',$home['events']);
+      log::add('netatmo','debug',json_encode($home['events']));
       $eqLogic = eqLogic::byLogicalId($home['id'], 'netatmo');
       if (!is_object($eqLogic)) {
         continue;

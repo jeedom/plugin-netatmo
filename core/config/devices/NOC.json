@@ -49,7 +49,11 @@
       "isVisible": 1,
       "isHistorized": 0,
       "logicalId": "monitoringOn",
-      "value" : "Monitoring"
+      "value" : "Monitoring",
+      "template" : {
+        "dashboard" : "core::lock",
+        "mobile" : "core::lock"
+      }
     },
     {
       "name": "Monitoring Off",
@@ -58,7 +62,11 @@
       "isVisible": 1,
       "isHistorized": 0,
       "logicalId": "monitoringOff",
-      "value" : "Monitoring"
+      "value" : "Monitoring",
+      "template" : {
+        "dashboard" : "core::lock",
+        "mobile" : "core::lock"
+      }
     },
     {
       "name": "Monitoring",

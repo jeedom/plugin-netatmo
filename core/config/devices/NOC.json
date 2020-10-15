@@ -1,7 +1,7 @@
 {
   "commands" : [
     {
-      "name": "Lumière",
+      "name": "Projecteur",
       "type": "info",
       "subtype": "string",
       "isVisible": 1,
@@ -9,7 +9,14 @@
       "logicalId": "light"
     },
     {
-      "name": "Lumière On",
+      "name": "Auto",
+      "type": "action",
+      "subtype": "other",
+      "isVisible": 1,
+      "logicalId": "lightauto"
+    },
+    {
+      "name": "Projecteur On",
       "type": "action",
       "subtype": "other",
       "isVisible": 1,
@@ -20,7 +27,7 @@
       }
     },
     {
-      "name": "Lumière Off",
+      "name": "Projecteur Off",
       "type": "action",
       "subtype": "other",
       "isVisible": 1,
@@ -31,14 +38,7 @@
       }
     },
     {
-      "name": "Auto",
-      "type": "action",
-      "subtype": "other",
-      "isVisible": 1,
-      "logicalId": "lightauto"
-    },
-    {
-      "name": "Lumière Variation",
+      "name": "Projecteur intensité",
       "type": "action",
       "subtype": "slider",
       "isVisible": 1,

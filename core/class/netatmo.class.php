@@ -193,6 +193,13 @@ class netatmo extends eqLogic {
 class netatmoCmd extends cmd {
   /*     * *************************Attributs****************************** */
   
+  public function formatValueWidget($_value) {
+    if(in_array($this->getLogicalId(),array('lastHuman','lastVehicle','lastAnimal','movement'))){
+      return '<img style="display: block;max-width: 100%;height: auto;" src="'.$_value.'" />';
+    }
+    return $_value;
+  }
+  
   public function execute($_options = array()) {
     $eqLogic = $this->getEqLogic();
     if ($this->getLogicalId() == 'refresh') {

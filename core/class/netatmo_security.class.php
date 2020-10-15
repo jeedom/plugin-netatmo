@@ -224,29 +224,25 @@ class netatmo_security {
     }
   }
   
-  public static function execCmd($_cmd){
+  public static function execCmd($_cmd,$_options = array()){
     $eqLogic = $_cmd->getEqLogic();
-    if(strpos($_cmd->getLogicalId(),'monitoringOff') !== false){
+    if($_cmd->getLogicalId() == 'monitoringOff'){
       $request_http = new com_http($eqLogic->getCache('vpnUrl').'/command/changestatus?status=off');
       $request_http->exec(5, 1);
-    }else if(strpos($_cmd->getLogicalId(),'monitoringOn') !== false){
+    }else if($_cmd->getLogicalId() == 'monitoringOn'){
       $request_http = new com_http($eqLogic->getCache('vpnUrl').'/command/changestatus?status=on');
       $request_http->exec(5, 1);
-    }else if(strpos($_cmd->getLogicalId(),'light') !== false){
-      $vpn = $eqLogic->getCache('vpnUrl');
-      $command = '/command/floodlight_set_config?config=';
-      if($_cmd->getSubType() == 'slider'){
-        $config = '{"mode":"on","intensity":"'.$_options['slider'].'"}';
-      }else{
-        if($_cmd->getConfiguration('mode')=='on'){
-          $config = '{"mode":"on","intensity":"100"}';
-        }else if($_cmd->getConfiguration('mode')=='auto'){
-          $config = '{"mode":"auto"}';
-        }else{
-          $config = '{"mode":"off","intensity":"0"}';
-        }
-      }
-      $request_http = new com_http($vpn.$command.urlencode($config));
+    }else if($_cmd->getLogicalId() == 'lighton'){
+      $request_http = new com_http($eqLogic->getCache('vpnUrl').'/command/floodlight_set_config?config='.urlencode('{"mode":"on","intensity":"100"}'));
+      $request_http->exec(5, 1);
+    }else if($_cmd->getLogicalId() == 'lightoff'){
+      $request_http = new com_http($eqLogic->getCache('vpnUrl').'/command/floodlight_set_config?config='.urlencode('{"mode":"off","intensity":"0"}'));
+      $request_http->exec(5, 1);
+    }else if($_cmd->getLogicalId() == 'lightintensity'){
+      $request_http = new com_http($eqLogic->getCache('vpnUrl').'/command/floodlight_set_config?config='.urlencode('{"mode":"on","intensity":"'.$_options['slider'].'"}'));
+      $request_http->exec(5, 1);
+    }else if($_cmd->getLogicalId() == 'lightauto')){
+      $request_http = new com_http($eqLogic->getCache('vpnUrl').'/command/floodlight_set_config?config='.urlencode('{"mode":"auto"}'));
       $request_http->exec(5, 1);
     }
   }

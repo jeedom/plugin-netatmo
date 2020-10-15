@@ -204,7 +204,7 @@ class netatmoCmd extends cmd {
       }
     }
     if($eqLogic->getConfiguration('type') == 'security'){
-      netatmo_security::execCmd($this);
+      netatmo_security::execCmd($this,$_options);
     }
     
   }

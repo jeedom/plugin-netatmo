@@ -32,6 +32,7 @@ class netatmo extends eqLogic {
   /*     * *************************Attributs****************************** */
   
   private static $_client = null;
+  private static $_globalConfig = array();
   
   /*     * ***********************Methode static*************************** */
   
@@ -79,20 +80,24 @@ class netatmo extends eqLogic {
     if(isset($datas['state']) && $datas['state'] != 'ok'){
       throw new \Exception(__('Erreur sur la récuperation des données : ',__FILE__).json_encode($datas));
     }
-    return json_decode($datas,true);
+    $return = json_decode($datas,true);
+    if(isset($return['body'])){
+      return $return['body'];
+    }
+    return $return;
   }
   
   public static function getGConfig($_mode,$_key){
     $keys = explode('::',$_key);
-    $return = json_decode(file_get_contents(__DIR__.'/../config/'.$_mode.'.json'),true);
+    if(!isset(self::$_globalConfig[$_mode])){
+      self::$_globalConfig[$_mode] = json_decode(file_get_contents(__DIR__.'/../config/config.json'),true);
+    }
+    $return = self::$_globalConfig[$_mode];
     foreach ($keys as $key) {
       if(!isset($return[$key])){
         return '';
       }
       $return = $return[$key];
-    }
-    if(isset($return['body'])){
-      return $return['body'];
     }
     return $return;
   }

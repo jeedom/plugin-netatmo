@@ -82,6 +82,7 @@ class netatmo_security {
             $eqLogic->setCategory('security', 1);
             $eqLogic->setIsVisible(1);
           }
+          $eqLogic->setConfiguration('home_id',$home['id']);
           $eqLogic->setConfiguration('mode','security');
           $eqLogic->setConfiguration('type', $camera['type']);
           $eqLogic->setLogicalId($camera['id']);
@@ -100,6 +101,7 @@ class netatmo_security {
                 $eqLogic->setCategory('security', 1);
                 $eqLogic->setIsVisible(1);
               }
+              $eqLogic->setConfiguration('home_id',$home['id']);
               $eqLogic->setConfiguration('mode','security');
               $eqLogic->setConfiguration('type', $module['type']);
               $eqLogic->setLogicalId($module['id']);
@@ -203,6 +205,7 @@ class netatmo_security {
       
     }
     foreach ($security['homes'] as $home) {
+      log::add('netatmo','debug',$home['events']);
       $eqLogic = eqLogic::byLogicalId($home['id'], 'netatmo');
       if (!is_object($eqLogic)) {
         continue;

@@ -1,11 +1,18 @@
 {
   "commands" : [
     {
+      "name": "Lumière",
+      "type": "info",
+      "subtype": "string",
+      "isVisible": 1,
+      "isHistorized": 0,
+      "logicalId": "light",
+    },
+    {
       "name": "Lumière On",
       "type": "action",
       "subtype": "other",
       "isVisible": 1,
-      "isHistorized": 0,
       "logicalId": "lighton",
       "generic_type" : "LIGHT_ON",
       "template" : {
@@ -18,7 +25,6 @@
       "type": "action",
       "subtype": "other",
       "isVisible": 1,
-      "isHistorized": 0,
       "logicalId": "lightoff",
       "generic_type" : "LIGHT_OFF",
       "template" : {
@@ -31,7 +37,6 @@
       "type": "action",
       "subtype": "other",
       "isVisible": 1,
-      "isHistorized": 0,
       "logicalId": "lightauto"
     },
     {
@@ -39,7 +44,6 @@
       "type": "action",
       "subtype": "slider",
       "isVisible": 1,
-      "isHistorized": 0,
       "logicalId": "lightintensity"
     },
     {
@@ -47,7 +51,6 @@
       "type": "action",
       "subtype": "other",
       "isVisible": 1,
-      "isHistorized": 0,
       "logicalId": "monitoringOn",
       "value" : "Monitoring",
       "template" : {
@@ -60,7 +63,6 @@
       "type": "action",
       "subtype": "other",
       "isVisible": 1,
-      "isHistorized": 0,
       "logicalId": "monitoringOff",
       "value" : "Monitoring",
       "template" : {
@@ -73,7 +75,6 @@
       "type": "info",
       "subtype": "binary",
       "isVisible": 0,
-      "isHistorized": 0,
       "logicalId": "monitoring"
     },
     {
@@ -81,7 +82,6 @@
       "type": "info",
       "subtype": "string",
       "isVisible": 1,
-      "isHistorized": 0,
       "logicalId": "lastHuman"
     },
     {
@@ -89,7 +89,6 @@
       "type": "info",
       "subtype": "string",
       "isVisible": 1,
-      "isHistorized": 0,
       "logicalId": "lastVehicle"
     },
     {
@@ -97,7 +96,6 @@
       "type": "info",
       "subtype": "string",
       "isVisible": 1,
-      "isHistorized": 0,
       "logicalId": "lastAnimal"
     }
   ]

@@ -200,14 +200,16 @@ class netatmo_security {
         if (!is_object($camera_eqLogic)) {
           continue;
         }
-        if(!isset($camera['vpn_url']) || $camera['vpn_url'] == ''){
-          continue;
+        if(isset($camera['light_mode_status'])){
+          $camera_eqLogic->checkAndUpdateCmd('light',$camera['light_mode_status']);
         }
-        try {
-          $request_http = new com_http($camera['vpn_url'] . '/command/ping');
-          $camera_eqLogic->setCache('vpnUrl',str_replace(',,','', json_decode(trim($request_http->exec(5, 1)), true)['local_url']));
-        } catch (Exception $e) {
-          log::add('netatmo','debug','Local error : '.$e->getMessage());
+        if(isset($camera['vpn_url']) && $camera['vpn_url'] == ''){
+          try {
+            $request_http = new com_http($camera['vpn_url'] . '/command/ping');
+            $camera_eqLogic->setCache('vpnUrl',str_replace(',,','', json_decode(trim($request_http->exec(5, 1)), true)['local_url']));
+          } catch (Exception $e) {
+            log::add('netatmo','debug','Local error : '.$e->getMessage());
+          }
         }
         if(isset($camera['modules'])){
           foreach ($camera['modules'] as $module) {
@@ -245,5 +247,7 @@ class netatmo_security {
       $request_http = new com_http($eqLogic->getCache('vpnUrl').'/command/floodlight_set_config?config='.urlencode('{"mode":"auto"}'));
       $request_http->exec(5, 1);
     }
+    sleep(2);
+    self::refresh();
   }
 }

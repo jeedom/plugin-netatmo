@@ -154,29 +154,10 @@ class netatmoCmd extends cmd {
         netatmo_security::refresh();
       }
     }
-    if(strpos($this->getLogicalId(),'monitoringOff') !== false){
-      $request_http = new com_http($this->getCache('vpnUrl').'/command/changestatus?status=off');
-      $request_http->exec(5, 1);
-    }else if(strpos($this->getLogicalId(),'monitoringOn') !== false){
-      $request_http = new com_http($this->getCache('vpnUrl').'/command/changestatus?status=on');
-      $request_http->exec(5, 1);
-    }else if(strpos($this->getLogicalId(),'light') !== false){
-      $vpn = $eqLogic->getCache('vpnUrl');
-      $command = '/command/floodlight_set_config?config=';
-      if($this->getSubType() == 'slider'){
-        $config = '{"mode":"on","intensity":"'.$_options['slider'].'"}';
-      }else{
-        if($this->getConfiguration('mode')=='on'){
-          $config = '{"mode":"on","intensity":"100"}';
-        }else if($this->getConfiguration('mode')=='auto'){
-          $config = '{"mode":"auto"}';
-        }else{
-          $config = '{"mode":"off","intensity":"0"}';
-        }
-      }
-      $request_http = new com_http($vpn.$command.urlencode($config));
-      $request_http->exec(5, 1);
+    if($eqLogic->getConfiguration('mode') == 'security'){
+      netatmo_security::execCmd($this);
     }
+    
   }
   
   /*     * **********************Getteur Setteur*************************** */

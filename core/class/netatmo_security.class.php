@@ -131,15 +131,11 @@ class netatmo_security {
     }
   }
   
-  public static function createCamera($_datas = null) {
+  public static function createCamera($_security = null) {
     if(!class_exists('camera')){
       return;
     }
-    if($_datas == null){
-      $security = self::request('/gethomedata');
-    }else{
-      $security = $data;
-    }
+    $security = ($_security == null) ? netatmo::request('/gethomedata') : $_security;
     foreach ($security['homes'] as $home) {
       foreach ($home['cameras'] as $camera) {
         $eqLogic = eqLogic::byLogicalId($camera['id'], 'netatmo');
@@ -202,13 +198,9 @@ class netatmo_security {
   
   
   public static function refresh($_security = null) {
-    if($_security == null){
-      $security = netatmo::request('/gethomedata');
-    }else{
-      $security = $_security;
-    }
+    $security = ($_security == null) ? netatmo::request('/gethomedata') : $_security;
     try {
-      //  self::createCamera($_datas);
+      self::createCamera($security);
     } catch (\Exception $e) {
       
     }
@@ -250,6 +242,17 @@ class netatmo_security {
         if(!is_object($eqLogic)){
           continue;
         }
+        $camera_jeedom = eqLogic::byLogicalId($id, 'camera');
+        if(isset($events[0]['message'])){
+          $eqLogic->checkAndUpdateCmd('lastOneEvent',$events[0]['message']);
+        }else if ($events[0] != null && isset($events[0]['event_list'])) {
+          $details = $events[0]['event_list'][0];
+          $message = date('Y-m-d H:i:s', $details['time']) . ' - ' . $details['message'];
+          $eqLogic->checkAndUpdateCmd('lastOneEvent', $message);
+          if(is_object($camera_jeedom)){
+            $camera_jeedom->checkAndUpdateCmd('lastOneEvent', $message);
+          }
+        }
         $message = '';
         foreach ($events as $event) {
           if(isset($event['message'])){
@@ -267,17 +270,20 @@ class netatmo_security {
         }
         if($message != ''){
           $eqLogic->checkAndUpdateCmd('lastEvent',$message);
+          if(is_object($camera_jeedom)){
+            $camera_jeedom->checkAndUpdateCmd('lastEvent', $message);
+          }
         }
       }
       foreach ($home['cameras'] as &$camera) {
         $eqLogic = eqLogic::byLogicalId($camera['id'], 'netatmo');
+        if (!is_object($eqLogic)) {
+          continue;
+        }
         $eqLogic->checkAndUpdateCmd('state', ($camera['status'] == 'on'));
         $eqLogic->checkAndUpdateCmd('stateSd', ($camera['sd_status'] == 'on'));
         $eqLogic->checkAndUpdateCmd('stateAlim', ($camera['alim_status'] == 'on'));
         if(!isset($camera['vpn_url']) || $camera['vpn_url'] == ''){
-          continue;
-        }
-        if (!is_object($eqLogic)) {
           continue;
         }
         $url = $camera['vpn_url'];
@@ -330,5 +336,30 @@ class netatmo_security {
     return 'plugins/netatmo/data/'.$filename;
   }
   
-  
+  public static function execCmd($_cmd){
+    $eqLogic = $_cmd->getEqLogic();
+    if(strpos($_cmd->getLogicalId(),'monitoringOff') !== false){
+      $request_http = new com_http($eqLogic->getCache('vpnUrl').'/command/changestatus?status=off');
+      $request_http->exec(5, 1);
+    }else if(strpos($_cmd->getLogicalId(),'monitoringOn') !== false){
+      $request_http = new com_http($eqLogic->getCache('vpnUrl').'/command/changestatus?status=on');
+      $request_http->exec(5, 1);
+    }else if(strpos($_cmd->getLogicalId(),'light') !== false){
+      $vpn = $eqLogic->getCache('vpnUrl');
+      $command = '/command/floodlight_set_config?config=';
+      if($_cmd->getSubType() == 'slider'){
+        $config = '{"mode":"on","intensity":"'.$_options['slider'].'"}';
+      }else{
+        if($_cmd->getConfiguration('mode')=='on'){
+          $config = '{"mode":"on","intensity":"100"}';
+        }else if($_cmd->getConfiguration('mode')=='auto'){
+          $config = '{"mode":"auto"}';
+        }else{
+          $config = '{"mode":"off","intensity":"0"}';
+        }
+      }
+      $request_http = new com_http($vpn.$command.urlencode($config));
+      $request_http->exec(5, 1);
+    }
+  }
 }

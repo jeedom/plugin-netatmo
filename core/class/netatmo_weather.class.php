@@ -70,11 +70,7 @@ class netatmo_weather {
   
   
   public static function refresh($_weather = null) {
-    if($_weather == null){
-      $weather = netatmo::request('/getstationsdata');
-    }else{
-      $weather = $_weather;
-    }
+    $weather = ($_weather == null) ? netatmo::request('/gethomedata') : $_weather;
     if(isset($weather['devices']) &&  count($weather['devices']) > 0){
       foreach ($weather['devices'] as $device) {
         $eqLogic = eqLogic::byLogicalId($device["_id"], 'netatmo');

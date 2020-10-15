@@ -7,7 +7,11 @@
       "isVisible": 1,
       "isHistorized": 0,
       "logicalId": "lighton",
-      "generic_type" : "LIGHT_ON"
+      "generic_type" : "LIGHT_ON",
+      "template" : {
+        "dashboard" : "core::light",
+        "mobile" : "core::light"
+      }
     },
     {
       "name": "Lumière Off",
@@ -16,7 +20,11 @@
       "isVisible": 1,
       "isHistorized": 0,
       "logicalId": "lightoff",
-      "generic_type" : "LIGHT_OFF"
+      "generic_type" : "LIGHT_OFF",
+      "template" : {
+        "dashboard" : "core::light",
+        "mobile" : "core::light"
+      }
     },
     {
       "name": "Lumière Auto",

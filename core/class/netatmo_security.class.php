@@ -241,7 +241,7 @@ class netatmo_security {
     }else if($_cmd->getLogicalId() == 'lightintensity'){
       $request_http = new com_http($eqLogic->getCache('vpnUrl').'/command/floodlight_set_config?config='.urlencode('{"mode":"on","intensity":"'.$_options['slider'].'"}'));
       $request_http->exec(5, 1);
-    }else if($_cmd->getLogicalId() == 'lightauto')){
+    }else if($_cmd->getLogicalId() == 'lightauto'){
       $request_http = new com_http($eqLogic->getCache('vpnUrl').'/command/floodlight_set_config?config='.urlencode('{"mode":"auto"}'));
       $request_http->exec(5, 1);
     }

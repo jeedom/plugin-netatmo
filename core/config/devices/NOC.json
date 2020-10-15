@@ -45,31 +45,31 @@
       "logicalId": "lightintensity"
     },
     {
-      "name": "Monitoring On",
+      "name": "Surveillance On",
       "type": "action",
       "subtype": "other",
       "isVisible": 1,
       "logicalId": "monitoringOn",
-      "value" : "Monitoring",
+      "value" : "Surveillance",
       "template" : {
         "dashboard" : "core::lock",
         "mobile" : "core::lock"
       }
     },
     {
-      "name": "Monitoring Off",
+      "name": "Surveillance Off",
       "type": "action",
       "subtype": "other",
       "isVisible": 1,
       "logicalId": "monitoringOff",
-      "value" : "Monitoring",
+      "value" : "Surveillance",
       "template" : {
         "dashboard" : "core::lock",
         "mobile" : "core::lock"
       }
     },
     {
-      "name": "Monitoring",
+      "name": "Surveillance",
       "type": "info",
       "subtype": "binary",
       "isVisible": 0,

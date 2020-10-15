@@ -6,7 +6,11 @@
       "subtype": "binary",
       "isVisible": 1,
       "isHistorized": 0,
-      "logicalId": "smoke"
+      "logicalId": "smoke",
+      "template" : {
+        "dashboard" : "core::alert",
+        "mobile" : "core::alert"
+      }
     }
   ]
 }

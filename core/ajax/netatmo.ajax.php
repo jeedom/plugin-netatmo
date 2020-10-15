@@ -31,6 +31,10 @@ try {
 		ajax::success();
 	}
 	
+	if (init('action') == 'sendConfig') {
+		netatmo::sendJeedomConfig();
+		ajax::success();
+	}
 	
 	throw new Exception(__('Aucune methode correspondante à : ', __FILE__) . init('action'));
 	/*     * *********Catch exeption*************** */

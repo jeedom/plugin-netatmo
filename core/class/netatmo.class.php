@@ -71,6 +71,12 @@ class netatmo extends eqLogic {
     } catch (\Exception $e) {
       
     }
+  }
+  
+  public static function cronHourly(){
+    if(config::byKey('mode', 'netatmo') != 'internal'){
+      sleep(rand(0,120));
+    }
     try {
       netatmo_security::refresh();
     } catch (\Exception $e) {

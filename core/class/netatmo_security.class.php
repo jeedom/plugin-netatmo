@@ -203,7 +203,6 @@ class netatmo_security {
         if(!isset($camera['vpn_url']) || $camera['vpn_url'] == ''){
           continue;
         }
-        $url = $camera['vpn_url'];
         try {
           $request_http = new com_http($camera['vpn_url'] . '/command/ping');
           $camera_eqLogic->setCache('vpnUrl',str_replace(',,','', json_decode(trim($request_http->exec(5, 1)), true)['local_url']));
@@ -215,11 +214,6 @@ class netatmo_security {
             $module_eqLogic = eqLogic::byLogicalId($module['id'], 'netatmo');
             if (!is_object($module_eqLogic)) {
               continue;
-            }
-            if($module['type'] == 'NACamDoorTag'){
-              $module_eqLogic->checkAndUpdateCmd('state', $module['status']);
-            }else if($module['type'] == 'NIS'){
-              $module_eqLogic->checkAndUpdateCmd('monitoring', $module['monitoring']);
             }
             if(isset($module['battery_percent'])){
               $module_eqLogic->batteryStatus($module['battery_percent']);

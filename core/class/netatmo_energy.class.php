@@ -122,6 +122,10 @@ class netatmo_energy {
             if(!isset($room[$cmd->getLogicalId()])){
               continue;
             }
+            if($cmd->getLogicalId() == 'therm_setpoint_mode' && $room[$cmd->getLogicalId()] != 'schedule' && isset($room['therm_setpoint_end_time'])){
+              $eqLogic->checkAndUpdateCmd($cmd,$room[$cmd->getLogicalId()].' ('.__('fini à').' '.date('H:i',$room['therm_setpoint_end_time']).')');
+              continue;
+            }
             $eqLogic->checkAndUpdateCmd($cmd,$room[$cmd->getLogicalId()]);
           }
         }

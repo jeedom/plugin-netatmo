@@ -1,7 +1,7 @@
 {
 	"id" : "netatmo",
 	"name" : "Netatmo",
-	"description" : "Plugin pour recuperer les équipements Netatmo",
+	"description" : "Plugin pour recuperer les équipements Netatmo (Weather,Energie,Securité). En mode standalone (configuration plus complexe) ou à travers le cloud Jeedom (service qui peut  à l'avenir devenir payant) .Attention pour l'instant il n'est pas possible d'avoir le flux des cameras en mode cloud Jeedom.",
 	"licence" : "AGPL",
 	"author" : "Jeedom SAS",
 	"require" : "4.0",

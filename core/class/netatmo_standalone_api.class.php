@@ -256,11 +256,14 @@ class netatmo_standalone_api {
         $query = '?' . http_build_query($params, NULL, '&');
       }
     }
-    $port = isset($parts['port']) && (($protocol === 'http://' && $parts['port'] !== 80) || ($protocol === 'https://' && $parts['port'] !== 443))  ? ':' . $parts['port'] : '';
+    $port = isset($parts['port']) && ($protocol === 'https://' && $parts['port'] !== 443) ? ':' . $parts['port'] : '';
     return $protocol . $parts['host'] . $port . $parts['path'] . $query;
   }
   
-  public function api($path, $method = 'GET', $params = array(), $secure = false){
+  public function api($path, $method = 'GET', $params = array()){
+    if($params == null){
+      $params = array();
+    }
     if (is_array($method) && empty($params)){
       $params = $method;
       $method = 'GET';
@@ -270,7 +273,7 @@ class netatmo_standalone_api {
         $params[$key] = json_encode($value);
       }
     }
-    $res = $this->makeOAuth2Request($this->getUri($path, array(), $secure), $method, $params);
+    $res = $this->makeOAuth2Request($this->getUri($path, array()), $method, $params);
     if(isset($res["body"])) return $res["body"];
     else return $res;
   }
@@ -305,11 +308,8 @@ class netatmo_standalone_api {
     return $res;
   }
   
-  protected function getUri($path = '', $params = array(), $secure = false){
+  protected function getUri($path = '', $params = array()){
     $url = $this->getVariable('services_uri') ? $this->getVariable('services_uri') : $this->getVariable('base_uri');
-    if($secure == true)  {
-      $url = self::str_replace_once("http", "https", $url);
-    }
     if(!empty($path)){
       if (substr($path, 0, 4) == "http"){
         $url = $path;

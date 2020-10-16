@@ -1,0 +1,22 @@
+{
+  "commands" : [
+    {
+      "name": "Absent",
+      "type": "action",
+      "subtype": "slider",
+      "isVisible": 0,
+      "isHistorized": 0,
+      "unite" : "Heure",
+      "logicalId": "home_mode_away"
+    },
+    {
+      "name": "Hors-gel",
+      "type": "action",
+      "subtype": "slider",
+      "isVisible": 0,
+      "isHistorized": 0,
+      "unite" : "Heure",
+      "logicalId": "home_mode_hg"
+    }
+  ]
+}

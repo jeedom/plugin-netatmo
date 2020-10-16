@@ -27,6 +27,9 @@ if (!class_exists('netatmo_weather')) {
 if (!class_exists('netatmo_security')) {
   require_once __DIR__ . '/netatmo_security.class.php';
 }
+if (!class_exists('netatmo_energy')) {
+  require_once __DIR__ . '/netatmo_energy.class.php';
+}
 
 class netatmo extends eqLogic {
   /*     * *************************Attributs****************************** */
@@ -86,7 +89,7 @@ class netatmo extends eqLogic {
   
   public static function request($_path,$_data = null,$_type='GET'){
     if(config::byKey('mode', 'netatmo') == 'internal'){
-      return self::getClient()->api(trim($_path,'/'));
+      return self::getClient()->api(trim($_path,'/'),$_type,$_data);
     }
     $url = config::byKey('service::cloud::url').'/service/netatmo';
     $url .='?path='.urlencode($_path);
@@ -111,6 +114,7 @@ class netatmo extends eqLogic {
   public static function sync(){
     netatmo_weather::sync();
     netatmo_security::sync();
+    netatmo_energy::sync();
     self::setWebhook();
   }
   
@@ -213,7 +217,9 @@ class netatmoCmd extends cmd {
     if($eqLogic->getConfiguration('type') == 'security'){
       netatmo_security::execCmd($this,$_options);
     }
-    
+    if($eqLogic->getConfiguration('type') == 'energy'){
+      netatmo_security::energy($this,$_options);
+    }
   }
   
   /*     * **********************Getteur Setteur*************************** */

@@ -74,6 +74,11 @@ class netatmo extends eqLogic {
     } catch (\Exception $e) {
       
     }
+    try {
+      netatmo_energy::refresh();
+    } catch (\Exception $e) {
+      
+    }
   }
   
   public static function cronHourly(){
@@ -212,6 +217,9 @@ class netatmoCmd extends cmd {
       }
       if($eqLogic->getConfiguration('type') == 'security'){
         netatmo_security::refresh();
+      }
+      if($eqLogic->getConfiguration('type') == 'energy'){
+        netatmo_energy::refresh();
       }
     }
     if($eqLogic->getConfiguration('type') == 'security'){

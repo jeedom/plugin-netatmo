@@ -22,9 +22,12 @@ require_once __DIR__  . '/../../../../core/php/core.inc.php';
 class netatmo_energy {
   
   public static function sync(){
-    $energy = netatmo::request('/homesdata');
-    if(isset($energy['homes']) &&  count($energy['homes']) > 0){
-      foreach ($energy['homes'] as $home) {
+    $homesdata = netatmo::request('/homesdata');
+    if(isset($homesdata['homes']) &&  count($homesdata['homes']) > 0){
+      foreach ($homesdata['homes'] as $home) {
+        if(!isset($home['rooms'])){
+          continue;
+        }
         $eqLogic = eqLogic::byLogicalId($home['id'], 'netatmo');
         if (!is_object($eqLogic)) {
           $eqLogic = new netatmo();
@@ -76,21 +79,45 @@ class netatmo_energy {
   }
   
   public static function refresh(){
-    $home_ids = array();
-    foreach (eqLogic::byType('netatmo') as $netatmo) {
-      if($netatmo->getConfiguration('device') != 'NAHome'){
-        continue;
+    $homesdata = netatmo::request('/homesdata');
+    if(isset($homesdata['homes']) &&  count($homesdata['homes']) > 0){
+      foreach ($homesdata['homes'] as $home) {
+        if(!isset($home['rooms'])){
+          continue;
+        }
+        $home_ids[] = $home['id'];
+        if(!isset($home['therm_mode'])){
+          continue;
+        }
+        $eqLogic = eqLogic::byLogicalId($home['id'], 'netatmo');
+        if(!is_object($eqLogic)){
+          continue;
+        }
+        if($home['therm_mode'] != 'schedule'){
+          $eqLogic->checkAndUpdateCmd('mode',$home['therm_mode']);
+          continue;
+        }
+        if(isset($home['schedules']) &&  count($home['schedules']) > 0){
+          foreach ($home['schedules'] as $schedule) {
+            if(!$schedule['selected']){
+              continue;
+            }
+            $eqLogic->checkAndUpdateCmd('mode',$schedule['name']);
+          }
+        }
       }
-      $home_ids[] = $netatmo->getLogicalId();
     }
     if(count($home_ids) == 0){
       return;
     }
     foreach ($home_ids as $home_id) {
-      $energy = netatmo::request('/homestatus',array('home_id' => $home_id));
-      if(isset($energy['home']) && isset($energy['home']['rooms']) &&  count($energy['home']['rooms']) > 0){
-        foreach ($energy['home']['rooms'] as $room) {
+      $homestatus = netatmo::request('/homestatus',array('home_id' => $home_id));
+      if(isset($homestatus['home']) && isset($homestatus['home']['rooms']) &&  count($homestatus['home']['rooms']) > 0){
+        foreach ($homestatus['home']['rooms'] as $room) {
           $eqLogic = eqLogic::byLogicalId($room['id'], 'netatmo');
+          if(!is_object($eqLogic)){
+            continue;
+          }
           foreach ($eqLogic->getCmd('info') as $cmd) {
             if(!isset($room[$cmd->getLogicalId()])){
               continue;

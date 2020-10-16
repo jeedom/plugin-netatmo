@@ -1,6 +1,15 @@
 {
   "commands" : [
     {
+      "name": "Mode",
+      "type": "info",
+      "subtype": "string",
+      "isVisible": 0,
+      "isHistorized": 0,
+      "unite" : "Heure",
+      "logicalId": "mode"
+    },
+    {
       "name": "Absent",
       "type": "action",
       "subtype": "slider",

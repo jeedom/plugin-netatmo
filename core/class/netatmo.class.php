@@ -221,12 +221,13 @@ class netatmoCmd extends cmd {
       if($eqLogic->getConfiguration('type') == 'energy'){
         netatmo_energy::refresh();
       }
+      return;
     }
     if($eqLogic->getConfiguration('type') == 'security'){
       netatmo_security::execCmd($this,$_options);
     }
     if($eqLogic->getConfiguration('type') == 'energy'){
-      netatmo_security::energy($this,$_options);
+      netatmo_security::execCmd($this,$_options);
     }
   }
   

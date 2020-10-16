@@ -52,8 +52,8 @@ class netatmo_energy {
             }
           }
         }
-        if(isset($home['room']) &&  count($home['room']) > 0){
-          foreach ($home['room'] as $room) {
+        if(isset($home['rooms']) &&  count($home['rooms']) > 0){
+          foreach ($home['rooms'] as $room) {
             $eqLogic = eqLogic::byLogicalId($room['id'], 'netatmo');
             if (!is_object($eqLogic)) {
               $eqLogic = new netatmo();
@@ -70,9 +70,9 @@ class netatmo_energy {
             $eqLogic->save();
           }
         }
-        
       }
     }
+    self::refresh();
   }
   
   public static function refresh(){

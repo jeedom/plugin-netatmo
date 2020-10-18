@@ -27,10 +27,13 @@ class netatmo_weather {
   public static function sync(){
     $weather = netatmo::request('/getstationsdata');
     if(isset($weather['devices']) &&  count($weather['devices']) > 0){
-      foreach ($weather['devices'] as $device) {
+      foreach ($weather['devices'] as &$device) {
         $eqLogic = eqLogic::byLogicalId($device['_id'], 'netatmo');
         if (isset($device['read_only']) && $device['read_only'] === true) {
           continue;
+        }
+        if(!isset($device['station_name']) || $device['station_name'] == ''){
+          $device['station_name'] = $device['_id'];
         }
         if (!is_object($eqLogic)) {
           $eqLogic = new netatmo();
@@ -45,8 +48,11 @@ class netatmo_weather {
         $eqLogic->setConfiguration('device', $device['type']);
         $eqLogic->save();
         if(isset($device['modules']) &&  count($device['modules']) > 0){
-          foreach ($device['modules'] as $module) {
+          foreach ($device['modules'] as &$module) {
             $eqLogic = eqLogic::byLogicalId($module['_id'], 'netatmo');
+            if(!isset($module['module_name']) || $module['module_name'] == ''){
+              $module['module_name'] = $module['_id'];
+            }
             if (!is_object($eqLogic)) {
               $eqLogic = new netatmo();
               $eqLogic->setName($module['module_name']);

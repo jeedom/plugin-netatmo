@@ -37,7 +37,7 @@ if (!isConnect()) {
       <?php
       try {
         $info =	netatmo::serviceInfo();
-        echo '<label class="col-sm-3 control-label">{{Abonnement service Netatmo}}</label>';
+        echo '<label class="col-sm-2 control-label">{{Abonnement service Netatmo}}</label>';
         echo '<div class="col-sm-9">';
         if(isset($info['limit']) && $info['limit'] != -1 && $info['limit'] != ''){
           echo '<div>{{Votre abonnement au service Netatmo fini le }}'.$info['limit'].'.';

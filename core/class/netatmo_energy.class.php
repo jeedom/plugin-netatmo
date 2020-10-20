@@ -21,6 +21,18 @@ require_once __DIR__  . '/../../../../core/php/core.inc.php';
 
 class netatmo_energy {
   
+  public static function getRoomDevice($_modules,$_module_ids){
+    foreach ($_modules as $module) {
+      if(!in_array($module['id'],$_modules_id)){
+        continue;
+      }
+      if($module['type'] == 'NRV'){
+        return 'NRV';
+      }
+    }
+    return 'NATherm1';
+  }
+  
   public static function sync(){
     $homesdata = netatmo::request('/homesdata');
     if(isset($homesdata['homes']) &&  count($homesdata['homes']) > 0){
@@ -68,7 +80,7 @@ class netatmo_energy {
             $eqLogic->setConfiguration('type','energy');
             $eqLogic->setEqType_name('netatmo');
             $eqLogic->setLogicalId($room['id']);
-            $eqLogic->setConfiguration('device', 'NARoom');
+            $eqLogic->setConfiguration('device', self::getRoomDevice($home['modules'],$room['module_ids']));
             $eqLogic->setConfiguration('home_id', $home['id']);
             $eqLogic->save();
           }

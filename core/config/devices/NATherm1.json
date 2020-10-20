@@ -1,4 +1,5 @@
 {
+  "name" : "Vanne",
   "commands" : [
     {
       "name": "Anticipation",
@@ -25,14 +26,6 @@
       "unite" : "°C",
       "generic_type" : "THERMOSTAT_TEMPERATURE",
       "logicalId": "therm_measured_temperature"
-    },
-    {
-      "name": "Puissance",
-      "type": "info",
-      "subtype": "numeric",
-      "isVisible": 1,
-      "isHistorized": 1,
-      "logicalId": "heating_power_request"
     },
     {
       "name": "Mode",

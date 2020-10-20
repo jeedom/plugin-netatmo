@@ -115,7 +115,8 @@ $eqLogics = eqLogic::byType($plugin->getId());
 											<option value="NIS">{{Sirène}}</option>
 											<option value="NACamDoorTag">{{Capteur de porte}}</option>
 											<option value="NAHome">{{Maison}}</option>
-											<option value="NARoom">{{Piece}}</option>
+											<option value="NATherm1">{{Thermostat}}</option>
+											<option value="NRV">{{Vanne}}</option>
 										</select>
 									</div>
 								</div>

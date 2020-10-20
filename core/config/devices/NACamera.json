@@ -1,4 +1,5 @@
 {
+  "name" : "Welcome",
   "commands" : [
     {
       "name": "Surveillance On",

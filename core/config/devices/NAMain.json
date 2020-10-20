@@ -1,4 +1,5 @@
 {
+  "name" : "Weather station",
   "commands" : [
     {
       "name":"Pression",

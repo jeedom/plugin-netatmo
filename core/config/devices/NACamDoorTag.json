@@ -1,4 +1,5 @@
 {
+  "name" : "Door Tag",
   "commands" : [
     {
       "name": "Etat",

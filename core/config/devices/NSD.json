@@ -1,4 +1,5 @@
 {
+  "name" : "Smoke detector",
   "commands" : [
     {
       "name": "Fumée",

@@ -22,15 +22,18 @@ require_once __DIR__  . '/../../../../core/php/core.inc.php';
 class netatmo_energy {
   
   public static function getRoomDevice($_modules,$_module_ids){
+    $return  = '';
     foreach ($_modules as $module) {
-      if(!in_array($module['id'],$_modules_id)){
+      if(!in_array($module['id'],$_module_ids)){
         continue;
       }
       if($module['type'] == 'NRV'){
         return 'NRV';
+      }else{
+        $return = $module['type'];
       }
     }
-    return 'NATherm1';
+    return $return;
   }
   
   public static function sync(){
@@ -69,6 +72,13 @@ class netatmo_energy {
         }
         if(isset($home['rooms']) &&  count($home['rooms']) > 0){
           foreach ($home['rooms'] as $room) {
+            if(count($room['module_ids']) == 0){
+              continue;
+            }
+            $device = self::getRoomDevice($home['modules'],$room['module_ids']);
+            if(!in_array($device,array('NRV','NATherm1'))){
+              continue;
+            }
             $eqLogic = eqLogic::byLogicalId($room['id'], 'netatmo');
             if (!is_object($eqLogic)) {
               $eqLogic = new netatmo();
@@ -80,7 +90,7 @@ class netatmo_energy {
             $eqLogic->setConfiguration('type','energy');
             $eqLogic->setEqType_name('netatmo');
             $eqLogic->setLogicalId($room['id']);
-            $eqLogic->setConfiguration('device', self::getRoomDevice($home['modules'],$room['module_ids']));
+            $eqLogic->setConfiguration('device', $device);
             $eqLogic->setConfiguration('home_id', $home['id']);
             $eqLogic->save();
           }

@@ -1,4 +1,5 @@
 {
+  "name" : "Présence",
   "commands" : [
     {
       "name": "Projecteur",

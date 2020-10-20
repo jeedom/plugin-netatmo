@@ -1,4 +1,5 @@
 {
+  "name" : "Sirène",
   "commands" : [
     {
       "name": "Sirène On",

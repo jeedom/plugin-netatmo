@@ -1,4 +1,5 @@
 {
+  "name" : "Rain",
   "configuration" : {
     "battery_type" : "4x1.5V AAA"
   },

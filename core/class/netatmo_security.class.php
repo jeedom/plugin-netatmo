@@ -40,6 +40,7 @@ class netatmo_security {
           $eqLogic->setCategory('security', 1);
           $eqLogic->setIsVisible(1);
         }
+        $eqLogic->setConfiguration('device', 'NASecurityHome');
         $eqLogic->setConfiguration('type','security');
         $eqLogic->setLogicalId($home['id']);
         $eqLogic->save();

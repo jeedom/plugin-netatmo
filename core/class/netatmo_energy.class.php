@@ -40,7 +40,7 @@ class netatmo_energy {
     $homesdata = netatmo::request('/homesdata');
     if(isset($homesdata['homes']) &&  count($homesdata['homes']) > 0){
       foreach ($homesdata['homes'] as $home) {
-        if(!isset($home['rooms'])){
+        if(!isset($home['rooms']) || count($home['rooms']) == 0 || !isset($home['modules']) || count($home['modules']) == 0 || !isset($home['schedules'])){
           continue;
         }
         $eqLogic = eqLogic::byLogicalId($home['id'], 'netatmo');
@@ -54,7 +54,7 @@ class netatmo_energy {
         $eqLogic->setConfiguration('type','energy');
         $eqLogic->setEqType_name('netatmo');
         $eqLogic->setLogicalId($home['id']);
-        $eqLogic->setConfiguration('device', 'NAHome');
+        $eqLogic->setConfiguration('device', 'NAEnergyHome');
         $eqLogic->save();
         if(isset($home['schedules']) &&  count($home['schedules']) > 0){
           foreach ($home['schedules'] as $schedule) {
@@ -70,30 +70,28 @@ class netatmo_energy {
             }
           }
         }
-        if(isset($home['rooms']) &&  count($home['rooms']) > 0){
-          foreach ($home['rooms'] as $room) {
-            if(count($room['module_ids']) == 0){
-              continue;
-            }
-            $device = self::getRoomDevice($home['modules'],$room['module_ids']);
-            if(!in_array($device,array('NRV','NATherm1'))){
-              continue;
-            }
-            $eqLogic = eqLogic::byLogicalId($room['id'], 'netatmo');
-            if (!is_object($eqLogic)) {
-              $eqLogic = new netatmo();
-              $eqLogic->setIsVisible(1);
-              $eqLogic->setIsEnable(1);
-              $eqLogic->setName($room['name']);
-              $eqLogic->setCategory('heating', 1);
-            }
-            $eqLogic->setConfiguration('type','energy');
-            $eqLogic->setEqType_name('netatmo');
-            $eqLogic->setLogicalId($room['id']);
-            $eqLogic->setConfiguration('device', $device);
-            $eqLogic->setConfiguration('home_id', $home['id']);
-            $eqLogic->save();
+        foreach ($home['rooms'] as $room) {
+          if(count($room['module_ids']) == 0){
+            continue;
           }
+          $device = self::getRoomDevice($home['modules'],$room['module_ids']);
+          if(!in_array($device,array('NRV','NATherm1'))){
+            continue;
+          }
+          $eqLogic = eqLogic::byLogicalId($room['id'], 'netatmo');
+          if (!is_object($eqLogic)) {
+            $eqLogic = new netatmo();
+            $eqLogic->setIsVisible(1);
+            $eqLogic->setIsEnable(1);
+            $eqLogic->setName($room['name']);
+            $eqLogic->setCategory('heating', 1);
+          }
+          $eqLogic->setConfiguration('type','energy');
+          $eqLogic->setEqType_name('netatmo');
+          $eqLogic->setLogicalId($room['id']);
+          $eqLogic->setConfiguration('device', $device);
+          $eqLogic->setConfiguration('home_id', $home['id']);
+          $eqLogic->save();
         }
       }
     }

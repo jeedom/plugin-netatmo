@@ -100,6 +100,7 @@ class netatmo_energy {
   
   public static function refresh(){
     $homesdata = netatmo::request('/homesdata');
+    $home_ids = array();
     if(isset($homesdata['homes']) &&  count($homesdata['homes']) > 0){
       foreach ($homesdata['homes'] as $home) {
         if(!isset($home['rooms'])){

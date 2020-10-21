@@ -74,12 +74,12 @@ class netatmo extends eqLogic {
     try {
       netatmo_weather::refresh();
     } catch (\Exception $e) {
-      
+      log::add('netatmo','debug','Weather : '.$e->getMessage());
     }
     try {
       netatmo_energy::refresh();
     } catch (\Exception $e) {
-      
+      log::add('netatmo','debug','Energy : '.$e->getMessage());
     }
   }
   
@@ -90,7 +90,7 @@ class netatmo extends eqLogic {
     try {
       netatmo_security::refresh();
     } catch (\Exception $e) {
-      
+      log::add('netatmo','debug','Security : '.$e->getMessage());
     }
   }
   

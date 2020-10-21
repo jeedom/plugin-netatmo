@@ -68,7 +68,9 @@ class netatmo extends eqLogic {
   }
   
   public static function cron15(){
-    sleep(rand(0,120));
+    if(config::byKey('mode', 'netatmo') != 'internal'){
+      sleep(rand(0,120));
+    }
     try {
       netatmo_weather::refresh();
     } catch (\Exception $e) {

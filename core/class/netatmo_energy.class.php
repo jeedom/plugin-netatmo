@@ -167,7 +167,7 @@ class netatmo_energy {
       netatmo::request('/setroomthermpoint',array(
         'home_id' => $eqLogic->getConfiguration('home_id'),
         'room_id' => $eqLogic->getLogicalId(),
-        'mode' => 'schedule',
+        'mode' => 'home',
       ),'POST');
     }else if($_cmd->getLogicalId() == 'home_mode_away'){
       netatmo::request('/setthermpoint',array(

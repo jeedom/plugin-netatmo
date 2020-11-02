@@ -156,17 +156,17 @@ class netatmo_energy {
   
   public static function execCmd($_cmd,$_options = array()){
     $eqLogic = $_cmd->getEqLogic();
-    if($_cmd->getLogicalId() == 'therm_setpoint_temperature'){
+    if($_cmd->getLogicalId() == 'setpoint'){
       netatmo::request('/setroomthermpoint',array(
         'home_id' => $eqLogic->getConfiguration('home_id'),
-        'room_id' => $eqLogic->logicalId(),
+        'room_id' => $eqLogic->getLogicalId(),
         'mode' => 'manual',
         'temp' => $_options['slider'],
       ),'POST');
     }else if($_cmd->getLogicalId() == 'mode_auto'){
       netatmo::request('/setroomthermpoint',array(
         'home_id' => $eqLogic->getConfiguration('home_id'),
-        'room_id' => $eqLogic->logicalId(),
+        'room_id' => $eqLogic->getLogicalId(),
         'mode' => 'schedule',
       ),'POST');
     }else if($_cmd->getLogicalId() == 'home_mode_away'){

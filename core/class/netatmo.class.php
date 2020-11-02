@@ -105,13 +105,20 @@ class netatmo extends eqLogic {
     }
     $request_http = new com_http($url);
     $request_http->setHeader(array(
+      'Content-Type: application/json',
       'Autorization: '.sha512(mb_strtolower(config::byKey('market::username')).':'.config::byKey('market::password'))
     ));
-    $datas = json_decode($request_http->exec(30,1),true);
-    if(isset($datas['state']) && $datas['state'] != 'ok'){
-      throw new \Exception(__('Erreur sur la récuperation des données : ',__FILE__).json_encode($datas));
+    if($_type == 'POST'){
+      $request_http->setPost(json_encode($_data));
     }
-    $return = json_decode($datas,true);
+    $return = json_decode($request_http->exec(30,1),true);
+    $return = is_json($return,$return);
+    if(isset($return['state']) && $return['state'] != 'ok'){
+      throw new \Exception(__('Erreur lors de la requete à Netatmo : ',__FILE__).json_encode($return));
+    }
+    if(isset($return['error'])){
+      throw new \Exception(__('Erreur lors de la requete à Netatmo : ',__FILE__).json_encode($return));
+    }
     if(isset($return['body'])){
       return $return['body'];
     }
@@ -229,7 +236,7 @@ class netatmoCmd extends cmd {
       netatmo_security::execCmd($this,$_options);
     }
     if($eqLogic->getConfiguration('type') == 'energy'){
-      netatmo_security::execCmd($this,$_options);
+      netatmo_energy::execCmd($this,$_options);
     }
   }
   

@@ -156,7 +156,7 @@ class netatmo_energy {
   
   public static function execCmd($_cmd,$_options = array()){
     $eqLogic = $_cmd->getEqLogic();
-    if($_cmd->getLogicalId() == 'setpoint'){
+    if($_cmd->getLogicalId() == 'therm_setpoint_temperature'){
       netatmo::request('/setroomthermpoint',array(
         'home_id' => $eqLogic->getConfiguration('home_id'),
         'room_id' => $eqLogic->logicalId(),

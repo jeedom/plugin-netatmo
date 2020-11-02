@@ -52,7 +52,11 @@
       "isHistorized": 0,
       "unite" : "°C",
       "generic_type" : "THERMOSTAT_SETPOINT",
-      "logicalId": "therm_setpoint_temperature"
+      "logicalId": "therm_setpoint_temperature",
+      "template": {
+        "dashboard" : "button",
+        "mobile" : "button"
+      }
     },
     {
       "name": "Thermostat",

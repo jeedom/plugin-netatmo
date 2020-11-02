@@ -43,6 +43,7 @@ class netatmo_security {
         $eqLogic->setConfiguration('device', 'NASecurityHome');
         $eqLogic->setConfiguration('type','security');
         $eqLogic->setLogicalId($home['id']);
+        $eqLogic->setConfiguration('home_id', $home['id']);
         $eqLogic->save();
         foreach ($home['persons'] as $person) {
           if (!isset($person['pseudo']) || $person['pseudo'] == '') {

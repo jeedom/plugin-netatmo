@@ -54,6 +54,7 @@ class netatmo_energy {
         $eqLogic->setConfiguration('type','energy');
         $eqLogic->setEqType_name('netatmo');
         $eqLogic->setLogicalId($home['id']);
+        $eqLogic->setConfiguration('home_id', $home['id']);
         $eqLogic->setConfiguration('device', 'NAEnergyHome');
         $eqLogic->save();
         if(isset($home['schedules']) &&  count($home['schedules']) > 0){
@@ -170,19 +171,19 @@ class netatmo_energy {
         'mode' => 'home',
       ),'POST');
     }else if($_cmd->getLogicalId() == 'home_mode_away'){
-      netatmo::request('/setthermpoint',array(
+      netatmo::request('/setthermmode',array(
         'home_id' => $eqLogic->getConfiguration('home_id'),
         'mode' => 'away',
         'endtime' => strotime('now +'.$_options['slider'].' hours')
       ),'POST');
     }else if($_cmd->getLogicalId() == 'home_mode_hg'){
-      netatmo::request('/setthermpoint',array(
+      netatmo::request('/setthermmode',array(
         'home_id' => $eqLogic->getConfiguration('home_id'),
         'mode' => 'hg',
         'endtime' => strotime('now +'.$_options['slider'].' hours')
       ),'POST');
     }else if(strpos($_cmd->getLogicalId(),'schedule') !== false){
-      netatmo::request('/setthermpoint',array(
+      netatmo::request('/setthermmode',array(
         'home_id' => $eqLogic->getConfiguration('home_id'),
         'mode' => 'schedule',
         'schedule_id' => str_replace('schedule','',$_cmd->getLogicalId())

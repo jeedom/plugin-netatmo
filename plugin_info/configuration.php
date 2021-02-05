@@ -70,25 +70,25 @@ if (!isConnect()) {
     <div class="form-group netatmomode internal">
       <label class="col-sm-2 control-label">{{Client ID}}</label>
       <div class="col-sm-3">
-        <input type="text" class="configKey form-control" data-l1key="client_id" placeholder="Client ID"/>
+        <input type="text" class="configKey form-control" data-l1key="client_id" placeholder="{{Client ID}}"/>
       </div>
     </div>
     <div class="form-group netatmomode internal">
       <label class="col-sm-2 control-label">{{Client secret}}</label>
       <div class="col-sm-3">
-        <input type="text" class="configKey form-control" data-l1key="client_secret" placeholder="Client Secret"/>
+        <input type="text" class="configKey form-control" data-l1key="client_secret" placeholder="{{Client Secret}}"/>
       </div>
     </div>
     <div class="form-group netatmomode internal">
       <label class="col-sm-2 control-label">{{Nom d'utilisateur}}</label>
       <div class="col-sm-3">
-        <input type="text" class="configKey form-control" data-l1key="username" placeholder="Nom d'utilisateur"/>
+        <input type="text" class="configKey form-control" data-l1key="username" placeholder="{{Nom d'utilisateur}}"/>
       </div>
     </div>
     <div class="form-group netatmomode internal">
       <label class="col-sm-2 control-label">{{Mot de passe}}</label>
       <div class="col-sm-3">
-        <input type="password" class="configKey form-control" data-l1key="password" placeholder="Mot de passe"/>
+        <input type="password" class="configKey form-control" data-l1key="password" placeholder="{{Mot de passe}}"/>
       </div>
     </div>
     <div class="form-group">

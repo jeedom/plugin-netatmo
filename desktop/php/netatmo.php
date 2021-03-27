@@ -21,6 +21,11 @@ $eqLogics = eqLogic::byType($plugin->getId());
 				<br>
 				<span>{{Configuration}}</span>
 			</div>
+			<div class="cursor logoSecondary" id="bt_healthNetatmo">
+				<i class="fas fa-medkit"></i>
+				<br/>
+				<span>{{Santé}}</span>
+			</div>
 		</div>
 		<legend><i class="fas fa-table"></i> {{Mes équipements Netatmo}}</legend>
 		<input class="form-control" placeholder="{{Rechercher}}" id="in_searchEqlogic" />

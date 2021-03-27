@@ -15,6 +15,10 @@
 * along with Jeedom. If not, see <http://www.gnu.org/licenses/>.
 */
 
+$('#bt_healthNetatmo').off('click').on('click', function () {
+  $('#md_modal').dialog({title: "{{Santé Netatmo}}"}).load('index.php?v=d&plugin=netatmo&modal=health').dialog('open');
+});
+
 $('.eqLogicAttr[data-l1key=configuration][data-l2key=device]').on('change',function(){
   $('#img_netatmoModel').attr('src','plugins/netatmo/core/config/devices/'+$(this).value()+'.png');
   if ($(this).value()=='station') {

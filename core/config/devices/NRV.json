@@ -53,6 +53,7 @@
       "unite" : "°C",
       "generic_type" : "THERMOSTAT_SETPOINT",
       "logicalId": "therm_setpoint_temperature",
+      
       "template": {
         "dashboard" : "button",
         "mobile" : "button"
@@ -67,6 +68,10 @@
       "unite" : "°C",
       "value" : "Consigne",
       "generic_type" : "THERMOSTAT_SET_SETPOINT",
+      "configuration" : {
+        "minValue" : 10,
+        "maxValue" : 35
+      },
       "logicalId": "setpoint"
     },
     {

@@ -59,6 +59,10 @@
       "unite" : "°C",
       "value" : "Consigne",
       "generic_type" : "THERMOSTAT_SET_SETPOINT",
+      "template" : {
+        "dashboard" : "button",
+        "mobile" : "button"
+      },
       "configuration" : {
         "minValue" : 10,
         "maxValue" : 35

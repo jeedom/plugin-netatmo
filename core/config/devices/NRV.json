@@ -7,7 +7,10 @@
       "subtype": "binary",
       "isVisible": 1,
       "isHistorized": 0,
-      "logicalId": "anticipating"
+      "logicalId": "anticipating",
+      "configuration": {
+        "repeatEventManagement": "always"
+      }
     },
     {
       "name": "Fenêtre ouverte",
@@ -15,7 +18,10 @@
       "subtype": "binary",
       "isVisible": 1,
       "isHistorized": 0,
-      "logicalId": "open_window"
+      "logicalId": "open_window",
+      "configuration": {
+        "repeatEventManagement": "always"
+      }
     },
     {
       "name": "Température",

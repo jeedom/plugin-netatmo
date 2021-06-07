@@ -74,7 +74,10 @@
       "type": "info",
       "subtype": "binary",
       "isVisible": 0,
-      "logicalId": "monitoring"
+      "logicalId": "monitoring",
+      "configuration": {
+        "repeatEventManagement": "always"
+      }
     },
     {
       "name": "Humain",

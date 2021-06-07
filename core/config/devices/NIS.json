@@ -7,7 +7,10 @@
       "subtype": "binary",
       "isVisible": 0,
       "isHistorized": 0,
-      "logicalId": "siren"
+      "logicalId": "siren",
+      "configuration": {
+        "repeatEventManagement": "always"
+      }
     }
   ]
 }

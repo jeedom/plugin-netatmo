@@ -1,3 +1,5 @@
-# Plugin template
+# Plugin Netatmo
 
-La documentation pour utiliser le template de plugin se trouve [ici](https://doc.jeedom.com/fr_FR/dev/)
+## Compatibilité
+
+Vous pouvez trouver [ici](https://compatibility.jeedom.com/index.php?v=d&p=home&plugin=netatmo) la liste des modules compatible avec le plugin

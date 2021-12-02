@@ -26,6 +26,7 @@ class netatmo_weather {
   
   public static function sync(){
     $weather = netatmo::request('/getstationsdata');
+    log::add('netatmo','debug','[netatmo weather] '.json_encode($weather));
     if(isset($weather['devices']) &&  count($weather['devices']) > 0){
       foreach ($weather['devices'] as &$device) {
         $eqLogic = eqLogic::byLogicalId($device['_id'], 'netatmo');

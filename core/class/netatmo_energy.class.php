@@ -38,6 +38,7 @@ class netatmo_energy {
   
   public static function sync(){
     $homesdata = netatmo::request('/homesdata');
+    log::add('netatmo','debug','[netatmo energy] '.json_encode($homesdata));
     if(isset($homesdata['homes']) &&  count($homesdata['homes']) > 0){
       foreach ($homesdata['homes'] as $home) {
         if(!isset($home['rooms']) || count($home['rooms']) == 0 || !isset($home['modules']) || count($home['modules']) == 0 || !isset($home['schedules'])){

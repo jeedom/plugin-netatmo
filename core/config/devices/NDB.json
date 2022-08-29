@@ -1,0 +1,104 @@
+{
+  "name" : "Doorbell",
+  "commands" : [
+    {
+      "name": "Projecteur",
+      "type": "info",
+      "subtype": "string",
+      "isVisible": 1,
+      "isHistorized": 0,
+      "logicalId": "light"
+    },
+    {
+      "name": "Auto",
+      "type": "action",
+      "subtype": "other",
+      "isVisible": 1,
+      "logicalId": "lightauto"
+    },
+    {
+      "name": "Projecteur On",
+      "type": "action",
+      "subtype": "other",
+      "isVisible": 1,
+      "logicalId": "lighton",
+      "generic_type" : "LIGHT_ON",
+      "display":{
+        "icon":"<i class=\"icon jeedom2-lightbulb25\"></i>"
+      }
+    },
+    {
+      "name": "Projecteur Off",
+      "type": "action",
+      "subtype": "other",
+      "isVisible": 1,
+      "logicalId": "lightoff",
+      "generic_type" : "LIGHT_OFF",
+      "display":{
+        "icon":"<i class=\"icon jeedom2-light-bulb7\"></i>"
+      }
+    },
+    {
+      "name": "Projecteur intensité",
+      "type": "action",
+      "subtype": "slider",
+      "isVisible": 1,
+      "logicalId": "lightintensity"
+    },
+    {
+      "name": "Surveillance On",
+      "type": "action",
+      "subtype": "other",
+      "isVisible": 1,
+      "logicalId": "monitoringOn",
+      "value" : "Surveillance",
+      "template" : {
+        "dashboard" : "core::lock",
+        "mobile" : "core::lock"
+      }
+    },
+    {
+      "name": "Surveillance Off",
+      "type": "action",
+      "subtype": "other",
+      "isVisible": 1,
+      "logicalId": "monitoringOff",
+      "value" : "Surveillance",
+      "template" : {
+        "dashboard" : "core::lock",
+        "mobile" : "core::lock"
+      }
+    },
+    {
+      "name": "Surveillance",
+      "type": "info",
+      "subtype": "binary",
+      "isVisible": 0,
+      "logicalId": "monitoring",
+      "configuration": {
+        "repeatEventManagement": "always"
+      }
+    },
+    {
+      "name": "Humain",
+      "type": "info",
+      "subtype": "string",
+      "isVisible": 1,
+      "logicalId": "lastHuman"
+    },
+    {
+      "name": "Voiture",
+      "type": "info",
+      "subtype": "string",
+      "isVisible": 1,
+      "logicalId": "lastVehicle"
+    },
+    {
+      "name": "Animal",
+      "type": "info",
+      "subtype": "string",
+      "isVisible": 1,
+      "logicalId": "lastAnimal"
+    }
+  ]
+}

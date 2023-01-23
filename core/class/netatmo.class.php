@@ -67,7 +67,7 @@ class netatmo extends eqLogic {
     return self::$_client;
   }
   
-  public static function cron15(){
+  public static function cron10(){
     if(config::byKey('mode', 'netatmo') != 'internal'){
       sleep(rand(0,120));
     }

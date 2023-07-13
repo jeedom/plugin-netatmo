@@ -26,6 +26,7 @@ class netatmo_weather {
   
   public static function sync(){
     $weather = netatmo::request('/getstationsdata');
+    log::add('netatmo','debug','[netatmo weather] '.json_encode($weather));
     if(isset($weather['devices']) &&  count($weather['devices']) > 0){
       foreach ($weather['devices'] as &$device) {
         $eqLogic = eqLogic::byLogicalId($device['_id'], 'netatmo');
@@ -75,7 +76,7 @@ class netatmo_weather {
   
   
   public static function refresh($_weather = null) {
-    $weather = ($_weather == null) ? netatmo::request('/gethomedata') : $_weather;
+    $weather = ($_weather == null) ? netatmo::request('/getstationsdata') : $_weather;
     if(isset($weather['devices']) &&  count($weather['devices']) > 0){
       foreach ($weather['devices'] as $device) {
         $eqLogic = eqLogic::byLogicalId($device["_id"], 'netatmo');
@@ -112,17 +113,19 @@ class netatmo_weather {
             if(isset($devices['bat_min']) && isset($devices['bat_max'])){
               $eqLogic->batteryStatus(round(($module['battery_vp'] - $devices['bat_min']) / ($devices['bat_max'] - $devices['bat_min']) * 100, 0));
             }
-            foreach ($module['dashboard_data'] as $key => $value) {
-              if ($key == 'max_temp') {
-                $collectDate = date('Y-m-d H:i:s', $module['dashboard_data']['date_max_temp']);
-              } else if ($key == 'min_temp') {
-                $collectDate = date('Y-m-d H:i:s', $module['dashboard_data']['date_min_temp']);
-              } else if ($key == 'max_wind_str') {
-                $collectDate = date('Y-m-d H:i:s', $module['dashboard_data']['date_max_wind_str']);
-              } else {
-                $collectDate = date('Y-m-d H:i:s', $module['dashboard_data']['time_utc']);
+            if(isset($module['dashboard_data'])){
+              foreach ($module['dashboard_data'] as $key => $value) {
+                if ($key == 'max_temp') {
+                  $collectDate = date('Y-m-d H:i:s', $module['dashboard_data']['date_max_temp']);
+                } else if ($key == 'min_temp') {
+                  $collectDate = date('Y-m-d H:i:s', $module['dashboard_data']['date_min_temp']);
+                } else if ($key == 'max_wind_str') {
+                  $collectDate = date('Y-m-d H:i:s', $module['dashboard_data']['date_max_wind_str']);
+                } else {
+                  $collectDate = date('Y-m-d H:i:s', $module['dashboard_data']['time_utc']);
+                }
+                $eqLogic->checkAndUpdateCmd(strtolower($key),$value,$collectDate);
               }
-              $eqLogic->checkAndUpdateCmd(strtolower($key),$value,$collectDate);
             }
           }
         }

@@ -11,6 +11,9 @@
       "template" : {
         "dashboard" : "core::alert",
         "mobile" : "core::alert"
+      },
+      "configuration": {
+        "repeatEventManagement": "always"
       }
     }
   ]

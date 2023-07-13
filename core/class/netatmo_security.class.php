@@ -26,6 +26,7 @@ class netatmo_security {
   
   public static function sync(){
     $security = netatmo::request('/gethomedata');
+    log::add('netatmo','debug','[netatmo security] '.json_encode($security));
     if(isset($security['homes']) &&  count($security['homes']) > 0){
       foreach ($security['homes'] as &$home) {
         $eqLogic = eqLogic::byLogicalId($home['id'], 'netatmo');
@@ -43,6 +44,7 @@ class netatmo_security {
         $eqLogic->setConfiguration('device', 'NASecurityHome');
         $eqLogic->setConfiguration('type','security');
         $eqLogic->setLogicalId($home['id']);
+        $eqLogic->setConfiguration('home_id', $home['id']);
         $eqLogic->save();
         foreach ($home['persons'] as $person) {
           if (!isset($person['pseudo']) || $person['pseudo'] == '') {

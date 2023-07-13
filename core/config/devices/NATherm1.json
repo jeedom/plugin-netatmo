@@ -1,5 +1,5 @@
 {
-  "name" : "Vanne",
+  "name" : "Thermostat",
   "commands" : [
     {
       "name": "Anticipation",
@@ -7,7 +7,10 @@
       "subtype": "binary",
       "isVisible": 1,
       "isHistorized": 0,
-      "logicalId": "anticipating"
+      "logicalId": "anticipating",
+      "configuration": {
+        "repeatEventManagement": "always"
+      }
     },
     {
       "name": "Fenêtre ouverte",
@@ -15,7 +18,10 @@
       "subtype": "binary",
       "isVisible": 1,
       "isHistorized": 0,
-      "logicalId": "open_window"
+      "logicalId": "open_window",
+      "configuration": {
+        "repeatEventManagement": "always"
+      }
     },
     {
       "name": "Température",
@@ -44,7 +50,11 @@
       "isHistorized": 0,
       "unite" : "°C",
       "generic_type" : "THERMOSTAT_SETPOINT",
-      "logicalId": "therm_setpoint_temperature"
+      "logicalId": "therm_setpoint_temperature",
+      "template": {
+        "dashboard" : "button",
+        "mobile" : "button"
+      }
     },
     {
       "name": "Thermostat",
@@ -55,6 +65,14 @@
       "unite" : "°C",
       "value" : "Consigne",
       "generic_type" : "THERMOSTAT_SET_SETPOINT",
+      "template" : {
+        "dashboard" : "button",
+        "mobile" : "button"
+      },
+      "configuration" : {
+        "minValue" : 10,
+        "maxValue" : 35
+      },
       "logicalId": "setpoint"
     },
     {

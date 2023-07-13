@@ -15,6 +15,10 @@
 * along with Jeedom. If not, see <http://www.gnu.org/licenses/>.
 */
 
+$('#bt_healthNetatmo').off('click').on('click', function () {
+  $('#md_modal').dialog({title: "{{Santé Netatmo}}"}).load('index.php?v=d&plugin=netatmo&modal=health').dialog('open');
+});
+
 $('.eqLogicAttr[data-l1key=configuration][data-l2key=device]').on('change',function(){
   $('#img_netatmoModel').attr('src','plugins/netatmo/core/config/devices/'+$(this).value()+'.png');
   if ($(this).value()=='station') {
@@ -44,6 +48,11 @@ function addCmdToTable(_cmd) {
   tr += '<td>';
   tr += '<span class="type" type="' + init(_cmd.type) + '">' + jeedom.cmd.availableType() + '</span>';
   tr += '<span class="subType" subType="' + init(_cmd.subType) + '"></span>';
+  tr += '</td>';
+  tr += '<td>';
+  tr += '<span><label class="checkbox-inline"><input type="checkbox" class="cmdAttr checkbox-inline" data-l1key="isVisible" checked/>{{Afficher}}</label></span> ';
+  tr += '<span><label class="checkbox-inline"><input type="checkbox" class="cmdAttr checkbox-inline" data-l1key="isHistorized" checked/>{{Historiser}}</label></span> ';
+  tr += '<span><label class="checkbox-inline"><input type="checkbox" class="cmdAttr" data-l1key="display" data-l2key="invertBinary"/>{{Inverser}}</label></span> ';
   tr += '</td>';
   tr += '<td>';
   if (is_numeric(_cmd.id)) {

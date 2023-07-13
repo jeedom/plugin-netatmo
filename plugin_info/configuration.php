@@ -25,15 +25,15 @@ if (!isConnect()) {
 <form class="form-horizontal">
   <fieldset>
     <div class="form-group">
-      <label class="col-lg-2 control-label">{{Association}}</label>
-      <div class="col-lg-4">
-        <a class="btn btn-success" href="<?php echo config::byKey('service::cloud::url').'/frontend/login.html?service=netatmo' ?>" target="__blank"><i class="fas fa-link"></i> {{Liée}}</a>
-      </div>
-    </div>
-    <div class="form-group netatmomode jeedom">
       <label class="col-sm-2 control-label">{{Envoyer configuration au market}}</label>
       <div class="col-sm-2">
         <a class="btn btn-default" id="bt_sendConfigToMarket"><i class="fa fa-paper-plane" aria-hidden="true"></i> {{Envoyer}}</a>
+      </div>
+    </div>
+     <div class="form-group">
+      <label class="col-lg-2 control-label">{{Association}}</label>
+      <div class="col-lg-4">
+        <a class="btn btn-success" href="<?php echo config::byKey('service::cloud::url').'/frontend/login.html?service=netatmo' ?>" target="__blank"><i class="fas fa-link"></i> {{Liée}}</a>
       </div>
     </div>
     <div class="form-group">

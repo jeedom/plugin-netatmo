@@ -135,6 +135,7 @@ class netatmo_energy {
     }
     foreach ($home_ids as $home_id) {
       $homestatus = netatmo::request('/homestatus',array('home_id' => $home_id));
+       log::add('netatmo','debug','[netatmo energy] homestatus : '.json_encode($homestatus));
       if(isset($homestatus['home']) && isset($homestatus['home']['rooms']) &&  count($homestatus['home']['rooms']) > 0){
         foreach ($homestatus['home']['rooms'] as $room) {
           $eqLogic = eqLogic::byLogicalId($room['id'], 'netatmo');

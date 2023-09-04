@@ -87,10 +87,10 @@
     {
       "name": "Etat chauffe",
       "type": "info",
-      "subtype": "binary",
+      "subtype": "numeric",
       "isVisible": 1,
       "isHistorized": 0,
-      "logicalId": "boiler_status"
+      "logicalId": "heating_power_request"
     }
   ]
 }

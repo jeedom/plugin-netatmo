@@ -38,14 +38,14 @@ if (!isset($data['apikey']) || !jeedom::apiAccess($data['apikey'], 'netatmo')) {
 if (isset($data['data'])) {
   $data = $data['data'];
 }
-log::add('netatmo', 'debug','Webhook received : '. json_encode($data));
+log::add('netatmo', 'debug','[webhook] '. json_encode($data));
 if(!isset($data['device_id'])){
-  log::add('netatmo', 'debug','No device id found on webhook');
+  log::add('netatmo', 'debug','[webhook] No device id found');
   die();
 }
 $eqLogic = eqLogic::byLogicalId($data['device_id'], 'netatmo');
 if(!is_object($eqLogic)){
-  log::add('netatmo', 'debug','No device found for this device id');
+  log::add('netatmo', 'debug','[webhook] No device found for this device id');
   die();
 }
 if(isset($data['home_id'])){

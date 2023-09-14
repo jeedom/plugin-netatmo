@@ -90,7 +90,7 @@
       "subtype": "numeric",
       "isVisible": 1,
       "isHistorized": 0,
-      "logicalId": "heating_power_request"
+      "logicalId": "boiler_status"
     }
   ]
 }

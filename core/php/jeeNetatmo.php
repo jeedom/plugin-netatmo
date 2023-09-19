@@ -43,7 +43,13 @@ if(!isset($data['device_id'])){
   log::add('netatmo', 'debug','[webhook] No device id found');
   die();
 }
-$eqLogic = eqLogic::byLogicalId($data['device_id'], 'netatmo');
+$eqLogic = null;
+if(isset($data['module_id'])){
+    $eqLogic = eqLogic::byLogicalId($data['module_id'], 'netatmo');
+}
+if(!is_object($eqLogic)){
+    $eqLogic = eqLogic::byLogicalId($data['device_id'], 'netatmo');
+}
 if(!is_object($eqLogic)){
   log::add('netatmo', 'debug','[webhook] No device found for this device id');
   die();

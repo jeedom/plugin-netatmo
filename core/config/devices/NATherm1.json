@@ -83,6 +83,14 @@
       "isHistorized": 0,
       "generic_type" : "THERMOSTAT_SET_MODE",
       "logicalId": "mode_auto"
+    },
+    {
+      "name": "Etat chauffe",
+      "type": "info",
+      "subtype": "numeric",
+      "isVisible": 1,
+      "isHistorized": 0,
+      "logicalId": "boiler_status"
     }
   ]
 }

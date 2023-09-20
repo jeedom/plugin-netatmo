@@ -202,7 +202,7 @@ class netatmo extends eqLogic {
     if(file_exists(__DIR__.'/../config/devices/'.  $this->getConfiguration('device').'.png')){
       return 'plugins/netatmo/core/config/devices/'.  $this->getConfiguration('device').'.png';
     }
-    return false;
+    return 'plugins/netatmo/plugin_info/netatmo_icon.png';
   }
   
   /*     * **********************Getteur Setteur*************************** */

@@ -38,12 +38,20 @@ if (!isset($data['apikey']) || !jeedom::apiAccess($data['apikey'], 'netatmo')) {
 if (isset($data['data'])) {
   $data = $data['data'];
 }
-log::add('netatmo', 'debug','Webhook received : '. json_encode($data));
+log::add('netatmo', 'debug','[webhook] '. json_encode($data));
 if(!isset($data['device_id'])){
+  log::add('netatmo', 'debug','[webhook] No device id found');
   die();
 }
-$eqLogic = eqLogic::byLogicalId($data['device_id'], 'netatmo');
+$eqLogic = null;
+if(isset($data['module_id'])){
+    $eqLogic = eqLogic::byLogicalId($data['module_id'], 'netatmo');
+}
 if(!is_object($eqLogic)){
+    $eqLogic = eqLogic::byLogicalId($data['device_id'], 'netatmo');
+}
+if(!is_object($eqLogic)){
+  log::add('netatmo', 'debug','[webhook] No device found for this device id');
   die();
 }
 if(isset($data['home_id'])){
@@ -63,25 +71,25 @@ switch ($data['event_type']) {
   foreach ($data['event_list'] as $event) {
     switch ($event['event_type']) {
       case 'human':
-      $eqLogic->checkAndUpdateCmd('lastHuman',$event['snapshot_url']);
+      $eqLogic->checkAndUpdateCmd('lastHuman',$event['message']);
       break;
       case 'vehicle':
-      $eqLogic->checkAndUpdateCmd('lastVehicle',$event['snapshot_url']);
+      $eqLogic->checkAndUpdateCmd('lastVehicle',$event['message']);
       break;
       case 'animal':
-      $eqLogic->checkAndUpdateCmd('lastAnimal',$event['snapshot_url']);
+      $eqLogic->checkAndUpdateCmd('lastAnimal',$event['message']);
       break;
     }
   }
   break;
   case 'human':
-  $eqLogic->checkAndUpdateCmd('lastHuman',$data['snapshot_url']);
+  $eqLogic->checkAndUpdateCmd('lastHuman',$data['message']);
   break;
   case 'vehicle':
-  $eqLogic->checkAndUpdateCmd('lastVehicle',$data['snapshot_url']);
+  $eqLogic->checkAndUpdateCmd('lastVehicle',$data['message']);
   break;
   case 'animal':
-  $eqLogic->checkAndUpdateCmd('lastAnimal',$data['snapshot_url']);
+  $eqLogic->checkAndUpdateCmd('lastAnimal',$data['message']);
   break;
   case 'tag_big_move':
   $eqLogic->checkAndUpdateCmd('state',__('Mouvement',__FILE__));
@@ -99,7 +107,7 @@ switch ($data['event_type']) {
   $eqLogic->checkAndUpdateCmd('siren',$data['sub_type']);
   break;
   case 'movement':
-  $eqLogic->checkAndUpdateCmd('movement',$data['snapshot_url']);
+  $eqLogic->checkAndUpdateCmd('movement',$data['message']);
   break;
   case 'person':
   foreach ($data['persons'] as $person) {

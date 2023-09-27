@@ -28,6 +28,26 @@ $('.eqLogicAttr[data-l1key=configuration][data-l2key=device]').on('change',funct
   }
 });
 
+$('#bt_syncEqLogicNetatmo').off('click').on('click', function () {
+  $.ajax({
+    type: "POST",
+    url: "plugins/netatmo/core/ajax/netatmo.ajax.php",
+    data: {
+      action: "sync",
+    },
+    dataType: 'json',
+    error: function (request, status, error) {
+      handleAjaxError(request, status, error);
+    },
+    success: function (data) {
+      if (data.state != 'ok') {
+        $('#div_alert').showAlert({message: data.result, level: 'danger'});
+        return;
+      }
+      $('#div_alert').showAlert({message: '{{Synchronisation réussie}}', level: 'success'});
+    }
+  });
+});
 
 $("#table_cmd").sortable({axis: "y", cursor: "move", items: ".cmd", placeholder: "ui-state-highlight", tolerance: "intersect", forcePlaceholderSize: true});
 /*

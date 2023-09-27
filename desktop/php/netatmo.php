@@ -154,7 +154,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
 				<table id="table_cmd" class="table table-bordered table-condensed">
 					<thead>
 						<tr>
-							<th>{{Nom}}</th>
+							<th style="width: 450px;">{{Nom}}</th>
 							<th>{{Type}}</th>
 							<th>{{Etat}}</th>
 							<th style="width:300px;">{{Options}}</th>

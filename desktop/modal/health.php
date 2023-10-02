@@ -16,7 +16,7 @@
 */
 
 if (!isConnect('admin')) {
-	throw new Exception('401 Unauthorized');
+	throw new Exception(__('401 - Accès non autorisé',__FILE__));
 }
 $plugin = plugin::byId('netatmo');
 $eqLogics = eqLogic::byType($plugin->getId());
@@ -25,7 +25,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
 <table class="table table-condensed tablesorter" id="table_healthrfxcom">
 	<thead>
 		<tr>
-			<th>{{Image}}</th>
+			<th></th>
 			<th>{{Module}}</th>
 			<th>{{ID}}</th>
 			<th>{{Batterie}}</th>
@@ -52,7 +52,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
 			} elseif ($eqLogic->getStatus('battery') > 60 && $eqLogic->getStatus('battery') != '') {
 				$battery_status = '<span class="label label-success" style="font-size : 1em;">' . $eqLogic->getStatus('battery') . '%</span>';
 			} else {
-				$battery_status = '<span class="label label-primary" style="font-size : 1em;" title="{{Secteur}}"><i class="fa fa-plug"></i></span>';
+				$battery_status = '<span class="label label-primary" style="font-size : 1em;" title="{{Secteur}}"><i class="fas fa-plug"></i></span>';
 			}
 			echo '<td>' . $battery_status . '</td>';
 			echo '<td><span class="label label-info" style="font-size : 1em;">' . $eqLogic->getStatus('lastCommunication') . '</span></td>';

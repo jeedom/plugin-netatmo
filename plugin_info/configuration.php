@@ -27,7 +27,7 @@ if (!isConnect()) {
     <div class="form-group">
       <label class="col-sm-2 control-label">{{Envoyer configuration au market}}</label>
       <div class="col-sm-2">
-        <a class="btn btn-default" id="bt_sendConfigToMarket"><i class="fa fa-paper-plane" aria-hidden="true"></i> {{Envoyer}}</a>
+        <a class="btn btn-default" id="bt_sendConfigToMarket"><i class="far fa-paper-plane" aria-hidden="true"></i> {{Envoyer}}</a>
       </div>
     </div>
      <div class="form-group">

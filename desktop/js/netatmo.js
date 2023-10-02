@@ -28,6 +28,26 @@ $('.eqLogicAttr[data-l1key=configuration][data-l2key=device]').on('change',funct
   }
 });
 
+$('#bt_syncEqLogicNetatmo').off('click').on('click', function () {
+  $.ajax({
+    type: "POST",
+    url: "plugins/netatmo/core/ajax/netatmo.ajax.php",
+    data: {
+      action: "sync",
+    },
+    dataType: 'json',
+    error: function (request, status, error) {
+      handleAjaxError(request, status, error);
+    },
+    success: function (data) {
+      if (data.state != 'ok') {
+        $('#div_alert').showAlert({message: data.result, level: 'danger'});
+        return;
+      }
+      $('#div_alert').showAlert({message: '{{Synchronisation réussie}}', level: 'success'});
+    }
+  });
+});
 
 $("#table_cmd").sortable({axis: "y", cursor: "move", items: ".cmd", placeholder: "ui-state-highlight", tolerance: "intersect", forcePlaceholderSize: true});
 /*
@@ -43,7 +63,7 @@ function addCmdToTable(_cmd) {
   var tr = '<tr class="cmd" data-cmd_id="' + init(_cmd.id) + '">';
   tr += '<td>';
   tr += '<span class="cmdAttr" data-l1key="id" style="display:none;"></span>';
-  tr += '<input class="cmdAttr form-control input-sm" data-l1key="name" style="width : 140px;" placeholder="{{Nom}}">';
+  tr += '<input class="cmdAttr form-control input-sm" data-l1key="name" placeholder="{{Nom}}">';
   tr += '</td>';
   tr += '<td>';
   tr += '<span class="type" type="' + init(_cmd.type) + '">' + jeedom.cmd.availableType() + '</span>';

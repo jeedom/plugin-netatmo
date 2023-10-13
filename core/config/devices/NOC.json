@@ -80,6 +80,14 @@
       }
     },
     {
+      "name": "Mouvement",
+      "type": "info",
+      "subtype": "string",
+      "isVisible": 1,
+      "isHistorized": 0,
+      "logicalId": "movement"
+    },
+    {
       "name": "Humain",
       "type": "info",
       "subtype": "string",

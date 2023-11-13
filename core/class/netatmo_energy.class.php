@@ -128,7 +128,7 @@ class netatmo_energy {
             }
             $mode .= $schedule['name'].',';
           }
-          $eqLogic->checkAndUpdateCmd('mode',trim($mode,',');
+          $eqLogic->checkAndUpdateCmd('mode',trim($mode,','));
         }
       }
     }

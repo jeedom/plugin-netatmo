@@ -80,25 +80,45 @@
       }
     },
     {
+      "name": "Mouvement",
+      "type": "info",
+      "subtype": "string",
+      "isVisible": 1,
+      "isHistorized": 0,
+      "logicalId": "movement",
+      "configuration": {
+        "repeatEventManagement": "always"
+      }
+    },
+    {
       "name": "Humain",
       "type": "info",
       "subtype": "string",
       "isVisible": 1,
-      "logicalId": "lastHuman"
+      "logicalId": "lastHuman",
+      "configuration": {
+        "repeatEventManagement": "always"
+      }
     },
     {
       "name": "Voiture",
       "type": "info",
       "subtype": "string",
       "isVisible": 1,
-      "logicalId": "lastVehicle"
+      "logicalId": "lastVehicle",
+      "configuration": {
+        "repeatEventManagement": "always"
+      }
     },
     {
       "name": "Animal",
       "type": "info",
       "subtype": "string",
       "isVisible": 1,
-      "logicalId": "lastAnimal"
+      "logicalId": "lastAnimal",
+      "configuration": {
+        "repeatEventManagement": "always"
+      }
     }
   ]
 }

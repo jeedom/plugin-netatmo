@@ -121,12 +121,14 @@ class netatmo_energy {
           continue;
         }
         if(isset($home['schedules']) &&  count($home['schedules']) > 0){
+          $mode = '';
           foreach ($home['schedules'] as $schedule) {
             if(!$schedule['selected']){
               continue;
             }
-            $eqLogic->checkAndUpdateCmd('mode',$schedule['name']);
+            $mode .= $schedule['name'].',';
           }
+          $eqLogic->checkAndUpdateCmd('mode',trim($mode,','));
         }
       }
     }

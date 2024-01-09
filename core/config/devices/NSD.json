@@ -5,6 +5,7 @@
       "name": "Fumée",
       "type": "info",
       "subtype": "binary",
+      "generic_type": "SMOKE",
       "isVisible": 1,
       "isHistorized": 0,
       "logicalId": "smoke",

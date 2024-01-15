@@ -194,6 +194,6 @@ class netatmo_energy {
       ),'POST');
     }
     sleep(10);
-    self::sync();
+    self::refresh();
   }
 }

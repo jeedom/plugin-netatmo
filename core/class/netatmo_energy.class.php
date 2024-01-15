@@ -193,7 +193,7 @@ class netatmo_energy {
         'schedule_id' => str_replace('schedule','',$_cmd->getLogicalId())
       ),'POST');
     }
-    sleep(2);
+    sleep(10);
     self::sync();
   }
 }

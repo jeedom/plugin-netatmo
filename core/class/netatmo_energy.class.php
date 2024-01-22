@@ -77,6 +77,9 @@ class netatmo_energy {
             continue;
           }
           $device = self::getRoomDevice($home['modules'],$room['module_ids']);
+          if(!in_array($device,array('NRV','NATherm1','OTM'))){
+            continue;
+          }
           $eqLogic = eqLogic::byLogicalId($room['id'], 'netatmo');
           if (!is_object($eqLogic)) {
             $eqLogic = new netatmo();

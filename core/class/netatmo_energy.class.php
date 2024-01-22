@@ -179,11 +179,23 @@ class netatmo_energy {
         ),'POST');
       }
     }else if($_cmd->getLogicalId() == 'mode_auto'){
-      netatmo::request('/setroomthermpoint',array(
-        'home_id' => $eqLogic->getConfiguration('home_id'),
-        'room_id' => $eqLogic->getLogicalId(),
-        'mode' => 'home',
-      ),'POST');
+      if($eqLogic->getConfiguration('device') == 'OTM'){
+        netatmo::request('/setstate ',array(
+          'home' => array(
+            'id' => $eqLogic->getConfiguration('home_id'),
+            'rooms' => array(
+              'id' => $eqLogic->getLogicalId(),
+              'therm_setpoint_mode' => 'mode'
+            )
+          )
+        ),'POST');
+      }else{
+        netatmo::request('/setroomthermpoint',array(
+          'home_id' => $eqLogic->getConfiguration('home_id'),
+          'room_id' => $eqLogic->getLogicalId(),
+          'mode' => 'home',
+        ),'POST');
+      }
     }else if($_cmd->getLogicalId() == 'home_mode_away'){
       netatmo::request('/setthermmode',array(
         'home_id' => $eqLogic->getConfiguration('home_id'),

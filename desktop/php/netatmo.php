@@ -146,6 +146,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
 										<option value="NAEnergyHome">{{Maison}}</option>
 										<option value="NASecurityHome">{{Maison}}</option>
 										<option value="NATherm1">{{Thermostat}}</option>
+										<option value="OTM">{{Thermostat}}</option>
 										<option value="NRV">{{Vanne}}</option>
 									</select>
 								</div>

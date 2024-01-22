@@ -77,9 +77,6 @@ class netatmo_energy {
             continue;
           }
           $device = self::getRoomDevice($home['modules'],$room['module_ids']);
-          if(!in_array($device,array('NRV','NATherm1'))){
-            continue;
-          }
           $eqLogic = eqLogic::byLogicalId($room['id'], 'netatmo');
           if (!is_object($eqLogic)) {
             $eqLogic = new netatmo();
@@ -162,12 +159,25 @@ class netatmo_energy {
   public static function execCmd($_cmd,$_options = array()){
     $eqLogic = $_cmd->getEqLogic();
     if($_cmd->getLogicalId() == 'setpoint'){
-      netatmo::request('/setroomthermpoint',array(
-        'home_id' => $eqLogic->getConfiguration('home_id'),
-        'room_id' => $eqLogic->getLogicalId(),
-        'mode' => 'manual',
-        'temp' => $_options['slider'],
-      ),'POST');
+      if($eqLogic->getConfiguration('device') == 'OTM'){
+        netatmo::request('/setstate ',array(
+          'home' => array(
+            'id' => $eqLogic->getConfiguration('home_id'),
+            'rooms' => array(
+              'id' => $eqLogic->getLogicalId(),
+              'therm_setpoint_mode' => 'manual',
+              'therm_setpoint_temperature' => $_options['slider'],
+            )
+          )
+        ),'POST');
+      }else{
+        netatmo::request('/setroomthermpoint',array(
+          'home_id' => $eqLogic->getConfiguration('home_id'),
+          'room_id' => $eqLogic->getLogicalId(),
+          'mode' => 'manual',
+          'temp' => $_options['slider'],
+        ),'POST');
+      }
     }else if($_cmd->getLogicalId() == 'mode_auto'){
       netatmo::request('/setroomthermpoint',array(
         'home_id' => $eqLogic->getConfiguration('home_id'),

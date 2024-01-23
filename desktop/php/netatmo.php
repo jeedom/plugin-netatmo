@@ -159,13 +159,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
 								<div class="col-sm-7">
 									<span class="eqLogicAttr tooltips label label-default" data-l1key="logicalId" style="font-size : 1em"></span>
 								</div>
-							</div>
-							<div class="form-group">
-								<label class="col-sm-3 control-label">{{Device}}</label>
-								<div class="col-sm-7">
-									<span class="eqLogicAttr tooltips label label-default" data-l1key="configuration" data-l2key="device" style="font-size : 1em"></span>
-								</div>
-							</div>                            
+							</div>                   
 							<div class="form-group">
 								<label class="col-sm-3 control-label">{{Firmware}}</label>
 								<div class="col-sm-7">

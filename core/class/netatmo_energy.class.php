@@ -167,9 +167,11 @@ class netatmo_energy {
           'home' => array(
             'id' => $eqLogic->getConfiguration('home_id'),
             'rooms' => array(
-              'id' => $eqLogic->getLogicalId(),
-              'therm_setpoint_mode' => 'manual',
-              'therm_setpoint_temperature' => $_options['slider'],
+              array(
+                'id' => $eqLogic->getLogicalId(),
+                'therm_setpoint_mode' => 'manual',
+                'therm_setpoint_temperature' => $_options['slider'],
+              )
             )
           )
         ),'POST');
@@ -187,8 +189,10 @@ class netatmo_energy {
           'home' => array(
             'id' => $eqLogic->getConfiguration('home_id'),
             'rooms' => array(
-              'id' => $eqLogic->getLogicalId(),
-              'therm_setpoint_mode' => 'mode'
+                array(
+                'id' => $eqLogic->getLogicalId(),
+                'therm_setpoint_mode' => 'mode'
+              )
             )
           )
         ),'POST');

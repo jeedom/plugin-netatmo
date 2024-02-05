@@ -183,7 +183,7 @@ class netatmo_energy {
   public static function execCmd($_cmd,$_options = array()){
     $eqLogic = $_cmd->getEqLogic();
     if($_cmd->getLogicalId() == 'setpoint'){
-      if($eqLogic->getConfiguration('device') == 'OTM'){
+      if($eqLogic->getConfiguration('bridge_type') == 'OTH'){
         netatmo::request('/setstate ',array(
           'home' => array(
             'id' => $eqLogic->getConfiguration('home_id'),
@@ -191,7 +191,7 @@ class netatmo_energy {
               array(
                 'id' => $eqLogic->getLogicalId(),
                 'therm_setpoint_mode' => 'manual',
-                'therm_setpoint_temperature' => (int) $_options['slider'],
+                'therm_setpoint_temperature' => intval($_options['slider']),
               )
             )
           )
@@ -205,14 +205,14 @@ class netatmo_energy {
         ),'POST');
       }
     }else if($_cmd->getLogicalId() == 'mode_auto'){
-      if($eqLogic->getConfiguration('device') == 'OTM'){
+      if($eqLogic->getConfiguration('bridge_type') == 'OTH'){
         netatmo::request('/setstate ',array(
           'home' => array(
             'id' => $eqLogic->getConfiguration('home_id'),
             'rooms' => array(
                 array(
                 'id' => $eqLogic->getLogicalId(),
-                'therm_setpoint_mode' => 'mode'
+                'therm_setpoint_mode' => 'home'
               )
             )
           )

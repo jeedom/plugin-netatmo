@@ -1,6 +1,6 @@
 <?php
 
-/* This file is part of Jeedom.
+/* This file is part of Jeedom. 
 *
 * Jeedom is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -109,6 +109,7 @@ class netatmo extends eqLogic {
       'Autorization: '.sha512(mb_strtolower(config::byKey('market::username')).':'.config::byKey('market::password'))
     ));
     if($_type == 'POST'){
+      log::add('netatmo','debug','[netatmo] request-json : '.json_encode($_data));
       $request_http->setPost(json_encode($_data));
     }
     $return = json_decode($request_http->exec(30,1),true);

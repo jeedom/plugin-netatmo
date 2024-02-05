@@ -119,7 +119,7 @@ class netatmo_energy {
   }
   
   public static function refresh($homesdata = null){
-    if(is_null($homesdata)) {
+    if($homesdata == null) {
       $homesdata = netatmo::request('/homesdata');
       log::add('netatmo','debug','[netatmo energy] homesdata : '.json_encode($homestatus));
     }
@@ -137,7 +137,7 @@ class netatmo_energy {
         if(!is_object($eqLogic)){
           continue;
         }
-        if(!isset($home['therm_mode'])){
+       if($home['therm_mode'] != 'schedule'){
           $eqLogic->checkAndUpdateCmd('mode',$home['therm_mode']);
           continue;
         }
@@ -159,24 +159,24 @@ class netatmo_energy {
     foreach ($home_ids as $home_id) {
       $homestatus = netatmo::request('/homestatus',array('home_id' => $home_id));
       log::add('netatmo','debug','[netatmo energy] homestatus : '.json_encode($homestatus));
-      if(isset($homestatus['home']) && isset($homestatus['home']['rooms']) &&  count($homestatus['home']['rooms']) > 0){
-        foreach ($homestatus['home']['rooms'] as $room) {
-          $eqLogic = eqLogic::byLogicalId($room['id'], 'netatmo');
-          if(!is_object($eqLogic)){
-            continue;
-          }
-          foreach ($eqLogic->getCmd('info') as $cmd) {
-            if(!isset($room[$cmd->getLogicalId()])){
-              continue;
-            }
-            if($cmd->getLogicalId() == 'therm_setpoint_mode' && $room[$cmd->getLogicalId()] != 'schedule' && isset($room['therm_setpoint_end_time'])){
-              $eqLogic->checkAndUpdateCmd($cmd,$room[$cmd->getLogicalId()].' ('.__('fini à',__FILE__).' '.date('H:i',$room['therm_setpoint_end_time']).')');
-              continue;
-            }
-            $eqLogic->checkAndUpdateCmd($cmd,$room[$cmd->getLogicalId()]);
+      if(isset($homestatus['home']) && isset($homestatus['home']['modules']) &&  count($homestatus['home']['modules']) > 0){
+          foreach ($homestatus['home']['modules'] as $module) {
+               $eqLogic = eqLogic::byLogicalId($module['id'], 'netatmo');
+               if(!is_object($eqLogic)){
+                  continue;
+               }
+               foreach ($eqLogic->getCmd('info') as $cmd) {
+                    $logicalId = $cmd->getLogicalId();
+                    if($logicalId == 'state'){
+                        $logicalId = 'status';
+                    }
+                    if(!isset($module[$logicalId])){
+                      continue;
+                    }
+                    $eqLogic->checkAndUpdateCmd($cmd,$module[$logicalId]);
+              }
           }
         }
-      }
      }
   }
   

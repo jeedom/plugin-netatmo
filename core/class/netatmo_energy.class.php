@@ -184,7 +184,7 @@ class netatmo_energy {
     $eqLogic = $_cmd->getEqLogic();
     if($_cmd->getLogicalId() == 'setpoint'){
       if($eqLogic->getConfiguration('bridge_type') == 'OTH'){
-        netatmo::request('/setstate ',array(
+        netatmo::request('/setstate',array(
           'home' => array(
             'id' => $eqLogic->getConfiguration('home_id'),
             'rooms' => array(
@@ -206,7 +206,7 @@ class netatmo_energy {
       }
     }else if($_cmd->getLogicalId() == 'mode_auto'){
       if($eqLogic->getConfiguration('bridge_type') == 'OTH'){
-        netatmo::request('/setstate ',array(
+        netatmo::request('/setstate',array(
           'home' => array(
             'id' => $eqLogic->getConfiguration('home_id'),
             'rooms' => array(

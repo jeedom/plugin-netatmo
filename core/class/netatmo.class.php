@@ -108,11 +108,13 @@ class netatmo extends eqLogic {
       'Content-Type: application/json',
       'Autorization: '.sha512(mb_strtolower(config::byKey('market::username')).':'.config::byKey('market::password'))
     ));
+    log::add('netatmo','debug','[netatmo cloud] request : '.$_path);
     if($_type == 'POST'){
-      log::add('netatmo','debug','[netatmo] request-json('.$_path.') : '.json_encode($_data));
+      log::add('netatmo','debug','[netatmo cloud] request (POST json): '.json_encode($_data));
       $request_http->setPost(json_encode($_data));
     }
     $return = json_decode($request_http->exec(30,1),true);
+    log::add('netatmo','debug','[netatmo cloud] response : '.json_encode($return));
     $return = is_json($return,$return);
     if(isset($return['state']) && $return['state'] != 'ok'){
       throw new \Exception(__('Erreur lors de la requete à Netatmo : ',__FILE__).json_encode($return));

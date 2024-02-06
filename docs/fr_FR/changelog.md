@@ -1,10 +1,13 @@
-# Changelog plugin template
+# Changelog plugin Netatmo
 
 >**IMPORTANT**
 >
 >Pour rappel s'il n'y a pas d'information sur la mise à jour, c'est que celle-ci concerne uniquement de la mise à jour de documentation, de traduction ou de texte.
 
+# 05/02/2024
 - Amélioration du support des tags
+- Identification du relais (bridge) des équipements (module Energie)
+- Ajout d'informations dans les logs
 
 # 24/01/2024
 

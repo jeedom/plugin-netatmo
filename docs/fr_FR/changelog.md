@@ -6,8 +6,8 @@
 
 # 05/02/2024
 - Amélioration du support des tags
-- Identification du relais (bridge) des équipements (module Energie)
-- Ajout d'informations dans les logs
+- Identification du relais (bridge) et de sa typologie pour les équipements du module Energie
+- Ajout d'informations dans les logs (requêtes cloud lorsque le mode debug est activé)
 
 # 24/01/2024
 

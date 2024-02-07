@@ -124,7 +124,7 @@ class netatmo_energy {
     $home_ids = array();
     if(isset($homesdata['homes']) &&  count($homesdata['homes']) > 0){
       foreach ($homesdata['homes'] as $home) {
-        if(!isset($home['rooms'])){
+        if(!isset($home['modules'])){
           continue;
         }
         $home_ids[] = $home['id'];

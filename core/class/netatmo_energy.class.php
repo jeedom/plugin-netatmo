@@ -174,6 +174,27 @@ class netatmo_energy {
               }
           }
         }
+      if(isset($homestatus['home']) && isset($homestatus['home']['rooms']) &&  count($homestatus['home']['rooms']) > 0){
+        foreach ($homestatus['home']['rooms'] as $room) {
+          $eqLogic = eqLogic::byLogicalId($room['id'], 'netatmo');
+          if(!is_object($eqLogic)){
+            continue;
+          }
+          foreach ($eqLogic->getCmd('info') as $cmd) {
+            if(!isset($room[$cmd->getLogicalId()])){
+              continue;
+            }
+            if($cmd->getLogicalId() == 'therm_setpoint_mode' && $room[$cmd->getLogicalId()] != 'schedule' && isset($room['therm_setpoint_end_time'])){
+              $eqLogic->checkAndUpdateCmd($cmd,$room[$cmd->getLogicalId()].' ('.__('fini à',__FILE__).' '.date('H:i',$room['therm_setpoint_end_time']).')');
+              continue;
+            }
+            $eqLogic->checkAndUpdateCmd($cmd,$room[$cmd->getLogicalId()]);
+          }
+        }
+      }
+
+
+      
      }
   }
   

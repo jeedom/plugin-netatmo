@@ -26,6 +26,21 @@ $('.eqLogicAttr[data-l1key=configuration][data-l2key=device]').on('change',funct
   } else {
     $('#battery_net_weather').show();
   }
+  if(['NATherm1','NaMain','NAModule1','NAModule2','NAModule3','NAModule4'].includes($(this).value())){
+    $('.eqLogicAttr[data-l1key=configuration][data-l2key=firmware]').parent().parent().show();
+  }else{
+    $('.eqLogicAttr[data-l1key=configuration][data-l2key=firmware]').parent().parent().hide();
+  }
+
+  if(['NATherm1','OTM','NRV'].includes($(this).value())){
+    $('.eqLogicAttr[data-l1key=configuration][data-l2key=bridge_type]').parent().parent().show();
+    $('.eqLogicAttr[data-l1key=configuration][data-l2key=bridge]').parent().parent().show();
+    $('.eqLogicAttr[data-l1key=configuration][data-l2key=devices-count]').parent().parent().show();
+  }else{
+    $('.eqLogicAttr[data-l1key=configuration][data-l2key=bridge_type]').parent().parent().hide();
+    $('.eqLogicAttr[data-l1key=configuration][data-l2key=bridge]').parent().parent().hide();
+    $('.eqLogicAttr[data-l1key=configuration][data-l2key=devices-count]').parent().parent().hide();
+  }
 });
 
 $('#bt_syncEqLogicNetatmo').off('click').on('click', function () {

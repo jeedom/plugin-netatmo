@@ -172,6 +172,26 @@ $eqLogics = eqLogic::byType($plugin->getId());
 									<span class="eqLogicAttr tooltips label label-default" data-l1key="configuration" data-l2key="home_id" style="font-size : 1em"></span>
 								</div>
 							</div>    
+
+							<div class="form-group">
+								<label class="col-sm-3 control-label">{{Bridge type}}</label>
+								<div class="col-sm-7">
+									<span class="eqLogicAttr tooltips label label-default" data-l1key="configuration" data-l2key="bridge_type" style="font-size : 1em"></span>
+								</div>
+							</div>    
+
+							<div class="form-group">
+								<label class="col-sm-3 control-label">{{Bridge}}</label>
+								<div class="col-sm-7">
+									<span class="eqLogicAttr tooltips label label-default" data-l1key="configuration" data-l2key="bridge" style="font-size : 1em"></span>
+								</div>
+							</div>  
+							<div class="form-group">
+								<label class="col-sm-3 control-label">{{Nombre d'équipement}}</label>
+								<div class="col-sm-7">
+									<span class="eqLogicAttr tooltips label label-default" data-l1key="configuration" data-l2key="devices-count" style="font-size : 1em"></span>
+								</div>
+							</div>    
 							
 							<br>
 							<div>

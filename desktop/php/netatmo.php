@@ -146,6 +146,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
 										<option value="NAEnergyHome">{{Maison}}</option>
 										<option value="NASecurityHome">{{Maison}}</option>
 										<option value="NATherm1">{{Thermostat}}</option>
+										<option value="OTM">{{Thermostat Opentherm}}</option>
 										<option value="NRV">{{Vanne}}</option>
 									</select>
 								</div>
@@ -158,7 +159,40 @@ $eqLogics = eqLogic::byType($plugin->getId());
 								<div class="col-sm-7">
 									<span class="eqLogicAttr tooltips label label-default" data-l1key="logicalId" style="font-size : 1em"></span>
 								</div>
-							</div>
+							</div>                   
+							<div class="form-group">
+								<label class="col-sm-3 control-label">{{Firmware}}</label>
+								<div class="col-sm-7">
+									<span class="eqLogicAttr tooltips label label-default" data-l1key="configuration" data-l2key="firmware" style="font-size : 1em"></span>
+								</div>
+							</div>                                
+							<div class="form-group">
+								<label class="col-sm-3 control-label">{{Maison}}</label>
+								<div class="col-sm-7">
+									<span class="eqLogicAttr tooltips label label-default" data-l1key="configuration" data-l2key="home_id" style="font-size : 1em"></span>
+								</div>
+							</div>    
+
+							<div class="form-group">
+								<label class="col-sm-3 control-label">{{Bridge type}}</label>
+								<div class="col-sm-7">
+									<span class="eqLogicAttr tooltips label label-default" data-l1key="configuration" data-l2key="bridge_type" style="font-size : 1em"></span>
+								</div>
+							</div>    
+
+							<div class="form-group">
+								<label class="col-sm-3 control-label">{{Bridge}}</label>
+								<div class="col-sm-7">
+									<span class="eqLogicAttr tooltips label label-default" data-l1key="configuration" data-l2key="bridge" style="font-size : 1em"></span>
+								</div>
+							</div>  
+							<div class="form-group">
+								<label class="col-sm-3 control-label">{{Nombre d'équipement}}</label>
+								<div class="col-sm-7">
+									<span class="eqLogicAttr tooltips label label-default" data-l1key="configuration" data-l2key="devices-count" style="font-size : 1em"></span>
+								</div>
+							</div>    
+							
 							<br>
 							<div>
 								<center>

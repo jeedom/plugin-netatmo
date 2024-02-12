@@ -250,7 +250,7 @@ class netatmo_security {
       $request_http = new com_http($eqLogic->getCache('vpnUrl').'/command/floodlight_set_config?config='.urlencode('{"mode":"auto"}'));
       $request_http->exec(5, 1);
     }
-    sleep(2);
+    sleep(10);
     self::refresh();
   }
 }

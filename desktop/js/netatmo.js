@@ -26,6 +26,21 @@ $('.eqLogicAttr[data-l1key=configuration][data-l2key=device]').on('change',funct
   } else {
     $('#battery_net_weather').show();
   }
+  if(['NATherm1','NaMain','NAModule1','NAModule2','NAModule3','NAModule4'].includes($(this).value())){
+    $('.eqLogicAttr[data-l1key=configuration][data-l2key=firmware]').parent().parent().show();
+  }else{
+    $('.eqLogicAttr[data-l1key=configuration][data-l2key=firmware]').parent().parent().hide();
+  }
+
+  if(['NATherm1','OTM','NRV'].includes($(this).value())){
+    $('.eqLogicAttr[data-l1key=configuration][data-l2key=bridge_type]').parent().parent().show();
+    $('.eqLogicAttr[data-l1key=configuration][data-l2key=bridge]').parent().parent().show();
+    $('.eqLogicAttr[data-l1key=configuration][data-l2key=devices-count]').parent().parent().show();
+  }else{
+    $('.eqLogicAttr[data-l1key=configuration][data-l2key=bridge_type]').parent().parent().hide();
+    $('.eqLogicAttr[data-l1key=configuration][data-l2key=bridge]').parent().parent().hide();
+    $('.eqLogicAttr[data-l1key=configuration][data-l2key=devices-count]').parent().parent().hide();
+  }
 });
 
 $('#bt_syncEqLogicNetatmo').off('click').on('click', function () {
@@ -77,6 +92,7 @@ function addCmdToTable(_cmd) {
   tr += '<td>';
   tr += '<label class="checkbox-inline"><input type="checkbox" class="cmdAttr" data-l1key="isVisible" checked/>{{Afficher}}</label> '
   tr += '<label class="checkbox-inline"><input type="checkbox" class="cmdAttr" data-l1key="isHistorized" checked/>{{Historiser}}</label> '
+  tr += '<label class="checkbox-inline"><input type="checkbox" class="cmdAttr" data-l1key="display" data-l2key="invertBinary"/>{{Inverser}}</label> '
   tr += '<div style="margin-top:7px;">'
   tr += '<input class="tooltips cmdAttr form-control input-sm" data-l1key="configuration" data-l2key="minValue" placeholder="{{Min}}" title="{{Min}}" style="width:30%;max-width:80px;display:inline-block;margin-right:2px;">'
   tr += '<input class="tooltips cmdAttr form-control input-sm" data-l1key="configuration" data-l2key="maxValue" placeholder="{{Max}}" title="{{Max}}" style="width:30%;max-width:80px;display:inline-block;margin-right:2px;">'

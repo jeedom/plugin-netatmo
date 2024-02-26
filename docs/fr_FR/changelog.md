@@ -5,6 +5,8 @@
 >Pour rappel s'il n'y a pas d'information sur la mise à jour, c'est que celle-ci concerne uniquement de la mise à jour de documentation, de traduction ou de texte.
 
 # 05/02/2024
+
+- Correction de bugs
 - Amélioration du support des tags
 - Identification du relais (bridge) et de sa typologie pour les équipements du module Energie
 - Ajout d'informations dans les logs (requêtes cloud lorsque le mode debug est activé)

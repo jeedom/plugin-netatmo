@@ -36,7 +36,6 @@ class netatmo_energy {
   
   public static function sync(){
     $homesdata = netatmo::request('/homesdata');
-    log::add('netatmo','debug','[netatmo energy] homesdata : '.json_encode($homesdata));
     if(isset($homesdata['homes']) &&  count($homesdata['homes']) > 0){
       foreach ($homesdata['homes'] as $home) {
         if(!isset($home['rooms']) || count($home['rooms']) == 0 || !isset($home['modules']) || count($home['modules']) == 0 || !isset($home['schedules'])){
@@ -121,12 +120,11 @@ class netatmo_energy {
   public static function refresh($homesdata = null){
     if($homesdata == null) {
       $homesdata = netatmo::request('/homesdata');
-      log::add('netatmo','debug','[netatmo energy] homesdata : '.json_encode($homestatus));
     }
     $home_ids = array();
     if(isset($homesdata['homes']) &&  count($homesdata['homes']) > 0){
       foreach ($homesdata['homes'] as $home) {
-        if(!isset($home['rooms'])){
+        if(!isset($home['modules'])){
           continue;
         }
         $home_ids[] = $home['id'];
@@ -158,7 +156,6 @@ class netatmo_energy {
     }
     foreach ($home_ids as $home_id) {
       $homestatus = netatmo::request('/homestatus',array('home_id' => $home_id));
-      log::add('netatmo','debug','[netatmo energy] homestatus : '.json_encode($homestatus));
       if(isset($homestatus['home']) && isset($homestatus['home']['modules']) &&  count($homestatus['home']['modules']) > 0){
           foreach ($homestatus['home']['modules'] as $module) {
                $eqLogic = eqLogic::byLogicalId($module['id'], 'netatmo');
@@ -212,7 +209,7 @@ class netatmo_energy {
               array(
                 'id' => $eqLogic->getLogicalId(),
                 'therm_setpoint_mode' => 'manual',
-                'therm_setpoint_temperature' => intval($_options['slider']),
+                'therm_setpoint_temperature' => floatval($_options['slider']),
               )
             )
           )

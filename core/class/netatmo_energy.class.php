@@ -209,7 +209,7 @@ class netatmo_energy {
               array(
                 'id' => $eqLogic->getLogicalId(),
                 'therm_setpoint_mode' => 'manual',
-                'therm_setpoint_temperature' => floatval($_options['slider']),
+                'therm_setpoint_temperature' => intval($_options['slider']),
               )
             )
           )
@@ -242,17 +242,74 @@ class netatmo_energy {
           'mode' => 'home',
         ),'POST');
       }
-    }else if($_cmd->getLogicalId() == 'home_mode_away'){
+    }else if($_cmd->getLogicalId() == 'mode_hg'){
+      netatmo::request('/setstate',array(
+        'home' => array(
+          'id' => $eqLogic->getConfiguration('home_id'),
+          'rooms' => array(
+            array(
+              'id' => $eqLogic->getLogicalId(),
+              'therm_setpoint_mode' => 'hg'
+            )
+          )
+        )
+      ),'POST');     
+    }else if($_cmd->getLogicalId() == 'mode_hg_endtime'){
+      log::add('netatmo','debug','[netatmo energy] Mode HG');
+      netatmo::request('/setstate',array(
+        'home' => array(
+          'id' => $eqLogic->getConfiguration('home_id'),
+          'rooms' => array(
+            array(
+              'id' => $eqLogic->getLogicalId(),
+              'therm_setpoint_mode' => 'hg',
+              'therm_setpoint_end_time' => strtotime('now +'.$_options['slider'].' hours')
+            )
+          )
+        )
+      ),'POST');    
+    }else if($_cmd->getLogicalId() == 'mode_off'){
+      log::add('netatmo','debug','[netatmo energy] Mode OFF');
+      netatmo::request('/setroomthermpoint',array(
+        'home_id' => $eqLogic->getConfiguration('home_id'),
+        'room_id' => $eqLogic->getLogicalId(),
+        'mode' => 'off',
+      ),'POST');
+    }else if($_cmd->getLogicalId() == 'mode_off_endtime'){
+      log::add('netatmo','debug','[netatmo energy] Mode OFF (heures)');
+      netatmo::request('/setroomthermpoint',array(
+        'home_id' => $eqLogic->getConfiguration('home_id'),
+        'room_id' => $eqLogic->getLogicalId(),
+        'mode' => 'off',
+        'endtime' => strtotime('now +'.$_options['slider'].' hours')
+      ),'POST');      
+            
+    }else if($_cmd->getLogicalId() == 'home_mode_away_endtime'){
       netatmo::request('/setthermmode',array(
         'home_id' => $eqLogic->getConfiguration('home_id'),
         'mode' => 'away',
-        'endtime' => strotime('now +'.$_options['slider'].' hours')
+        'endtime' => strtotime('now +'.$_options['slider'].' hours')
+      ),'POST');
+    }else if($_cmd->getLogicalId() == 'home_mode_hg_endtime'){
+      netatmo::request('/setthermmode',array(
+        'home_id' => $eqLogic->getConfiguration('home_id'),
+        'mode' => 'hg',
+        'endtime' => strtotime('now +'.$_options['slider'].' hours')
+      ),'POST');
+    }else if($_cmd->getLogicalId() == 'home_mode_schedule'){
+      netatmo::request('/setthermmode',array(
+        'home_id' => $eqLogic->getConfiguration('home_id'),
+        'mode' => 'schedule'
+      ),'POST');
+    }else if($_cmd->getLogicalId() == 'home_mode_away'){
+      netatmo::request('/setthermmode',array(
+        'home_id' => $eqLogic->getConfiguration('home_id'),
+        'mode' => 'away'
       ),'POST');
     }else if($_cmd->getLogicalId() == 'home_mode_hg'){
       netatmo::request('/setthermmode',array(
         'home_id' => $eqLogic->getConfiguration('home_id'),
-        'mode' => 'hg',
-        'endtime' => strotime('now +'.$_options['slider'].' hours')
+        'mode' => 'hg'
       ),'POST');
     }else if(strpos($_cmd->getLogicalId(),'schedule') !== false){
       netatmo::request('/setthermmode',array(

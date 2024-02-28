@@ -209,7 +209,7 @@ class netatmo_energy {
               array(
                 'id' => $eqLogic->getLogicalId(),
                 'therm_setpoint_mode' => 'manual',
-                'therm_setpoint_temperature' => intval($_options['slider']),
+                'therm_setpoint_temperature' => floatval($_options['slider']),
               )
             )
           )

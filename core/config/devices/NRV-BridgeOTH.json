@@ -1,5 +1,5 @@
 {
-  "name" : "Thermostat modulant OpenTherm",
+  "name" : "Vanne",
   "commands" : [
     {
       "name": "Anticipation",
@@ -34,6 +34,14 @@
       "logicalId": "therm_measured_temperature"
     },
     {
+      "name": "Puissance",
+      "type": "info",
+      "subtype": "numeric",
+      "isVisible": 1,
+      "isHistorized": 1,
+      "logicalId": "heating_power_request"
+    },
+    {
       "name": "Mode",
       "type": "info",
       "subtype": "string",
@@ -51,6 +59,7 @@
       "unite" : "°C",
       "generic_type" : "THERMOSTAT_SETPOINT",
       "logicalId": "therm_setpoint_temperature",
+      
       "template": {
         "dashboard" : "button",
         "mobile" : "button"
@@ -85,14 +94,6 @@
       "logicalId": "mode_auto"
     },
     {
-      "name": "Etat chauffe",
-      "type": "info",
-      "subtype": "numeric",
-      "isVisible": 1,
-      "isHistorized": 0,
-      "logicalId": "boiler_status"
-    },
-    {
       "name": "Mode Hors-Gel",
       "type": "action",
       "subtype": "other",
@@ -113,6 +114,6 @@
         "maxValue" : 24
       },
       "logicalId": "mode_hg_endtime"
-    }    
+    }     
   ]
 }

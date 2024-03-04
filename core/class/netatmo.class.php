@@ -127,6 +127,10 @@ class netatmo extends eqLogic {
       throw new \Exception(__('Erreur lors de la requete à Netatmo : ',__FILE__).json_encode($return));
     }
     if(isset($return['body'])){
+      $return_temp = $return['body'];
+      if(isset($return_temp['errors'])){
+        throw new \Exception(__('Erreur lors de la requete à Netatmo : ',__FILE__).json_encode($return));
+      }      
       return $return['body'];
     }
     return $return;

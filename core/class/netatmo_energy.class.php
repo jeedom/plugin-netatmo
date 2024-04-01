@@ -318,6 +318,9 @@ class netatmo_energy {
         'schedule_id' => str_replace('schedule','',$_cmd->getLogicalId())
       ),'POST');
     }
+    else {
+      throw new \Exception('Erreur lors de l éxécution de la commande (commande '.$_cmd->getLogicalId().' inconnue)');
+    }    
     sleep(10);
     self::refresh();
   }

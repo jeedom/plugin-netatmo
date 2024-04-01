@@ -58,6 +58,15 @@ if(isset($data['home_id'])){
   $home = eqLogic::byLogicalId($data['home_id'], 'netatmo');
 }
 switch ($data['event_type']) {
+  case 'connection':
+  $eqLogic->checkAndUpdateCmd('connection',1);
+  break;
+  case 'disconnection':
+  $eqLogic->checkAndUpdateCmd('connection',0);
+  break;
+  case 'boot':
+  $eqLogic->checkAndUpdateCmd('booting',1);
+  break;
   case 'on':
   $eqLogic->checkAndUpdateCmd('monitoring',1);
   break;

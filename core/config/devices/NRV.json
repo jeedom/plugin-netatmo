@@ -85,7 +85,7 @@
       "logicalId": "setpoint"
     },
     {
-      "name": "Mode Auto",
+      "name": "Auto",
       "type": "action",
       "subtype": "other",
       "isVisible": 1,
@@ -94,26 +94,12 @@
       "logicalId": "mode_auto"
     },
     {
-      "name": "Mode OFF",
-      "type": "action",
-      "subtype": "other",
+      "name": "Joignabilité (Etat)",
+      "type": "info",
+      "subtype": "binary",
       "isVisible": 0,
       "isHistorized": 0,
-      "generic_type" : "THERMOSTAT_SET_MODE",
-      "logicalId": "mode_off"
-    },
-    {
-      "name": "Mode OFF (heures)",
-      "type": "action",
-      "subtype": "slider",
-      "isVisible": 0,
-      "isHistorized": 0,
-      "generic_type" : "THERMOSTAT_SET_MODE",
-      "configuration" : {
-        "minValue" : 1,
-        "maxValue" : 24
-      },      
-      "logicalId": "mode_off_endtime"
-    }     
+      "logicalId": "reachable"
+    }
   ]
 }

@@ -113,6 +113,30 @@
         "maxValue" : 24
       },
       "logicalId": "mode_hg_endtime"
-    }    
+    },
+    {
+      "name": "Joignabilité (Etat)",
+      "type": "info",
+      "subtype": "binary",
+      "isVisible": 0,
+      "isHistorized": 0,
+      "logicalId": "reachable"
+    },
+    {
+      "name": "Retour Erreur Chaudière",
+      "type": "info",
+      "subtype": "other",
+      "isVisible": 0,
+      "isHistorized": 0,
+      "logicalId": "boiler_error"
+    },
+    {
+      "name": "Etat Mode Comfort Vannes",
+      "type": "info",
+      "subtype": "binary",
+      "isVisible": 0,
+      "isHistorized": 0,
+      "logicalId": "boiler_valve_comfort_boost"
+    }        
   ]
 }

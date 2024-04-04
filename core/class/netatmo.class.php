@@ -224,9 +224,20 @@ class netatmo extends eqLogic {
     if(isset($return['body'])){
       $return_temp = $return['body'];
       if(isset($return_temp['errors'])){
-        //throw new \Exception(__('Erreur lors de la requete à Netatmo : ',__FILE__).json_encode($return));
-        //A retraiter : Remonte des erreurs sur les modules (dans le cas /HomeStatus) ou sur des actions (Ex: cas /SetState) 
-      }      
+        foreach ($return_temp['errors'] as $error) {
+          $eqLogicError = eqLogic::byLogicalId($error[id], 'netatmo');
+          if(!is_object($eqLogicError)){
+            continue;
+          }
+          $error_desc[1] = "Unknown error";
+          $error_desc[2] = "Internal error";
+          $error_desc[3] = "Parser error";
+          $error_desc[4] = "Command unknown node module error";
+          $error_desc[5] = "Command invalid params";
+          $error_desc[6] = "Unreachable";
+          message::add('netatmo','L\'équipement '.$eqLogicError->getName().' est en erreur : '.$error_desc[$error[code]].'('.$error[code].')');
+        }
+      }
       return $return['body'];
     }
     return $return;

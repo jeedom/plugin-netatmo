@@ -224,7 +224,8 @@ class netatmo extends eqLogic {
     if(isset($return['body'])){
       $return_temp = $return['body'];
       if(isset($return_temp['errors'])){
-        throw new \Exception(__('Erreur lors de la requete à Netatmo : ',__FILE__).json_encode($return));
+        //throw new \Exception(__('Erreur lors de la requete à Netatmo : ',__FILE__).json_encode($return));
+        //A retraiter : Remonte des erreurs sur les modules (dans le cas /HomeStatus) ou sur des actions (Ex: cas /SetState) 
       }      
       return $return['body'];
     }

@@ -121,6 +121,14 @@
       "logicalId": "wifi_state"
     },
     {
+      "name": "Wifi (Puissance Signal)",
+      "type": "info",
+      "subtype": "numeric",
+      "isVisible": 0,
+      "isHistorized": 0,
+      "logicalId": "wifi_strength"
+    },
+    {
       "name": "CarteSD (Etat)",
       "type": "info",
       "subtype": "string",

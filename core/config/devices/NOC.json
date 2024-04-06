@@ -2,14 +2,6 @@
   "name" : "Présence",
   "commands" : [
     {
-      "name": "Projecteur",
-      "type": "info",
-      "subtype": "string",
-      "isVisible": 1,
-      "isHistorized": 0,
-      "logicalId": "light"
-    },
-    {
       "name": "Auto",
       "type": "action",
       "subtype": "other",
@@ -119,6 +111,62 @@
       "configuration": {
         "repeatEventManagement": "always"
       }
-    }
+    },
+    {
+      "name": "Wifi (Etat)",
+      "type": "info",
+      "subtype": "string",
+      "isVisible": 0,
+      "isHistorized": 0,
+      "logicalId": "wifi_state"
+    },
+    {
+      "name": "Wifi (Puissance Signal)",
+      "type": "info",
+      "subtype": "numeric",
+      "isVisible": 0,
+      "isHistorized": 0,
+      "logicalId": "wifi_strength"
+    },
+    {
+      "name": "CarteSD (Etat)",
+      "type": "info",
+      "subtype": "string",
+      "isVisible": 0,
+      "isHistorized": 0,
+      "logicalId": "sd_status"
+    },
+    {
+      "name": "Sirène (Etat)",
+      "type": "info",
+      "subtype": "string",
+      "isVisible": 0,
+      "isHistorized": 0,
+      "logicalId": "siren_status"
+    },
+    {
+      "name": "Connexion (Etat)",
+      "type": "info",
+      "subtype": "binary",
+      "isVisible": 0,
+      "isHistorized": 0,
+      "logicalId": "connection"
+    },
+    {
+      "name": "Démarrage",
+      "type": "info",
+      "subtype": "binary",
+      "isVisible": 0,
+      "isHistorized": 0,
+      "logicalId": "booting"
+    },
+    {
+      "name": "Sirène",
+      "type": "info",
+      "subtype": "binary",
+      "isVisible": 0,
+      "isHistorized": 0,
+      "logicalId": "siren"
+    }     
   ]
 }

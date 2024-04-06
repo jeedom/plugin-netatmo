@@ -92,6 +92,14 @@
       "isHistorized": 0,
       "generic_type" : "THERMOSTAT_SET_MODE",
       "logicalId": "mode_auto"
+    },
+    {
+      "name": "Joignabilité (Etat)",
+      "type": "info",
+      "subtype": "binary",
+      "isVisible": 0,
+      "isHistorized": 0,
+      "logicalId": "reachable"
     }
   ]
 }

@@ -113,6 +113,22 @@
         "maxValue" : 24
       },
       "logicalId": "mode_off_endtime"
-    }
+    },
+    {
+      "name": "Joignabilité",
+      "type": "info",
+      "subtype": "binary",
+      "isVisible": 0,
+      "isHistorized": 0,
+      "logicalId": "reachable"
+    },
+    {
+      "name": "Etat Mode Comfort Vannes",
+      "type": "info",
+      "subtype": "binary",
+      "isVisible": 0,
+      "isHistorized": 0,
+      "logicalId": "boiler_valve_comfort_boost "
+    }    
   ]
 }

@@ -118,84 +118,7 @@ class netatmo_energy {
   }
   
   public static function refresh($homesdata = null){
-    if($homesdata == null) {
-      $homesdata = netatmo::request('/homesdata');
-    }
-    $home_ids = array();
-    if(isset($homesdata['homes']) &&  count($homesdata['homes']) > 0){
-      foreach ($homesdata['homes'] as $home) {
-        if(!isset($home['modules'])){
-          continue;
-        }
-        $home_ids[] = $home['id'];
-        if(!isset($home['therm_mode'])){
-          continue;
-        }
-        $eqLogic = eqLogic::byLogicalId($home['id'], 'netatmo');
-        if(!is_object($eqLogic)){
-          continue;
-        }
-       if($home['therm_mode'] != 'schedule'){
-          $eqLogic->checkAndUpdateCmd('mode',$home['therm_mode']);
-          continue;
-        }
-        if(isset($home['schedules']) &&  count($home['schedules']) > 0){
-          $mode = '';
-          foreach ($home['schedules'] as $schedule) {
-            if(!$schedule['selected']){
-              continue;
-            }
-            $mode .= $schedule['name'].',';
-          }
-          $eqLogic->checkAndUpdateCmd('mode',trim($mode,','));
-        }
-      }
-    }
-    if(count($home_ids) == 0){
-      return;
-    }
-    foreach ($home_ids as $home_id) {
-      $homestatus = netatmo::request('/homestatus',array('home_id' => $home_id));
-      if(isset($homestatus['home']) && isset($homestatus['home']['modules']) &&  count($homestatus['home']['modules']) > 0){
-          foreach ($homestatus['home']['modules'] as $module) {
-               $eqLogic = eqLogic::byLogicalId($module['id'], 'netatmo');
-               if(!is_object($eqLogic)){
-                  continue;
-               }
-               foreach ($eqLogic->getCmd('info') as $cmd) {
-                    $logicalId = $cmd->getLogicalId();
-                    if($logicalId == 'state'){
-                        $logicalId = 'status';
-                    }
-                    if(!isset($module[$logicalId])){
-                      continue;
-                    }
-                    $eqLogic->checkAndUpdateCmd($cmd,$module[$logicalId]);
-              }
-          }
-        }
-      if(isset($homestatus['home']) && isset($homestatus['home']['rooms']) &&  count($homestatus['home']['rooms']) > 0){
-        foreach ($homestatus['home']['rooms'] as $room) {
-          $eqLogic = eqLogic::byLogicalId($room['id'], 'netatmo');
-          if(!is_object($eqLogic)){
-            continue;
-          }
-          foreach ($eqLogic->getCmd('info') as $cmd) {
-            if(!isset($room[$cmd->getLogicalId()])){
-              continue;
-            }
-            if($cmd->getLogicalId() == 'therm_setpoint_mode' && $room[$cmd->getLogicalId()] != 'schedule' && isset($room['therm_setpoint_end_time'])){
-              $eqLogic->checkAndUpdateCmd($cmd,$room[$cmd->getLogicalId()].' ('.__('fini à',__FILE__).' '.date('H:i',$room['therm_setpoint_end_time']).')');
-              continue;
-            }
-            $eqLogic->checkAndUpdateCmd($cmd,$room[$cmd->getLogicalId()]);
-          }
-        }
-      }
-
-
-      
-     }
+   netatmo::refreshClassNetatmo();
   }
   
   public static function execCmd($_cmd,$_options = array()){
@@ -322,6 +245,6 @@ class netatmo_energy {
       throw new \Exception('Erreur lors de l éxécution de la commande (commande '.$_cmd->getLogicalId().' inconnue)');
     }    
     sleep(10);
-    self::refresh();
+    netatmo::refreshClassNetatmo();
   }
 }

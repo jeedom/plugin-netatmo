@@ -40,8 +40,20 @@ if (isset($data['data'])) {
 }
 log::add('netatmo', 'debug','[webhook] '. json_encode($data));
 if(!isset($data['device_id'])){
-  log::add('netatmo', 'debug','[webhook] No device id found');
-  die();
+  if(isset($data['push_type']) && $data['push_type']='topology_changed'){
+    log::add('netatmo', 'debug','[webhook] Topologie changée -> Actualisation (refresh)');
+    netatmo::refreshClassNetatmo();
+    exit(0);
+  }
+  elseif(isset($data['push_type']) && $data['push_type']='home_event_changed') {
+    if(isset($data['event_type']) && $data['event_type']='schedule'){
+      log::add('netatmo', 'debug','[webhook] Changement de Planning signalé');
+    }
+  }
+  else{
+    log::add('netatmo', 'debug','[webhook] Device id not found');
+    die();
+  }
 }
 $eqLogic = null;
 if(isset($data['module_id'])){

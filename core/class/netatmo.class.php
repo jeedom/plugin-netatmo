@@ -173,7 +173,7 @@ class netatmo extends eqLogic {
                     }
                     if($logicalId == 'error_status'){
                       if($logicalId == 'error_status' && !isset($ModulesError[$module['id']])) {
-                        $eqLogic->checkAndUpdateCmd($cmd,'');                      
+                        $eqLogic->checkAndUpdateCmd($cmd,'0 No error');                      
                       }
                     }
                     if(!isset($module[$logicalId])){

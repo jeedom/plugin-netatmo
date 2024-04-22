@@ -128,6 +128,27 @@ class netatmo extends eqLogic {
     }
     foreach ($home_ids as $home_id) {
       $homestatus = netatmo::request('/homestatus',array('home_id' => $home_id));
+      if(isset($homestatus['errors']) && count($homestatus['errors']) > 0){
+        $error_desc[1] = "Unknown error";
+        $error_desc[2] = "Internal error";
+        $error_desc[3] = "Parser error";
+        $error_desc[4] = "Command unknown node module error";
+        $error_desc[5] = "Command invalid params";
+        $error_desc[6] = "Unreachable";         
+        $ModulesError = array();
+        foreach ($homestatus['errors'] as $deviceerror) {
+          $ModulesError[$deviceerror['id']] = $deviceerror['code'];          
+          $eqLogic = eqLogic::byLogicalId($deviceerror['id'], 'netatmo');
+            if(!is_object($eqLogic)){
+              continue;
+            }
+          $Cmderrorinfo = $eqLogic->getCmd('info','error_status');
+          if(isset($Cmderrorinfo)){
+             log::add('netatmo','debug','[netatmo cloud] Erreur '.$deviceerror['code'].' détectée sur l\'équipement '.$deviceerror['id']);  
+            $eqLogic->checkAndUpdateCmd("error_status",$deviceerror['code'].' '.$error_desc[$deviceerror['code']]);
+          }
+        }
+      }
       if(isset($homestatus['home']) && isset($homestatus['home']['modules']) &&  count($homestatus['home']['modules']) > 0){
           foreach ($homestatus['home']['modules'] as $module) {
             if ($module['type']=="OTM" || $module['type']=="NATherm1") {
@@ -149,6 +170,11 @@ class netatmo extends eqLogic {
                     $logicalId = $cmd->getLogicalId();
                     if($logicalId == 'state'){
                         $logicalId = 'status';
+                    }
+                    if($logicalId == 'error_status'){
+                      if($logicalId == 'error_status' && !isset($ModulesError[$module['id']])) {
+                        $eqLogic->checkAndUpdateCmd($cmd,'0 No error');                      
+                      }
                     }
                     if(!isset($module[$logicalId])){
                       continue;
@@ -175,7 +201,7 @@ class netatmo extends eqLogic {
           }
         }
       }
-     }    
+    }    
   }
   
   public static function cronHourly(){

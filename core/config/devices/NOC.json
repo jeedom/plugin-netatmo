@@ -145,6 +145,14 @@
       "logicalId": "siren_status"
     },
     {
+      "name": "Etat Erreur",
+      "type": "info",
+      "subtype": "string",
+      "isVisible": 0,
+      "isHistorized": 0,
+      "logicalId": "error_status"
+    },    
+    {
       "name": "Connexion (Etat)",
       "type": "info",
       "subtype": "binary",

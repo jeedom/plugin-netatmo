@@ -1,5 +1,5 @@
 {
-  "name" : "Thermostat open therm",
+  "name" : "Thermostat modulant OpenTherm",
   "commands" : [
     {
       "name": "Anticipation",
@@ -76,7 +76,7 @@
       "logicalId": "setpoint"
     },
     {
-      "name": "Auto",
+      "name": "Mode Auto",
       "type": "action",
       "subtype": "other",
       "isVisible": 1,
@@ -91,6 +91,52 @@
       "isVisible": 1,
       "isHistorized": 0,
       "logicalId": "boiler_status"
-    }
+    },
+    {
+      "name": "Mode Hors-Gel",
+      "type": "action",
+      "subtype": "other",
+      "isVisible": 0,
+      "isHistorized": 0,
+      "generic_type" : "THERMOSTAT_SET_MODE",
+      "logicalId": "mode_hg"
+    },
+    {
+      "name": "Mode Hors-Gel (heures)",
+      "type": "action",
+      "subtype": "slider",
+      "isVisible": 0,
+      "isHistorized": 0,
+      "generic_type" : "THERMOSTAT_SET_MODE",
+      "configuration" : {
+        "minValue" : 1,
+        "maxValue" : 24
+      },
+      "logicalId": "mode_hg_endtime"
+    },
+    {
+      "name": "Joignabilité (Etat)",
+      "type": "info",
+      "subtype": "binary",
+      "isVisible": 0,
+      "isHistorized": 0,
+      "logicalId": "reachable"
+    },
+    {
+      "name": "Retour Erreur Chaudière",
+      "type": "info",
+      "subtype": "other",
+      "isVisible": 0,
+      "isHistorized": 0,
+      "logicalId": "boiler_error"
+    },
+    {
+      "name": "Etat Mode Comfort Vannes",
+      "type": "info",
+      "subtype": "binary",
+      "isVisible": 0,
+      "isHistorized": 0,
+      "logicalId": "boiler_valve_comfort_boost"
+    }        
   ]
 }

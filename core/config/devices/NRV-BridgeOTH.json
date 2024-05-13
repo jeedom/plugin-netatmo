@@ -1,5 +1,5 @@
 {
-  "name" : "Thermostat",
+  "name" : "Vanne",
   "commands" : [
     {
       "name": "Anticipation",
@@ -34,6 +34,14 @@
       "logicalId": "therm_measured_temperature"
     },
     {
+      "name": "Puissance",
+      "type": "info",
+      "subtype": "numeric",
+      "isVisible": 1,
+      "isHistorized": 1,
+      "logicalId": "heating_power_request"
+    },
+    {
       "name": "Mode",
       "type": "info",
       "subtype": "string",
@@ -51,6 +59,7 @@
       "unite" : "°C",
       "generic_type" : "THERMOSTAT_SETPOINT",
       "logicalId": "therm_setpoint_temperature",
+      
       "template": {
         "dashboard" : "button",
         "mobile" : "button"
@@ -85,24 +94,16 @@
       "logicalId": "mode_auto"
     },
     {
-      "name": "Etat chauffe",
-      "type": "info",
-      "subtype": "numeric",
-      "isVisible": 1,
-      "isHistorized": 0,
-      "logicalId": "boiler_status"
-    },
-    {
-      "name": "Mode Off",
+      "name": "Mode Hors-Gel",
       "type": "action",
       "subtype": "other",
       "isVisible": 0,
       "isHistorized": 0,
       "generic_type" : "THERMOSTAT_SET_MODE",
-      "logicalId": "mode_off"
+      "logicalId": "mode_hg"
     },
     {
-      "name": "Mode Off (heures)",
+      "name": "Mode Hors-Gel (heures)",
       "type": "action",
       "subtype": "slider",
       "isVisible": 0,
@@ -112,23 +113,7 @@
         "minValue" : 1,
         "maxValue" : 24
       },
-      "logicalId": "mode_off_endtime"
-    },
-    {
-      "name": "Joignabilité",
-      "type": "info",
-      "subtype": "binary",
-      "isVisible": 0,
-      "isHistorized": 0,
-      "logicalId": "reachable"
-    },
-    {
-      "name": "Etat Mode Comfort Vannes",
-      "type": "info",
-      "subtype": "binary",
-      "isVisible": 0,
-      "isHistorized": 0,
-      "logicalId": "boiler_valve_comfort_boost "
-    }    
+      "logicalId": "mode_hg_endtime"
+    }     
   ]
 }

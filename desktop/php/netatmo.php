@@ -148,6 +148,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
 										<option value="NATherm1">{{Thermostat}}</option>
 										<option value="OTM">{{Thermostat Opentherm}}</option>
 										<option value="NRV">{{Vanne}}</option>
+										<option value="NRV-BridgeOTH">{{Vanne}}</option>
 									</select>
 								</div>
 							</div>

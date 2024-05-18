@@ -250,7 +250,7 @@ class netatmo extends eqLogic {
       $return_temp = $return['body'];
       if (isset($return_temp['errors'])) {
         foreach ($return_temp['errors'] as $error) {
-          $eqLogicError = eqLogic::byLogicalId($error[id], 'netatmo');
+          $eqLogicError = eqLogic::byLogicalId($error['id'], 'netatmo');
           if (!is_object($eqLogicError)) {
             continue;
           }
@@ -260,7 +260,7 @@ class netatmo extends eqLogic {
           $error_desc[4] = "Command unknown node module error";
           $error_desc[5] = "Command invalid params";
           $error_desc[6] = "Unreachable";
-          message::add('netatmo', 'L\'équipement ' . $eqLogicError->getName() . ' est en erreur : ' . $error_desc[$error[code]] . '(' . $error[code] . ')');
+          message::add('netatmo', 'L\'équipement ' . $eqLogicError->getName() . ' est en erreur : ' . $error_desc[$error['code']] . '(' . $error['code'] . ')');
         }
       }
       return $return['body'];

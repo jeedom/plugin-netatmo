@@ -1,0 +1,112 @@
+{
+    "plugins\/netatmo\/plugin_info\/configuration.php": {
+        "Envoyer configuration au market": "Envoyer configuration au market",
+        "Envoyer": "Gönder",
+        "Association": "Association",
+        "Liée": "Liée",
+        "Synchronisation": "Synchronisation",
+        "Synchroniser mes équipements": "Cihazlarımı senkronize et",
+        "Configuration envoyée avec succès": "Configuration envoyée avec succès",
+        "Synchronisation réussie": "Sekronizasyon başarılı"
+    },
+    "plugins\/netatmo\/desktop\/modal\/health.php": {
+        "401 - Accès non autorisé": "401 - Accès non autorisé",
+        "Module": "Module",
+        "ID": "ID",
+        "Batterie": "Batterie",
+        "Dernière communication": "Dernière communication",
+        "Date création": "Date création",
+        "OK": "OK",
+        "Secteur": "Secteur"
+    },
+    "plugins\/netatmo\/desktop\/php\/netatmo.php": {
+        "401 - Accès non autorisé": "401 - Yetkisiz erişim",
+        "Gestion": "Idare",
+        "Synchronisation": "Synchronisation",
+        "Configuration": "Ayar",
+        "Santé": "Santé",
+        "Community": "Community",
+        "Mes équipements Netatmo": "Mes équipements Netatmo",
+        "Rechercher": "Arayın",
+        "Équipement visible": "Équipement visible",
+        "Équipement non visible": "Équipement non visible",
+        "Configuration avancée": "Gelişmiş ayarlar",
+        "Sauvegarder": "Kaydet",
+        "Supprimer": "Sil",
+        "Equipement": "Cihaz",
+        "Commandes": "Komutalar",
+        "Paramètres généraux": "Paramètres généraux",
+        "Nom de l'équipement": "Nom de l'équipement",
+        "Objet parent": "Üst nesne",
+        "Aucun": "Hiçbir",
+        "Catégorie": "Kategori",
+        "Options": "Opsiyonlar",
+        "Activer": "Etkinleştir",
+        "Visible": "Görülebilir",
+        "Paramètres spécifiques": "Paramètres spécifiques",
+        "Type": "Çeşit",
+        "Station": "Station",
+        "Module extérieur": "Module extérieur",
+        "Module intérieur": "Module intérieur",
+        "Module pluie": "Module pluie",
+        "Anémomètre": "Anémomètre",
+        "Welcome": "Welcome",
+        "Présence": "Presence",
+        "Détecteur de fumée": "Detecteur de fumée",
+        "Sirène": "Sirène",
+        "Capteur de porte": "Capteur de porte",
+        "Maison": "Maison",
+        "Thermostat": "Thermostat",
+        "Thermostat Opentherm": "Thermostat Opentherm",
+        "Vanne": "Vanne",
+        "Informations": "Informations",
+        "Identifiant": "Kimlik numara",
+        "Firmware": "Firmware",
+        "Bridge type": "Bridge type",
+        "Bridge": "Bridge",
+        "Nombre d'équipement": "Nombre d'équipement",
+        "Nom": "İsim",
+        "Valeur": "Valeur",
+        "Actions": "Actions"
+    },
+    "plugins\/netatmo\/desktop\/js\/netatmo.js": {
+        "Santé Netatmo": "Santé Netatmo",
+        "Synchronisation réussie": "Synchronisation réussie",
+        "Nom de la commande": "Nom de la commande",
+        "Choisir une icône": "Choisir une icône",
+        "Afficher": "Göster",
+        "Historiser": "Tarihe göre sırala",
+        "Inverser": "Inverser",
+        "Min": "Min",
+        "Max": "Max",
+        "Unité": "Unité",
+        "Configuration avancée": "Configuration avancée",
+        "Tester": "Test et",
+        "Supprimer la commande": "Supprimer la commande"
+    },
+    "plugins\/netatmo\/core\/php\/jeeNetatmo.php": {
+        "Mouvement": "Mouvement",
+        "Petit mouvement": "Petit mouvement",
+        "Enlevé": "Enlevé",
+        "Ouvert": "Açık"
+    },
+    "plugins\/netatmo\/core\/ajax\/netatmo.ajax.php": {
+        "401 - Accès non autorisé": "401 - Yetkisiz erişim",
+        "Aucune methode correspondante à : ": "Aşağıdakilere karşılık gelen bir yöntem yok:"
+    },
+    "plugins\/netatmo\/core\/class\/netatmo_energy.class.php": {
+        "Programmation": "Programlama"
+    },
+    "plugins\/netatmo\/core\/class\/netatmo.class.php": {
+        "fini à": "fini à",
+        "Erreur lors de la requete à Netatmo : ": "Erreur lors de la requete à Netatmo :",
+        "Rafraichir": "Yenile"
+    },
+    "plugins\/netatmo\/core\/class\/netatmo_security.class.php": {
+        "Présence": "Présence",
+        "Derniere fois": "Derniere fois"
+    },
+    "info.json": {
+        "Plugin pour recuperer les équipements Netatmo (Weather,Energie,Securité). A travers le cloud Jeedom. Attention pour l'instant il n'est pas possible d'avoir le flux des cameras.": "Plugin pour recuperer les équipements Netatmo (Weather,Energie,Securité). A travers le cloud Jeedom. Attention pour l'instant il n'est pas possible d'avoir le flux des cameras"
+    }
+}

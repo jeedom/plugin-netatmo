@@ -1,3 +1,5 @@
+# Changelog Netatmo
+
 # Changelog plugin Netatmo
 
 >**IMPORTANT**

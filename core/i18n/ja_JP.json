@@ -1,0 +1,112 @@
+{
+    "plugins\/netatmo\/plugin_info\/configuration.php": {
+        "Envoyer configuration au market": "Envoyer configuration au market",
+        "Envoyer": "送ります",
+        "Association": "Association",
+        "Liée": "Liée",
+        "Synchronisation": "Synchronisation",
+        "Synchroniser mes équipements": "私の機器を同期",
+        "Configuration envoyée avec succès": "Configuration envoyée avec succès",
+        "Synchronisation réussie": "正常な同期"
+    },
+    "plugins\/netatmo\/desktop\/modal\/health.php": {
+        "401 - Accès non autorisé": "401 - Accès non autorisé",
+        "Module": "Module",
+        "ID": "ID",
+        "Batterie": "Batterie",
+        "Dernière communication": "Dernière communication",
+        "Date création": "Date création",
+        "OK": "OK",
+        "Secteur": "Secteur"
+    },
+    "plugins\/netatmo\/desktop\/php\/netatmo.php": {
+        "401 - Accès non autorisé": "401-不正アクセス",
+        "Gestion": "管理",
+        "Synchronisation": "Synchronisation",
+        "Configuration": "コンフィギュレーション",
+        "Santé": "Santé",
+        "Community": "Community",
+        "Mes équipements Netatmo": "Mes équipements Netatmo",
+        "Rechercher": "検索",
+        "Équipement visible": "Équipement visible",
+        "Équipement non visible": "Équipement non visible",
+        "Configuration avancée": "高度な構成",
+        "Sauvegarder": "セーブ",
+        "Supprimer": "取り除きます",
+        "Equipement": "設備",
+        "Commandes": "コマンド",
+        "Paramètres généraux": "Paramètres généraux",
+        "Nom de l'équipement": "Nom de l'équipement",
+        "Objet parent": "親オブジェクト",
+        "Aucun": "何でもありません",
+        "Catégorie": "カテゴリ",
+        "Options": "オプション",
+        "Activer": "アクティブ",
+        "Visible": "目に見えます",
+        "Paramètres spécifiques": "Paramètres spécifiques",
+        "Type": "タイプ",
+        "Station": "Station",
+        "Module extérieur": "Module extérieur",
+        "Module intérieur": "Module intérieur",
+        "Module pluie": "Module pluie",
+        "Anémomètre": "Anémomètre",
+        "Welcome": "Welcome",
+        "Présence": "Presence",
+        "Détecteur de fumée": "Detecteur de fumée",
+        "Sirène": "Sirène",
+        "Capteur de porte": "Capteur de porte",
+        "Maison": "Maison",
+        "Thermostat": "Thermostat",
+        "Thermostat Opentherm": "Thermostat Opentherm",
+        "Vanne": "Vanne",
+        "Informations": "Informations",
+        "Identifiant": "ログイン",
+        "Firmware": "Firmware",
+        "Bridge type": "Bridge type",
+        "Bridge": "Bridge",
+        "Nombre d'équipement": "Nombre d'équipement",
+        "Nom": "表題",
+        "Valeur": "Valeur",
+        "Actions": "Actions"
+    },
+    "plugins\/netatmo\/desktop\/js\/netatmo.js": {
+        "Santé Netatmo": "Santé Netatmo",
+        "Synchronisation réussie": "Synchronisation réussie",
+        "Nom de la commande": "Nom de la commande",
+        "Choisir une icône": "Choisir une icône",
+        "Afficher": "ディスプレイ",
+        "Historiser": "Historicize",
+        "Inverser": "Inverser",
+        "Min": "Min",
+        "Max": "Max",
+        "Unité": "Unité",
+        "Configuration avancée": "Configuration avancée",
+        "Tester": "テスト",
+        "Supprimer la commande": "Supprimer la commande"
+    },
+    "plugins\/netatmo\/core\/php\/jeeNetatmo.php": {
+        "Mouvement": "Mouvement",
+        "Petit mouvement": "Petit mouvement",
+        "Enlevé": "Enlevé",
+        "Ouvert": "オープン"
+    },
+    "plugins\/netatmo\/core\/ajax\/netatmo.ajax.php": {
+        "401 - Accès non autorisé": "401-不正アクセス",
+        "Aucune methode correspondante à : ": "以下に対応するメソッドはありません："
+    },
+    "plugins\/netatmo\/core\/class\/netatmo_energy.class.php": {
+        "Programmation": "プログラミング"
+    },
+    "plugins\/netatmo\/core\/class\/netatmo.class.php": {
+        "fini à": "fini à",
+        "Erreur lors de la requete à Netatmo : ": "Erreur lors de la requete à Netatmo :",
+        "Rafraichir": "クール"
+    },
+    "plugins\/netatmo\/core\/class\/netatmo_security.class.php": {
+        "Présence": "Présence",
+        "Derniere fois": "Derniere fois"
+    },
+    "info.json": {
+        "Plugin pour recuperer les équipements Netatmo (Weather,Energie,Securité). A travers le cloud Jeedom. Attention pour l'instant il n'est pas possible d'avoir le flux des cameras.": "Plugin pour recuperer les équipements Netatmo (Weather,Energie,Securité). A travers le cloud Jeedom. Attention pour l'instant il n'est pas possible d'avoir le flux des cameras"
+    }
+}

@@ -1,0 +1,112 @@
+{
+    "plugins\/netatmo\/plugin_info\/configuration.php": {
+        "Envoyer configuration au market": "Send configuration to market",
+        "Envoyer": "Send",
+        "Association": "Association",
+        "Liée": "Tied",
+        "Synchronisation": "Synchronization",
+        "Synchroniser mes équipements": "Synchronize my equipment",
+        "Configuration envoyée avec succès": "Configuration successfully sent",
+        "Synchronisation réussie": "Synchronization successful"
+    },
+    "plugins\/netatmo\/desktop\/modal\/health.php": {
+        "401 - Accès non autorisé": "401 - Unauthorized Access",
+        "Module": "Module",
+        "ID": "ID",
+        "Batterie": "Drums",
+        "Dernière communication": "Last communication",
+        "Date création": "Creation Date",
+        "OK": "Okay",
+        "Secteur": "Sector"
+    },
+    "plugins\/netatmo\/desktop\/php\/netatmo.php": {
+        "401 - Accès non autorisé": "401 - Unauthorized access",
+        "Gestion": "Management",
+        "Synchronisation": "Synchronization",
+        "Configuration": "Configuration",
+        "Santé": "Health",
+        "Community": "Community",
+        "Mes équipements Netatmo": "My Netatmo equipment",
+        "Rechercher": "Search",
+        "Équipement visible": "Visible equipment",
+        "Équipement non visible": "Equipment not visible",
+        "Configuration avancée": "Advanced configuration",
+        "Sauvegarder": "Save",
+        "Supprimer": "Delete",
+        "Equipement": "Equipment",
+        "Commandes": "Commands",
+        "Paramètres généraux": "General settings",
+        "Nom de l'équipement": "Equipment Name",
+        "Objet parent": "Parent object",
+        "Aucun": "None",
+        "Catégorie": "Category",
+        "Options": "Options",
+        "Activer": "Activate",
+        "Visible": "Visible",
+        "Paramètres spécifiques": "Specific settings",
+        "Type": "Type",
+        "Station": "Station",
+        "Module extérieur": "Outdoor module",
+        "Module intérieur": "Indoor module",
+        "Module pluie": "Rain module",
+        "Anémomètre": "Anemometer",
+        "Welcome": "Welcome",
+        "Présence": "Presence",
+        "Détecteur de fumée": "Smoke detector",
+        "Sirène": "Mermaid",
+        "Capteur de porte": "Door sensor",
+        "Maison": "House",
+        "Thermostat": "Thermostat",
+        "Thermostat Opentherm": "Opentherm thermostat",
+        "Vanne": "Valve",
+        "Informations": "Information",
+        "Identifiant": "Username",
+        "Firmware": "Firmware",
+        "Bridge type": "Bridge type",
+        "Bridge": "Bridge",
+        "Nombre d'équipement": "Number of equipment",
+        "Nom": "Name",
+        "Valeur": "Value",
+        "Actions": "Actions"
+    },
+    "plugins\/netatmo\/desktop\/js\/netatmo.js": {
+        "Santé Netatmo": "Netatmo health",
+        "Synchronisation réussie": "Synchronization successful",
+        "Nom de la commande": "Command name",
+        "Choisir une icône": "Choose an icon",
+        "Afficher": "Show",
+        "Historiser": "Historize",
+        "Inverser": "Reverse",
+        "Min": "Minimum",
+        "Max": "Maximum",
+        "Unité": "Unit",
+        "Configuration avancée": "Advanced configuration",
+        "Tester": "Test",
+        "Supprimer la commande": "Delete order"
+    },
+    "plugins\/netatmo\/core\/php\/jeeNetatmo.php": {
+        "Mouvement": "Movement",
+        "Petit mouvement": "Small movement",
+        "Enlevé": "Kidnapped",
+        "Ouvert": "Open"
+    },
+    "plugins\/netatmo\/core\/ajax\/netatmo.ajax.php": {
+        "401 - Accès non autorisé": "401 - Unauthorized access",
+        "Aucune methode correspondante à : ": "No method corresponding to:"
+    },
+    "plugins\/netatmo\/core\/class\/netatmo_energy.class.php": {
+        "Programmation": "Programming"
+    },
+    "plugins\/netatmo\/core\/class\/netatmo.class.php": {
+        "fini à": "finished at",
+        "Erreur lors de la requete à Netatmo : ": "Error when requesting Netatmo:",
+        "Rafraichir": "Refresh"
+    },
+    "plugins\/netatmo\/core\/class\/netatmo_security.class.php": {
+        "Présence": "Presence",
+        "Derniere fois": "Last time"
+    },
+    "info.json": {
+        "Plugin pour recuperer les équipements Netatmo (Weather,Energie,Securité). A travers le cloud Jeedom. Attention pour l'instant il n'est pas possible d'avoir le flux des cameras.": "Plugin to retrieve Netatmo equipment (Weather, Energy, Security). Through the Jeedom cloud. Attention for the moment it is not possible to have the flow of the cameras"
+    }
+}

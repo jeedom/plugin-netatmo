@@ -46,14 +46,6 @@ class netatmo extends eqLogic {
     }
   }
 
-  public static function serviceInfo() {
-    $market = repo_market::getJsonRpc();
-    if (!$market->sendRequest('netatmo::serviceInfo')) {
-      throw new Exception($market->getError(), $market->getErrorCode());
-    }
-    return $market->getResult();
-  }
-
   public static function getClient() {
     if (self::$_client == null) {
       self::$_client = new netatmo_standalone_api(array(

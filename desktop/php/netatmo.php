@@ -26,16 +26,6 @@ $eqLogics = eqLogic::byType($plugin->getId());
 				<br />
 				<span>{{Santé}}</span>
 			</div>
-			<?php
-			$jeedomVersion  = jeedom::version() ?? '0';
-			$displayInfo = version_compare($jeedomVersion, '4.4.0', '>=');
-			if ($displayInfo) {
-				echo '<div class="cursor eqLogicAction info" data-action="createCommunityPost">';
-				echo '<i class="fas fa-ambulance"></i><br>';
-				echo '<span>{{Community}}</span>';
-				echo '</div>';
-			}
-			?>
 		</div>
 		<legend><i class="fas fa-table"></i> {{Mes équipements Netatmo}}</legend>
 		<div class="input-group" style="margin:5px;">
@@ -160,40 +150,40 @@ $eqLogics = eqLogic::byType($plugin->getId());
 								<div class="col-sm-7">
 									<span class="eqLogicAttr tooltips label label-default" data-l1key="logicalId" style="font-size : 1em"></span>
 								</div>
-							</div>                   
+							</div>
 							<div class="form-group">
 								<label class="col-sm-3 control-label">{{Firmware}}</label>
 								<div class="col-sm-7">
 									<span class="eqLogicAttr tooltips label label-default" data-l1key="configuration" data-l2key="firmware" style="font-size : 1em"></span>
 								</div>
-							</div>                                
+							</div>
 							<div class="form-group">
 								<label class="col-sm-3 control-label">{{Maison}}</label>
 								<div class="col-sm-7">
 									<span class="eqLogicAttr tooltips label label-default" data-l1key="configuration" data-l2key="home_id" style="font-size : 1em"></span>
 								</div>
-							</div>    
+							</div>
 
 							<div class="form-group">
 								<label class="col-sm-3 control-label">{{Bridge type}}</label>
 								<div class="col-sm-7">
 									<span class="eqLogicAttr tooltips label label-default" data-l1key="configuration" data-l2key="bridge_type" style="font-size : 1em"></span>
 								</div>
-							</div>    
+							</div>
 
 							<div class="form-group">
 								<label class="col-sm-3 control-label">{{Bridge}}</label>
 								<div class="col-sm-7">
 									<span class="eqLogicAttr tooltips label label-default" data-l1key="configuration" data-l2key="bridge" style="font-size : 1em"></span>
 								</div>
-							</div>  
+							</div>
 							<div class="form-group">
 								<label class="col-sm-3 control-label">{{Nombre d'équipement}}</label>
 								<div class="col-sm-7">
 									<span class="eqLogicAttr tooltips label label-default" data-l1key="configuration" data-l2key="devices-count" style="font-size : 1em"></span>
 								</div>
-							</div>    
-							
+							</div>
+
 							<br>
 							<div>
 								<center>

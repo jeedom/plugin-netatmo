@@ -189,7 +189,13 @@ class netatmo_security {
     } catch (\Exception $e) {
       
     }
+    if(!is_array($security) || !isset($security['homes'])){
+      return;
+    }
     foreach ($security['homes'] as $home) {
+      if(!is_array($home) || !isset($home['id'])){
+        continue;
+      }
       $home_eqLogic = eqLogic::byLogicalId($home['id'], 'netatmo');
       if (!is_object($home_eqLogic)) {
         continue;

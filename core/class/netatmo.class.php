@@ -46,14 +46,6 @@ class netatmo extends eqLogic {
     }
   }
 
-  public static function serviceInfo() {
-    $market = repo_market::getJsonRpc();
-    if (!$market->sendRequest('netatmo::serviceInfo')) {
-      throw new Exception($market->getError(), $market->getErrorCode());
-    }
-    return $market->getResult();
-  }
-
   public static function getClient() {
     if (self::$_client == null) {
       self::$_client = new netatmo_standalone_api(array(
@@ -341,6 +333,12 @@ class netatmo extends eqLogic {
   }
 
   public function getImage() {
+    if(method_exists($this,'getCustomImage')){
+         $customImage = $this->getCustomImage();
+         if($customImage !== null){
+            return $customImage;
+         }
+      }
     if (file_exists(__DIR__ . '/../config/devices/' .  $this->getConfiguration('device') . '.png')) {
       return 'plugins/netatmo/core/config/devices/' .  $this->getConfiguration('device') . '.png';
     }

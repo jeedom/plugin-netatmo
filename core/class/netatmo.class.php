@@ -106,7 +106,7 @@ class netatmo extends eqLogic {
         if (isset($home['schedules']) &&  count($home['schedules']) > 0) {
           $mode = '';
           foreach ($home['schedules'] as $schedule) {
-            if (!$schedule['selected']) {
+            if (!isset($schedule['selected']) || !$schedule['selected']) {
               continue;
             }
             $mode .= $schedule['name'] . ',';

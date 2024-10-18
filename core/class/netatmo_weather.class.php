@@ -80,7 +80,7 @@ class netatmo_weather {
     if(isset($weather['devices']) &&  count($weather['devices']) > 0){
       foreach ($weather['devices'] as $device) {
         $eqLogic = eqLogic::byLogicalId($device["_id"], 'netatmo');
-        if (!is_object($eqLogic)) {
+        if (!is_object($eqLogic) || $eqLogic->getIsEnable() == 0) {
           continue;
         }
         $eqLogic->setConfiguration('firmware', $device['firmware']);
@@ -103,7 +103,7 @@ class netatmo_weather {
         if(isset($device['modules']) &&  count($device['modules']) > 0){
           foreach ($device['modules'] as $module) {
             $eqLogic = eqLogic::byLogicalId($module["_id"], 'netatmo');
-            if(!is_object($eqLogic)){
+            if(!is_object($eqLogic) || $eqLogic->getIsEnable() == 0){
               continue;
             }
             $eqLogic->setConfiguration('rf_status', $module['rf_status']);

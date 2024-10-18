@@ -144,7 +144,7 @@ class netatmo_security {
     foreach ($security['homes'] as $home) {
       foreach ($home['cameras'] as $camera) {
         $eqLogic = eqLogic::byLogicalId($camera['id'], 'netatmo');
-        if(!is_object($eqLogic)){
+        if(!is_object($eqLogic) || $eqLogic->getIsEnable() == 0){
           continue;
         }
         $url_parse = parse_url($eqLogic->getCache('vpnUrl'). '/live/snapshot_720.jpg');
@@ -197,7 +197,7 @@ class netatmo_security {
         continue;
       }
       $home_eqLogic = eqLogic::byLogicalId($home['id'], 'netatmo');
-      if (!is_object($home_eqLogic)) {
+      if (!is_object($home_eqLogic) || $home_eqLogic->getIsEnable() == 0) {
         continue;
       }
       foreach ($home['persons'] as $person) {
@@ -206,7 +206,7 @@ class netatmo_security {
       }
       foreach ($home['cameras'] as $camera) {
         $camera_eqLogic = eqLogic::byLogicalId($camera['id'], 'netatmo');
-        if (!is_object($camera_eqLogic)) {
+        if (!is_object($camera_eqLogic) || $camera_eqLogic->getIsEnable() == 0) {
           continue;
         }
         if(isset($camera['light_mode_status'])){
@@ -223,7 +223,7 @@ class netatmo_security {
         if(isset($camera['modules'])){
           foreach ($camera['modules'] as $module) {
             $module_eqLogic = eqLogic::byLogicalId($module['id'], 'netatmo');
-            if (!is_object($module_eqLogic)) {
+            if (!is_object($module_eqLogic) || $module_eqLogic->getIsEnable() == 0) {
               continue;
             }
             if(isset($module['battery_percent'])){

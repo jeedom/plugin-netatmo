@@ -96,7 +96,7 @@ class netatmo extends eqLogic {
           continue;
         }
         $eqLogic = eqLogic::byLogicalId($home['id'], 'netatmo');
-        if (!is_object($eqLogic)) {
+        if (!is_object($eqLogic) || $eqLogic->getIsEnable() == 0) {
           continue;
         }
         if ($home['therm_mode'] != 'schedule') {
@@ -131,7 +131,7 @@ class netatmo extends eqLogic {
         foreach ($homestatus['errors'] as $deviceerror) {
           $ModulesError[$deviceerror['id']] = $deviceerror['code'];
           $eqLogic = eqLogic::byLogicalId($deviceerror['id'], 'netatmo');
-          if (!is_object($eqLogic)) {
+          if (!is_object($eqLogic) || $eqLogic->getIsEnable() == 0) {
             continue;
           }
           $Cmderrorinfo = $eqLogic->getCmd('info', 'error_status');
@@ -155,7 +155,7 @@ class netatmo extends eqLogic {
             }
           }
           $eqLogic = eqLogic::byLogicalId($module['id'], 'netatmo');
-          if (!is_object($eqLogic)) {
+          if (!is_object($eqLogic) || $eqLogic->getIsEnable() == 0) {
             continue;
           }
           foreach ($eqLogic->getCmd('info') as $cmd) {
@@ -178,7 +178,7 @@ class netatmo extends eqLogic {
       if (isset($homestatus['home']) && isset($homestatus['home']['rooms']) &&  count($homestatus['home']['rooms']) > 0) {
         foreach ($homestatus['home']['rooms'] as $room) {
           $eqLogic = eqLogic::byLogicalId($room['id'], 'netatmo');
-          if (!is_object($eqLogic)) {
+          if (!is_object($eqLogic) || $eqLogic->getIsEnable() == 0) {
             continue;
           }
           foreach ($eqLogic->getCmd('info') as $cmd) {

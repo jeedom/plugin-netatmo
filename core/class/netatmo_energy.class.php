@@ -85,10 +85,10 @@ class netatmo_energy {
           $devices = self::getRoomEnergyDevices($home['modules'], $room['module_ids']);
           $room_devices_list = array();
           foreach ($devices as $device) {
-            $room_devices_list[] = $device[type];
+            $room_devices_list[] = $device['type'];
           }
           $room_devices_list = implode(", ", $room_devices_list);
-          $eqLogic->setConfiguration('equipements', $devices_room_list);
+          $eqLogic->setConfiguration('equipements', $room_devices_list);
           $device = $devices[0]['type'];
 
           if (!in_array($devices[0]['type'], array('NRV', 'NATherm1', 'OTM'))) {

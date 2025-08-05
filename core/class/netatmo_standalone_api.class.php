@@ -83,13 +83,13 @@ class netatmo_standalone_api {
     if ($params) {
       switch ($method) {
         case 'GET':
-          $path .= '?' . http_build_query($params, NULL, '&');
+          $path .= '?' . http_build_query($params, "", '&');
           break;
         default:
           if ($this->getVariable('file_upload_support')) {
             $opts[CURLOPT_POSTFIELDS] = $params;
           } else {
-            $opts[CURLOPT_POSTFIELDS] = http_build_query($params, NULL, '&');
+            $opts[CURLOPT_POSTFIELDS] = http_build_query($params, "", '&');
           }
           break;
       }
@@ -245,7 +245,7 @@ class netatmo_standalone_api {
 
   protected function getCurrentUri() {
     $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on' ? 'https://' : 'http://';
-    $current_uri = $protocol . $_SERVER['HTTP_HOST'] . $this->getRequestUri();
+    $current_uri = $protocol . $_SERVER['HTTP_HOST'] . $this->getRequestUri(); // FIXME: Undefined method 'getRequestUri'
     $parts = parse_url($current_uri);
     $query = '';
     if (!empty($parts['query'])) {
@@ -253,7 +253,7 @@ class netatmo_standalone_api {
       parse_str($parts['query'], $params);
       $params = array_filter($params);
       if (!empty($params)) {
-        $query = '?' . http_build_query($params, NULL, '&');
+        $query = '?' . http_build_query($params, "", '&');
       }
     }
     $port = isset($parts['port']) && ($protocol === 'https://' && $parts['port'] !== 443) ? ':' . $parts['port'] : '';
@@ -320,7 +320,7 @@ class netatmo_standalone_api {
       }
     }
     if (!empty($params)) {
-      $url .= '?' . http_build_query($params, NULL, '&');
+      $url .= '?' . http_build_query($params, "", '&');
     }
     return $url;
   }

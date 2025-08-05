@@ -21,19 +21,19 @@ require_once __DIR__  . '/../../../../core/php/core.inc.php';
 
 class netatmo_weather {
   /*     * *************************Attributs****************************** */
-  
+
   /*     * ***********************Methode static*************************** */
-  
-  public static function sync(){
+
+  public static function sync() {
     $weather = netatmo::request('/getstationsdata');
-    log::add('netatmo','debug','[netatmo weather] '.json_encode($weather));
-    if(isset($weather['devices']) &&  count($weather['devices']) > 0){
+    log::add('netatmo', 'debug', '[netatmo weather] ' . json_encode($weather));
+    if (isset($weather['devices']) &&  count($weather['devices']) > 0) {
       foreach ($weather['devices'] as &$device) {
         $eqLogic = eqLogic::byLogicalId($device['_id'], 'netatmo');
         if (isset($device['read_only']) && $device['read_only'] === true) {
           continue;
         }
-        if(!isset($device['station_name']) || $device['station_name'] == ''){
+        if (!isset($device['station_name']) || $device['station_name'] == '') {
           $device['station_name'] = $device['_id'];
         }
         if (!is_object($eqLogic)) {
@@ -43,15 +43,15 @@ class netatmo_weather {
           $eqLogic->setName($device['station_name']);
           $eqLogic->setCategory('heating', 1);
         }
-        $eqLogic->setConfiguration('type','weather');
+        $eqLogic->setConfiguration('type', 'weather');
         $eqLogic->setEqType_name('netatmo');
         $eqLogic->setLogicalId($device['_id']);
         $eqLogic->setConfiguration('device', $device['type']);
         $eqLogic->save();
-        if(isset($device['modules']) &&  count($device['modules']) > 0){
+        if (isset($device['modules']) &&  count($device['modules']) > 0) {
           foreach ($device['modules'] as &$module) {
             $eqLogic = eqLogic::byLogicalId($module['_id'], 'netatmo');
-            if(!isset($module['module_name']) || $module['module_name'] == ''){
+            if (!isset($module['module_name']) || $module['module_name'] == '') {
               $module['module_name'] = $module['_id'];
             }
             if (!is_object($eqLogic)) {
@@ -61,7 +61,7 @@ class netatmo_weather {
               $eqLogic->setCategory('heating', 1);
               $eqLogic->setIsVisible(1);
             }
-            $eqLogic->setConfiguration('type','weather');
+            $eqLogic->setConfiguration('type', 'weather');
             $eqLogic->setEqType_name('netatmo');
             $eqLogic->setLogicalId($module['_id']);
             $eqLogic->setConfiguration('device', $module['type']);
@@ -71,13 +71,12 @@ class netatmo_weather {
       }
       self::refresh($weather);
     }
-    
   }
-  
-  
+
+
   public static function refresh($_weather = null) {
     $weather = ($_weather == null) ? netatmo::request('/getstationsdata') : $_weather;
-    if(isset($weather['devices']) &&  count($weather['devices']) > 0){
+    if (isset($weather['devices']) &&  count($weather['devices']) > 0) {
       foreach ($weather['devices'] as $device) {
         $eqLogic = eqLogic::byLogicalId($device["_id"], 'netatmo');
         if (!is_object($eqLogic) || $eqLogic->getIsEnable() == 0) {
@@ -86,7 +85,7 @@ class netatmo_weather {
         $eqLogic->setConfiguration('firmware', $device['firmware']);
         $eqLogic->setConfiguration('wifi_status', $device['wifi_status']);
         $eqLogic->save(true);
-        if(isset($device['dashboard_data']) && count($device['dashboard_data']) > 0){
+        if (isset($device['dashboard_data']) && count($device['dashboard_data']) > 0) {
           foreach ($device['dashboard_data'] as $key => $value) {
             if ($key == 'max_temp') {
               $collectDate = date('Y-m-d H:i:s', $device['dashboard_data']['date_max_temp']);
@@ -97,23 +96,23 @@ class netatmo_weather {
             } else {
               $collectDate = date('Y-m-d H:i:s', $device['dashboard_data']['time_utc']);
             }
-            $eqLogic->checkAndUpdateCmd(strtolower($key),$value,$collectDate);
+            $eqLogic->checkAndUpdateCmd(strtolower($key), $value, $collectDate);
           }
         }
-        if(isset($device['modules']) &&  count($device['modules']) > 0){
+        if (isset($device['modules']) &&  count($device['modules']) > 0) {
           foreach ($device['modules'] as $module) {
             $eqLogic = eqLogic::byLogicalId($module["_id"], 'netatmo');
-            if(!is_object($eqLogic) || $eqLogic->getIsEnable() == 0){
+            if (!is_object($eqLogic) || $eqLogic->getIsEnable() == 0) {
               continue;
             }
             $eqLogic->setConfiguration('rf_status', $module['rf_status']);
             $eqLogic->setConfiguration('firmware', $module['firmware']);
             $eqLogic->save(true);
             $devices = netatmo::devicesParameters($eqLogic->getConfiguration('device'));
-            if(isset($devices['bat_min']) && isset($devices['bat_max'])){
+            if (isset($devices['bat_min']) && isset($devices['bat_max'])) {
               $eqLogic->batteryStatus(round(($module['battery_vp'] - $devices['bat_min']) / ($devices['bat_max'] - $devices['bat_min']) * 100, 0));
             }
-            if(isset($module['dashboard_data'])){
+            if (isset($module['dashboard_data'])) {
               foreach ($module['dashboard_data'] as $key => $value) {
                 if ($key == 'max_temp') {
                   $collectDate = date('Y-m-d H:i:s', $module['dashboard_data']['date_max_temp']);
@@ -124,7 +123,7 @@ class netatmo_weather {
                 } else {
                   $collectDate = date('Y-m-d H:i:s', $module['dashboard_data']['time_utc']);
                 }
-                $eqLogic->checkAndUpdateCmd(strtolower($key),$value,$collectDate);
+                $eqLogic->checkAndUpdateCmd(strtolower($key), $value, $collectDate);
               }
             }
           }
@@ -132,5 +131,4 @@ class netatmo_weather {
       }
     }
   }
-  
 }

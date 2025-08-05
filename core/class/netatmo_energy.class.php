@@ -20,25 +20,25 @@
 require_once __DIR__  . '/../../../../core/php/core.inc.php';
 
 class netatmo_energy {
-  
-  public static function getRoomEnergyDevices($_modules,$_module_ids){
+
+  public static function getRoomEnergyDevices($_modules, $_module_ids) {
     foreach ($_modules as $module) {
-      if(!in_array($module['id'],$_module_ids)){
+      if (!in_array($module['id'], $_module_ids)) {
         continue;
       }
-      if(!in_array($module['type'],array('NRV','NATherm1','OTM'))){
+      if (!in_array($module['type'], array('NRV', 'NATherm1', 'OTM'))) {
         continue;
       }
       $return[] = ['type' => $module['type'], 'bridge' => $module['bridge']];
     }
     return $return;
   }
-  
-  public static function sync(){
+
+  public static function sync() {
     $homesdata = netatmo::request('/homesdata');
-    if(isset($homesdata['homes']) &&  count($homesdata['homes']) > 0){
+    if (isset($homesdata['homes']) &&  count($homesdata['homes']) > 0) {
       foreach ($homesdata['homes'] as $home) {
-        if(!isset($home['rooms']) || count($home['rooms']) == 0 || !isset($home['modules']) || count($home['modules']) == 0 || !isset($home['schedules'])){
+        if (!isset($home['rooms']) || count($home['rooms']) == 0 || !isset($home['modules']) || count($home['modules']) == 0 || !isset($home['schedules'])) {
           continue;
         }
         $eqLogic = eqLogic::byLogicalId($home['id'], 'netatmo');
@@ -49,13 +49,13 @@ class netatmo_energy {
           $eqLogic->setName($home['name']);
           $eqLogic->setCategory('heating', 1);
         }
-        $eqLogic->setConfiguration('type','energy');
+        $eqLogic->setConfiguration('type', 'energy');
         $eqLogic->setEqType_name('netatmo');
         $eqLogic->setLogicalId($home['id']);
         $eqLogic->setConfiguration('home_id', $home['id']);
         $eqLogic->setConfiguration('device', 'NAEnergyHome');
         $eqLogic->save();
-        if(isset($home['schedules']) &&  count($home['schedules']) > 0){
+        if (isset($home['schedules']) &&  count($home['schedules']) > 0) {
           foreach ($home['schedules'] as $schedule) {
             $cmd = $eqLogic->getCmd('action', 'schedule' . $schedule['id']);
             if (!is_object($cmd)) {
@@ -64,7 +64,7 @@ class netatmo_energy {
               $cmd->setLogicalId('schedule' . $schedule['id']);
               $cmd->setType('action');
               $cmd->setSubType('other');
-              $cmd->setName(__('Programmation',__FILE__).' '.$schedule['name']);
+              $cmd->setName(__('Programmation', __FILE__) . ' ' . $schedule['name']);
               $cmd->save();
             }
           }
@@ -72,26 +72,26 @@ class netatmo_energy {
 
         $bridges = array();
         foreach ($home['modules'] as $module) {
-          if(!in_array($module['type'],array('NAPlug','OTH'))){
-          continue;
-          }      
+          if (!in_array($module['type'], array('NAPlug', 'OTH'))) {
+            continue;
+          }
           $bridges[$module['id']] = $module['type'];
         }
 
         foreach ($home['rooms'] as $room) {
-          if(count($room['module_ids']) == 0){
+          if (count($room['module_ids']) == 0) {
             continue;
           }
-          $devices = self::getRoomEnergyDevices($home['modules'],$room['module_ids']);
+          $devices = self::getRoomEnergyDevices($home['modules'], $room['module_ids']);
           $room_devices_list = array();
           foreach ($devices as $device) {
             $room_devices_list[] = $device[type];
           }
-          $room_devices_list = implode(", ",$room_devices_list);
-          $eqLogic->setConfiguration('equipements',$devices_room_list);
+          $room_devices_list = implode(", ", $room_devices_list);
+          $eqLogic->setConfiguration('equipements', $devices_room_list);
           $device = $devices[0]['type'];
-          
-          if(!in_array($devices[0]['type'],array('NRV','NATherm1','OTM'))){
+
+          if (!in_array($devices[0]['type'], array('NRV', 'NATherm1', 'OTM'))) {
             continue;
           }
           $eqLogic = eqLogic::byLogicalId($room['id'], 'netatmo');
@@ -102,7 +102,7 @@ class netatmo_energy {
             $eqLogic->setName($room['name']);
             $eqLogic->setCategory('heating', 1);
           }
-          $eqLogic->setConfiguration('type','energy');
+          $eqLogic->setConfiguration('type', 'energy');
           $eqLogic->setEqType_name('netatmo');
           $eqLogic->setLogicalId($room['id']);
           $eqLogic->setConfiguration('device', $device);
@@ -116,16 +116,16 @@ class netatmo_energy {
     }
     self::refresh($homesdata);
   }
-  
-  public static function refresh($homesdata = null){
-   netatmo::refreshClassNetatmo();
+
+  public static function refresh($homesdata = null) {
+    netatmo::refreshClassNetatmo();
   }
-  
-  public static function execCmd($_cmd,$_options = array()){
+
+  public static function execCmd($_cmd, $_options = array()) {
     $eqLogic = $_cmd->getEqLogic();
-    if($_cmd->getLogicalId() == 'setpoint'){
-      if($eqLogic->getConfiguration('bridge_type') == 'OTH'){
-        netatmo::request('/setstate',array(
+    if ($_cmd->getLogicalId() == 'setpoint') {
+      if ($eqLogic->getConfiguration('bridge_type') == 'OTH') {
+        netatmo::request('/setstate', array(
           'home' => array(
             'id' => $eqLogic->getConfiguration('home_id'),
             'rooms' => array(
@@ -136,37 +136,37 @@ class netatmo_energy {
               )
             )
           )
-        ),'POST');
-      }else{
-        netatmo::request('/setroomthermpoint',array(
+        ), 'POST');
+      } else {
+        netatmo::request('/setroomthermpoint', array(
           'home_id' => $eqLogic->getConfiguration('home_id'),
           'room_id' => $eqLogic->getLogicalId(),
           'mode' => 'manual',
           'temp' => $_options['slider'],
-        ),'POST');
+        ), 'POST');
       }
-    }else if($_cmd->getLogicalId() == 'mode_auto'){
-      if($eqLogic->getConfiguration('bridge_type') == 'OTH'){
-        netatmo::request('/setstate',array(
+    } else if ($_cmd->getLogicalId() == 'mode_auto') {
+      if ($eqLogic->getConfiguration('bridge_type') == 'OTH') {
+        netatmo::request('/setstate', array(
           'home' => array(
             'id' => $eqLogic->getConfiguration('home_id'),
             'rooms' => array(
-                array(
+              array(
                 'id' => $eqLogic->getLogicalId(),
                 'therm_setpoint_mode' => 'home'
               )
             )
           )
-        ),'POST');
-      }else{
-        netatmo::request('/setroomthermpoint',array(
+        ), 'POST');
+      } else {
+        netatmo::request('/setroomthermpoint', array(
           'home_id' => $eqLogic->getConfiguration('home_id'),
           'room_id' => $eqLogic->getLogicalId(),
           'mode' => 'home',
-        ),'POST');
+        ), 'POST');
       }
-    }else if($_cmd->getLogicalId() == 'mode_hg'){
-      netatmo::request('/setstate',array(
+    } else if ($_cmd->getLogicalId() == 'mode_hg') {
+      netatmo::request('/setstate', array(
         'home' => array(
           'id' => $eqLogic->getConfiguration('home_id'),
           'rooms' => array(
@@ -176,74 +176,72 @@ class netatmo_energy {
             )
           )
         )
-      ),'POST');     
-    }else if($_cmd->getLogicalId() == 'mode_hg_endtime'){
-      log::add('netatmo','debug','[netatmo energy] Mode HG');
-      netatmo::request('/setstate',array(
+      ), 'POST');
+    } else if ($_cmd->getLogicalId() == 'mode_hg_endtime') {
+      log::add('netatmo', 'debug', '[netatmo energy] Mode HG');
+      netatmo::request('/setstate', array(
         'home' => array(
           'id' => $eqLogic->getConfiguration('home_id'),
           'rooms' => array(
             array(
               'id' => $eqLogic->getLogicalId(),
               'therm_setpoint_mode' => 'hg',
-              'therm_setpoint_end_time' => strtotime('now +'.$_options['slider'].' hours')
+              'therm_setpoint_end_time' => strtotime('now +' . $_options['slider'] . ' hours')
             )
           )
         )
-      ),'POST');    
-    }else if($_cmd->getLogicalId() == 'mode_off'){
-      log::add('netatmo','debug','[netatmo energy] Mode OFF');
-      netatmo::request('/setroomthermpoint',array(
+      ), 'POST');
+    } else if ($_cmd->getLogicalId() == 'mode_off') {
+      log::add('netatmo', 'debug', '[netatmo energy] Mode OFF');
+      netatmo::request('/setroomthermpoint', array(
         'home_id' => $eqLogic->getConfiguration('home_id'),
         'room_id' => $eqLogic->getLogicalId(),
         'mode' => 'off',
-      ),'POST');
-    }else if($_cmd->getLogicalId() == 'mode_off_endtime'){
-      log::add('netatmo','debug','[netatmo energy] Mode OFF (heures)');
-      netatmo::request('/setroomthermpoint',array(
+      ), 'POST');
+    } else if ($_cmd->getLogicalId() == 'mode_off_endtime') {
+      log::add('netatmo', 'debug', '[netatmo energy] Mode OFF (heures)');
+      netatmo::request('/setroomthermpoint', array(
         'home_id' => $eqLogic->getConfiguration('home_id'),
         'room_id' => $eqLogic->getLogicalId(),
         'mode' => 'off',
-        'endtime' => strtotime('now +'.$_options['slider'].' hours')
-      ),'POST');      
-            
-    }else if($_cmd->getLogicalId() == 'home_mode_away_endtime'){
-      netatmo::request('/setthermmode',array(
+        'endtime' => strtotime('now +' . $_options['slider'] . ' hours')
+      ), 'POST');
+    } else if ($_cmd->getLogicalId() == 'home_mode_away_endtime') {
+      netatmo::request('/setthermmode', array(
         'home_id' => $eqLogic->getConfiguration('home_id'),
         'mode' => 'away',
-        'endtime' => strtotime('now +'.$_options['slider'].' hours')
-      ),'POST');
-    }else if($_cmd->getLogicalId() == 'home_mode_hg_endtime'){
-      netatmo::request('/setthermmode',array(
+        'endtime' => strtotime('now +' . $_options['slider'] . ' hours')
+      ), 'POST');
+    } else if ($_cmd->getLogicalId() == 'home_mode_hg_endtime') {
+      netatmo::request('/setthermmode', array(
         'home_id' => $eqLogic->getConfiguration('home_id'),
         'mode' => 'hg',
-        'endtime' => strtotime('now +'.$_options['slider'].' hours')
-      ),'POST');
-    }else if($_cmd->getLogicalId() == 'home_mode_schedule'){
-      netatmo::request('/setthermmode',array(
+        'endtime' => strtotime('now +' . $_options['slider'] . ' hours')
+      ), 'POST');
+    } else if ($_cmd->getLogicalId() == 'home_mode_schedule') {
+      netatmo::request('/setthermmode', array(
         'home_id' => $eqLogic->getConfiguration('home_id'),
         'mode' => 'schedule'
-      ),'POST');
-    }else if($_cmd->getLogicalId() == 'home_mode_away'){
-      netatmo::request('/setthermmode',array(
+      ), 'POST');
+    } else if ($_cmd->getLogicalId() == 'home_mode_away') {
+      netatmo::request('/setthermmode', array(
         'home_id' => $eqLogic->getConfiguration('home_id'),
         'mode' => 'away'
-      ),'POST');
-    }else if($_cmd->getLogicalId() == 'home_mode_hg'){
-      netatmo::request('/setthermmode',array(
+      ), 'POST');
+    } else if ($_cmd->getLogicalId() == 'home_mode_hg') {
+      netatmo::request('/setthermmode', array(
         'home_id' => $eqLogic->getConfiguration('home_id'),
         'mode' => 'hg'
-      ),'POST');
-    }else if(strpos($_cmd->getLogicalId(),'schedule') !== false){
-      netatmo::request('/setthermmode',array(
+      ), 'POST');
+    } else if (strpos($_cmd->getLogicalId(), 'schedule') !== false) {
+      netatmo::request('/setthermmode', array(
         'home_id' => $eqLogic->getConfiguration('home_id'),
         'mode' => 'schedule',
-        'schedule_id' => str_replace('schedule','',$_cmd->getLogicalId())
-      ),'POST');
+        'schedule_id' => str_replace('schedule', '', $_cmd->getLogicalId())
+      ), 'POST');
+    } else {
+      throw new \Exception('Erreur lors de l éxécution de la commande (commande ' . $_cmd->getLogicalId() . ' inconnue)');
     }
-    else {
-      throw new \Exception('Erreur lors de l éxécution de la commande (commande '.$_cmd->getLogicalId().' inconnue)');
-    }    
     sleep(10);
     netatmo::refreshClassNetatmo();
   }

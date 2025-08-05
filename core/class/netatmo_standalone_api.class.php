@@ -20,10 +20,10 @@
 require_once __DIR__ . '/../../../../core/php/core.inc.php';
 
 class netatmo_standalone_api {
-  const BACKEND_BASE_URI =  "https://api.netatmo.net/";
-  const BACKEND_SERVICES_URI =  "https://api.netatmo.net/api";
-  const BACKEND_ACCESS_TOKEN_URI =  "https://api.netatmo.net/oauth2/token";
-  const BACKEND_AUTHORIZE_URI =  "https://api.netatmo.net/oauth2/authorize";
+  const BACKEND_BASE_URI =  "https://api.netatmo.com/";
+  const BACKEND_SERVICES_URI =  "https://api.netatmo.com/api";
+  const BACKEND_ACCESS_TOKEN_URI =  "https://api.netatmo.com/oauth2/token";
+  const BACKEND_AUTHORIZE_URI =  "https://api.netatmo.com/oauth2/authorize";
 
   protected $conf = array();
   protected $refresh_token;

@@ -20,15 +20,15 @@
 require_once __DIR__ . '/../../../../core/php/core.inc.php';
 
 class netatmo_standalone_api {
-  const BACKEND_BASE_URI=  "https://api.netatmo.net/";
-  const BACKEND_SERVICES_URI=  "https://api.netatmo.net/api";
-  const BACKEND_ACCESS_TOKEN_URI=  "https://api.netatmo.net/oauth2/token";
-  const BACKEND_AUTHORIZE_URI=  "https://api.netatmo.net/oauth2/authorize";
-  
+  const BACKEND_BASE_URI =  "https://api.netatmo.net/";
+  const BACKEND_SERVICES_URI =  "https://api.netatmo.net/api";
+  const BACKEND_ACCESS_TOKEN_URI =  "https://api.netatmo.net/oauth2/token";
+  const BACKEND_AUTHORIZE_URI =  "https://api.netatmo.net/oauth2/authorize";
+
   protected $conf = array();
   protected $refresh_token;
   protected $access_token;
-  
+
   public static $CURL_OPTS = array(
     CURLOPT_CONNECTTIMEOUT => 10,
     CURLOPT_RETURNTRANSFER => TRUE,
@@ -38,71 +38,71 @@ class netatmo_standalone_api {
     CURLOPT_SSL_VERIFYPEER => TRUE,
     CURLOPT_HTTPHEADER     => array("Accept: application/json"),
   );
-  
-  public function getVariable($name, $default = NULL){
+
+  public function getVariable($name, $default = NULL) {
     return isset($this->conf[$name]) ? $this->conf[$name] : $default;
   }
-  
-  public function getRefreshToken(){
+
+  public function getRefreshToken() {
     return $this->refresh_token;
   }
-  
-  public function setVariable($name, $value){
+
+  public function setVariable($name, $value) {
     $this->conf[$name] = $value;
     return $this;
   }
-  
-  public function __construct($config = array()){
-    if(isset($config["access_token"])){
+
+  public function __construct($config = array()) {
+    if (isset($config["access_token"])) {
       $this->access_token = $config["access_token"];
       unset($access_token);
     }
-    if(isset($config["refresh_token"])){
+    if (isset($config["refresh_token"])) {
       $this->refresh_token = $config["refresh_token"];
     }
     $uri = array("base_uri" => self::BACKEND_BASE_URI, "services_uri" => self::BACKEND_SERVICES_URI, "access_token_uri" => self::BACKEND_ACCESS_TOKEN_URI, "authorize_uri" => self::BACKEND_AUTHORIZE_URI);
-    foreach($uri as $key => $val){
-      if(isset($config[$key])){
+    foreach ($uri as $key => $val) {
+      if (isset($config[$key])) {
         $this->setVariable($key, $config[$key]);
         unset($config[$key]);
-      }else{
+      } else {
         $this->setVariable($key, $val);
       }
     }
-    foreach ($config as $name => $value){
+    foreach ($config as $name => $value) {
       $this->setVariable($name, $value);
     }
-    if($this->getVariable("code") == null && isset($_GET["code"])){
+    if ($this->getVariable("code") == null && isset($_GET["code"])) {
       $this->setVariable("code", $_GET["code"]);
     }
   }
-  
-  public function makeRequest($path, $method = 'GET', $params = array()){
+
+  public function makeRequest($path, $method = 'GET', $params = array()) {
     $ch = curl_init();
     $opts = self::$CURL_OPTS;
-    if ($params)  {
-      switch ($method){
+    if ($params) {
+      switch ($method) {
         case 'GET':
-        $path .= '?' . http_build_query($params, NULL, '&');
-        break;
+          $path .= '?' . http_build_query($params, NULL, '&');
+          break;
         default:
-        if ($this->getVariable('file_upload_support')){
-          $opts[CURLOPT_POSTFIELDS] = $params;
-        }else{
-          $opts[CURLOPT_POSTFIELDS] = http_build_query($params, NULL, '&');
-        }
-        break;
+          if ($this->getVariable('file_upload_support')) {
+            $opts[CURLOPT_POSTFIELDS] = $params;
+          } else {
+            $opts[CURLOPT_POSTFIELDS] = http_build_query($params, NULL, '&');
+          }
+          break;
       }
     }
     $opts[CURLOPT_URL] = $path;
-    if (isset($opts[CURLOPT_HTTPHEADER]))  {
+    if (isset($opts[CURLOPT_HTTPHEADER])) {
       $existing_headers = $opts[CURLOPT_HTTPHEADER];
       $existing_headers[] = 'Expect:';
       $ip = $this->getVariable("ip");
-      if($ip)
-      $existing_headers[] = 'CLIENT_IP: '.$ip;
+      if ($ip)
+        $existing_headers[] = 'CLIENT_IP: ' . $ip;
       $opts[CURLOPT_HTTPHEADER] = $existing_headers;
-    }else{
+    } else {
       $opts[CURLOPT_HTTPHEADER] = array('Expect:');
     }
     curl_setopt_array($ch, $opts);
@@ -112,52 +112,52 @@ class netatmo_standalone_api {
       curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
       $result = curl_exec($ch);
     }
-    if ($result === FALSE)  {
-      $e = new Exception(curl_errno($ch).' | '.curl_error($ch));
+    if ($result === FALSE) {
+      $e = new Exception(curl_errno($ch) . ' | ' . curl_error($ch));
       curl_close($ch);
       throw $e;
     }
     curl_close($ch);
     list($headers, $body) = explode("\r\n\r\n", $result);
     $headers = explode("\r\n", $headers);
-    if(strpos($headers[0], 'HTTP/1.1 2') !== FALSE){
+    if (strpos($headers[0], 'HTTP/1.1 2') !== FALSE) {
       $decode = json_decode($body, TRUE);
-      if(!$decode){
-        if (preg_match('/^HTTP\/1.1 ([0-9]{3,3}) (.*)$/', $headers[0], $matches)){
-          throw new Exception($matches[1].' | '. $matches[2]);
-        }else {
+      if (!$decode) {
+        if (preg_match('/^HTTP\/1.1 ([0-9]{3,3}) (.*)$/', $headers[0], $matches)) {
+          throw new Exception($matches[1] . ' | ' . $matches[2]);
+        } else {
           throw new Exception("OK");
         }
       }
       return $decode;
-    }else  {
-      if (!preg_match('/^HTTP\/1.1 ([0-9]{3,3}) (.*)$/', $headers[0], $matches)){
+    } else {
+      if (!preg_match('/^HTTP\/1.1 ([0-9]{3,3}) (.*)$/', $headers[0], $matches)) {
         $matches = array("", 400, "bad request");
       }
       $decode = json_decode($body, TRUE);
-      if(!$decode){
+      if (!$decode) {
         throw new Exception($body);
       }
       throw new Exception($body);
     }
   }
-  
-  public function getAccessToken(){
-    if($this->access_token) return array("access_token" => $this->access_token);
-    if($this->getVariable('code')){
+
+  public function getAccessToken() {
+    if ($this->access_token) return array("access_token" => $this->access_token);
+    if ($this->getVariable('code')) {
       return $this->getAccessTokenFromAuthorizationCode($this->getVariable('code'));
-    } else if($this->refresh_token) {
+    } else if ($this->refresh_token) {
       return $this->getAccessTokenFromRefreshToken($this->refresh_token);
-    }else if($this->getVariable('username') && $this->getVariable('password')) {
+    } else if ($this->getVariable('username') && $this->getVariable('password')) {
       return $this->getAccessTokenFromPassword($this->getVariable('username'), $this->getVariable('password'));
     }
     throw new Exception("No access token stored");
   }
-  
-  private function getAccessTokenFromRefreshToken(){
-    if ($this->getVariable('access_token_uri') && ($client_id = $this->getVariable('client_id')) != NULL && ($client_secret = $this->getVariable('client_secret')) != NULL && ($refresh_token = $this->refresh_token) != NULL){
-      if($this->getVariable('scope') != null){
-        $ret = $this->makeRequest($this->getVariable('access_token_uri'),'POST',array(
+
+  private function getAccessTokenFromRefreshToken() {
+    if ($this->getVariable('access_token_uri') && ($client_id = $this->getVariable('client_id')) != NULL && ($client_secret = $this->getVariable('client_secret')) != NULL && ($refresh_token = $this->refresh_token) != NULL) {
+      if ($this->getVariable('scope') != null) {
+        $ret = $this->makeRequest($this->getVariable('access_token_uri'), 'POST', array(
           'grant_type' => 'refresh_token',
           'client_id' => $this->getVariable('client_id'),
           'client_secret' => $this->getVariable('client_secret'),
@@ -165,7 +165,7 @@ class netatmo_standalone_api {
           'scope' => $this->getVariable('scope'),
         ));
       } else {
-        $ret = $this->makeRequest($this->getVariable('access_token_uri'),'POST',array(
+        $ret = $this->makeRequest($this->getVariable('access_token_uri'), 'POST', array(
           'grant_type' => 'refresh_token',
           'client_id' => $this->getVariable('client_id'),
           'client_secret' => $this->getVariable('client_secret'),
@@ -177,12 +177,12 @@ class netatmo_standalone_api {
     }
     throw new Exception("missing args for getting refresh token grant");
   }
-  
+
   private function getAccessTokenFromAuthorizationCode($code) {
     $redirect_uri = $this->getRedirectUri();
     $scope = $this->getVariable('scope');
-    if($this->getVariable('access_token_uri') && ($client_id = $this->getVariable('client_id')) != NULL && ($client_secret = $this->getVariable('client_secret')) != NULL && $redirect_uri != NULL)  {
-      $ret = $this->makeRequest($this->getVariable('access_token_uri'),'POST',array(
+    if ($this->getVariable('access_token_uri') && ($client_id = $this->getVariable('client_id')) != NULL && ($client_secret = $this->getVariable('client_secret')) != NULL && $redirect_uri != NULL) {
+      $ret = $this->makeRequest($this->getVariable('access_token_uri'), 'POST', array(
         'grant_type' => 'authorization_code',
         'client_id' => $client_id,
         'client_secret' => $client_secret,
@@ -195,35 +195,35 @@ class netatmo_standalone_api {
     }
     throw new Exception("missing args for getting authorization code grant");
   }
-  
-  private function setTokens($value){
-    if(isset($value["access_token"])){
+
+  private function setTokens($value) {
+    if (isset($value["access_token"])) {
       $this->access_token = $value["access_token"];
       $update = true;
     }
-    if(isset($value["refresh_token"])){
+    if (isset($value["refresh_token"])) {
       $this->refresh_token = $value["refresh_token"];
       $update = true;
     }
-    if(isset($update)) $this->updateSession();
+    if (isset($update)) $this->updateSession();
   }
-  
-  private function updateSession(){
+
+  private function updateSession() {
     $cb = $this->getVariable("func_cb");
     $object = $this->getVariable("object_cb");
-    if($object && $cb){
-      if(method_exists($object, $cb)){
-        call_user_func_array(array($object, $cb), array(array("access_token"=> $this->access_token, "refresh_token" => $this->refresh_token)));
+    if ($object && $cb) {
+      if (method_exists($object, $cb)) {
+        call_user_func_array(array($object, $cb), array(array("access_token" => $this->access_token, "refresh_token" => $this->refresh_token)));
       }
-    }else if($cb && is_callable($cb)){
+    } else if ($cb && is_callable($cb)) {
       call_user_func_array($cb, array(array("access_token" => $this->access_token, "refresh_token" => $this->refresh_token)));
     }
   }
-  
-  private function getAccessTokenFromPassword($username, $password){
+
+  private function getAccessTokenFromPassword($username, $password) {
     $scope = $this->getVariable('scope');
-    if ($this->getVariable('access_token_uri') && ($client_id = $this->getVariable('client_id')) != NULL && ($client_secret = $this->getVariable('client_secret')) != NULL){
-      $ret = $this->makeRequest($this->getVariable('access_token_uri'),'POST',array(
+    if ($this->getVariable('access_token_uri') && ($client_id = $this->getVariable('client_id')) != NULL && ($client_secret = $this->getVariable('client_secret')) != NULL) {
+      $ret = $this->makeRequest($this->getVariable('access_token_uri'), 'POST', array(
         'grant_type' => 'password',
         'client_id' => $client_id,
         'client_secret' => $client_secret,
@@ -236,14 +236,14 @@ class netatmo_standalone_api {
     }
     throw new Exception("missing args for getting password grant");
   }
-  
-  protected function getRedirectUri()  {
+
+  protected function getRedirectUri() {
     $redirect_uri = $this->getVariable("redirect_uri");
-    if(!empty($redirect_uri)) return $redirect_uri;
+    if (!empty($redirect_uri)) return $redirect_uri;
     else return $this->getCurrentUri();
   }
-  
-  protected function getCurrentUri(){
+
+  protected function getCurrentUri() {
     $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on' ? 'https://' : 'http://';
     $current_uri = $protocol . $_SERVER['HTTP_HOST'] . $this->getRequestUri();
     $parts = parse_url($current_uri);
@@ -259,70 +259,69 @@ class netatmo_standalone_api {
     $port = isset($parts['port']) && ($protocol === 'https://' && $parts['port'] !== 443) ? ':' . $parts['port'] : '';
     return $protocol . $parts['host'] . $port . $parts['path'] . $query;
   }
-  
-  public function api($path, $method = 'GET', $params = array()){
-    if($params == null){
+
+  public function api($path, $method = 'GET', $params = array()) {
+    if ($params == null) {
       $params = array();
     }
-    if (is_array($method) && empty($params)){
+    if (is_array($method) && empty($params)) {
       $params = $method;
       $method = 'GET';
     }
-    foreach ($params as $key => $value){
-      if (!is_string($value)){
+    foreach ($params as $key => $value) {
+      if (!is_string($value)) {
         $params[$key] = json_encode($value);
       }
     }
     $res = $this->makeOAuth2Request($this->getUri($path, array()), $method, $params);
-    if(isset($res["body"])) return $res["body"];
+    if (isset($res["body"])) return $res["body"];
     else return $res;
   }
-  
-  protected function makeOAuth2Request($path, $method = 'GET', $params = array(), $reget_token = true){
+
+  protected function makeOAuth2Request($path, $method = 'GET', $params = array(), $reget_token = true) {
     $res = $this->getAccessToken();
     $params["access_token"] = $res["access_token"];
-    try{
+    try {
       $res = $this->makeRequest($path, $method, $params);
       return $res;
-    }catch(NAApiErrorType $ex){
-      if($reget_token == true)  {
-        switch($ex->getCode()){
+    } catch (NAApiErrorType $ex) {
+      if ($reget_token == true) {
+        switch ($ex->getCode()) {
           case 2:
           case 3:
-          if($this->refresh_token){
-            try{
-              $this->getAccessTokenFromRefreshToken();
-            }catch(Exception $ex2){
-              throw $ex;
+            if ($this->refresh_token) {
+              try {
+                $this->getAccessTokenFromRefreshToken();
+              } catch (Exception $ex2) {
+                throw $ex;
+              }
             }
-          }
-          throw $ex;
-          return $this->makeOAuth2Request($path, $method, $params, false);
-          break;
+            throw $ex;
+            return $this->makeOAuth2Request($path, $method, $params, false);
+            break;
           default:
-          throw $ex;
+            throw $ex;
         }
       }
       throw $ex;
     }
     return $res;
   }
-  
-  protected function getUri($path = '', $params = array()){
+
+  protected function getUri($path = '', $params = array()) {
     $url = $this->getVariable('services_uri') ? $this->getVariable('services_uri') : $this->getVariable('base_uri');
-    if(!empty($path)){
-      if (substr($path, 0, 4) == "http"){
+    if (!empty($path)) {
+      if (substr($path, 0, 4) == "http") {
         $url = $path;
-      }else if(substr($path, 0, 5) == "https"){
+      } else if (substr($path, 0, 5) == "https") {
         $url = $path;
-      }else{
+      } else {
         $url = rtrim($url, '/') . '/' . ltrim($path, '/');
       }
     }
-    if (!empty($params)){
+    if (!empty($params)) {
       $url .= '?' . http_build_query($params, NULL, '&');
     }
     return $url;
   }
-  
 }

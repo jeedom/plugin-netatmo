@@ -24,6 +24,9 @@ if (!class_exists('netatmo_standalone_api')) {
 if (!class_exists('netatmo_weather')) {
   require_once __DIR__ . '/netatmo_weather.class.php';
 }
+if (!class_exists('netatmo_aircare')) {
+  require_once __DIR__ . '/netatmo_aircare.class.php';
+}
 if (!class_exists('netatmo_security')) {
   require_once __DIR__ . '/netatmo_security.class.php';
 }
@@ -67,6 +70,11 @@ class netatmo extends eqLogic {
       netatmo_weather::refresh();
     } catch (\Exception $e) {
       log::add('netatmo', 'debug', 'Weather : ' . $e->getMessage());
+    }
+    try {
+      netatmo_aircare::refresh();
+    } catch (\Exception $e) {
+      log::add('netatmo', 'debug', 'Aircare : ' . $e->getMessage());
     }
     try {
       netatmo::refreshClassNetatmo();
@@ -262,6 +270,7 @@ class netatmo extends eqLogic {
 
   public static function sync() {
     netatmo_weather::sync();
+    netatmo_aircare::sync();
     netatmo_security::sync();
     netatmo_energy::sync();
     self::setWebhook();
@@ -363,6 +372,9 @@ class netatmoCmd extends cmd {
     if ($this->getLogicalId() == 'refresh') {
       if ($eqLogic->getConfiguration('type') == 'weather') {
         netatmo_weather::refresh();
+      }
+      if ($eqLogic->getConfiguration('type') == 'aircare') {
+        netatmo_aircare::refresh();
       }
       if ($eqLogic->getConfiguration('type') == 'security') {
         netatmo_security::refresh();

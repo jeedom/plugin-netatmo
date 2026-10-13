@@ -118,7 +118,7 @@ class netatmo_energy {
   }
 
   public static function refresh($homesdata = null) {
-    netatmo::refreshClassNetatmo();
+    netatmo::refreshClassNetatmo($homesdata);
   }
 
   public static function execCmd($_cmd, $_options = array()) {

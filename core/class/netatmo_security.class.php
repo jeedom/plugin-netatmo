@@ -182,7 +182,10 @@ class netatmo_security {
 
 
   public static function refresh($_security = null) {
-    $security = ($_security == null) ? netatmo::request('/gethomedata') : $_security;
+    if ($_security === null && count(netatmo::getEnabledEqLogics('security')) == 0) {
+      return;
+    }
+    $security = ($_security === null) ? netatmo::request('/gethomedata') : $_security;
     try {
       self::createCamera($security);
     } catch (\Exception $e) {

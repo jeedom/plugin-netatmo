@@ -75,7 +75,10 @@ class netatmo_aircare {
 
 
   public static function refresh($_aircare = null) {
-    $aircare = ($_aircare == null) ? netatmo::request('/gethomecoachsdata') : $_aircare;
+    if ($_aircare === null && count(netatmo::getEnabledEqLogics('aircare')) == 0) {
+      return;
+    }
+    $aircare = ($_aircare === null) ? netatmo::request('/gethomecoachsdata') : $_aircare;
     if (isset($aircare['devices']) &&  count($aircare['devices']) > 0) {
       foreach ($aircare['devices'] as $device) {
         $eqLogic = eqLogic::byLogicalId($device["_id"], 'netatmo');

@@ -9,6 +9,10 @@
 - Amélioration du systeme de mise à jour des informations
 - Support de Netamo Aircare
 
+- Réduction des appels API aux familles et maisons ayant des équipements actifs.
+- Correction du traitement des notifications Netatmo pour éviter les rafraîchissements inutiles.
+- Réutilisation des données de synchronisation du chauffage sans second appel à `/homesdata`.
+
 
 # 06/08/2025
 

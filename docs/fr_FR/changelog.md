@@ -6,6 +6,25 @@
 >
 >Pour rappel s'il n'y a pas d'information sur la mise à jour, c'est que celle-ci concerne uniquement de la mise à jour de documentation, de traduction ou de texte.
 
+# 20/10/2026
+
+- Amélioration du systeme de mise à jour des informations
+- Support de Netamo Aircare
+- Réduction des appels API aux familles et maisons ayant des équipements actifs.
+- Correction du traitement des notifications Netatmo pour éviter les rafraîchissements inutiles.
+- Réutilisation des données de synchronisation du chauffage sans second appel à `/homesdata`.
+- Mise a jour de la traduction
+
+# 06/08/2025
+
+- Corrections de bugs
+- Migration des appels API de api.netatmo.net vers api.netatmo.com
+
+# 18/10/2024
+
+- Correction de warnings
+- Meilleur gestion des équipements désactivés
+
 # 06/10/2024
 
 - Correction de warnings

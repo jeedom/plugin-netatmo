@@ -139,6 +139,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
 										<option value="OTM">{{Thermostat Opentherm}}</option>
 										<option value="NRV">{{Vanne}}</option>
 										<option value="NRV-BridgeOTH">{{Vanne}}</option>
+										<option value="NHC">{{Qualité de l'air}}</option>
 									</select>
 								</div>
 							</div>

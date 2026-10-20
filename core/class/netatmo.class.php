@@ -24,6 +24,9 @@ if (!class_exists('netatmo_standalone_api')) {
 if (!class_exists('netatmo_weather')) {
   require_once __DIR__ . '/netatmo_weather.class.php';
 }
+if (!class_exists('netatmo_aircare')) {
+  require_once __DIR__ . '/netatmo_aircare.class.php';
+}
 if (!class_exists('netatmo_security')) {
   require_once __DIR__ . '/netatmo_security.class.php';
 }
@@ -59,7 +62,20 @@ class netatmo extends eqLogic {
     return self::$_client;
   }
 
+  public static function getEnabledEqLogics($_types) {
+    $eqLogics = array();
+    foreach (eqLogic::byType('netatmo', true) as $eqLogic) {
+      if (in_array($eqLogic->getConfiguration('type'), (array) $_types, true)) {
+        $eqLogics[] = $eqLogic;
+      }
+    }
+    return $eqLogics;
+  }
+
   public static function cron10() {
+    if (count(self::getEnabledEqLogics(array('weather', 'aircare', 'energy', 'security'))) == 0) {
+      return;
+    }
     if (config::byKey('mode', 'netatmo') != 'internal') {
       sleep(rand(0, 120));
     }
@@ -69,134 +85,203 @@ class netatmo extends eqLogic {
       log::add('netatmo', 'debug', 'Weather : ' . $e->getMessage());
     }
     try {
+      netatmo_aircare::refresh();
+    } catch (\Exception $e) {
+      log::add('netatmo', 'debug', 'Aircare : ' . $e->getMessage());
+    }
+    try {
       netatmo::refreshClassNetatmo();
     } catch (\Exception $e) {
       log::add('netatmo', 'debug', 'Energy : ' . $e->getMessage());
     }
   }
 
-  public static function refreshClassNetatmo($homesdata = null) {
-    if ($homesdata == null) {
-      $homesdata = netatmo::request('/homesdata');
+public static function refreshClassNetatmo($homesdata = null) {
+  // homestatus also updates cameras and detectors, not only heating devices.
+  $enabledEqLogics = self::getEnabledEqLogics(array('energy', 'security'));
+  if (count($enabledEqLogics) == 0) {
+    return;
+  }
+  $enabledIds = array();
+  $enabledHomes = array();
+  foreach ($enabledEqLogics as $eqLogic) {
+    $enabledIds[$eqLogic->getLogicalId()] = true;
+    $homeId = $eqLogic->getConfiguration('home_id');
+    if ($homeId !== '') {
+      $enabledHomes[$homeId] = true;
     }
-    $home_ids = array();
-    if (isset($homesdata['homes']) &&  count($homesdata['homes']) > 0) {
-      foreach ($homesdata['homes'] as $home) {
-        if (!isset($home['modules'])) {
-          continue;
+  }
+  if ($homesdata === null) {
+    $homesdata = netatmo::request('/homesdata');
+  }
+
+  $home_ids = array();
+  $ArrayAssocModuleIDtoRoom = array();
+
+  if (isset($homesdata['homes']) && count($homesdata['homes']) > 0) {
+    foreach ($homesdata['homes'] as $home) {
+      if (!isset($home['id'])) {
+        continue;
+      }
+      $isEnabled = isset($enabledHomes[$home['id']]) || isset($enabledIds[$home['id']]);
+      // Match older equipment without home_id through its room/module ID.
+      if (!$isEnabled) {
+        foreach (array('modules', 'rooms') as $key) {
+          if (!isset($home[$key])) {
+            continue;
+          }
+          foreach ($home[$key] as $device) {
+            if (isset($device['id']) && isset($enabledIds[$device['id']])) {
+              $isEnabled = true;
+              break 2;
+            }
+          }
         }
-        if (isset($home['modules']) &&  count($home['modules']) > 0) {
-          foreach ($home['modules'] as $module) {
-            $moduleid = $module['id'];
+      }
+      if (!$isEnabled) {
+        continue;
+      }
+
+      if (isset($home['modules']) && count($home['modules']) > 0) {
+        foreach ($home['modules'] as $module) {
+          $moduleid = $module['id'];
+          if (isset($module['room_id']) && $module['room_id'] !== null && $module['room_id'] !== '') {
             $ArrayAssocModuleIDtoRoom[$moduleid] = $module['room_id'];
           }
         }
-        $home_ids[] = $home['id'];
-        if (!isset($home['therm_mode'])) {
-          continue;
-        }
-        $eqLogic = eqLogic::byLogicalId($home['id'], 'netatmo');
-        if (!is_object($eqLogic)) {
-          continue;
-        }
-        if ($home['therm_mode'] != 'schedule') {
-          $eqLogic->checkAndUpdateCmd('mode', $home['therm_mode']);
-          continue;
-        }
-        if (isset($home['schedules']) &&  count($home['schedules']) > 0) {
-          $mode = '';
-          foreach ($home['schedules'] as $schedule) {
-            if (!$schedule['selected']) {
-              continue;
-            }
-            $mode .= $schedule['name'] . ',';
-          }
-          $eqLogic->checkAndUpdateCmd('mode', trim($mode, ','));
-        }
       }
-    }
-    if (count($home_ids) == 0) {
-      return;
-    }
-    foreach ($home_ids as $home_id) {
-      $homestatus = netatmo::request('/homestatus', array('home_id' => $home_id));
-      if (isset($homestatus['errors']) && count($homestatus['errors']) > 0) {
-        $error_desc[1] = "Unknown error";
-        $error_desc[2] = "Internal error";
-        $error_desc[3] = "Parser error";
-        $error_desc[4] = "Command unknown node module error";
-        $error_desc[5] = "Command invalid params";
-        $error_desc[6] = "Unreachable";
-        $ModulesError = array();
-        foreach ($homestatus['errors'] as $deviceerror) {
-          $ModulesError[$deviceerror['id']] = $deviceerror['code'];
-          $eqLogic = eqLogic::byLogicalId($deviceerror['id'], 'netatmo');
-          if (!is_object($eqLogic)) {
+
+      $home_ids[$home['id']] = $home['id'];
+      if (!isset($home['therm_mode'])) {
+        continue;
+      }
+
+      $eqLogic = eqLogic::byLogicalId($home['id'], 'netatmo');
+      if (!is_object($eqLogic) || $eqLogic->getIsEnable() == 0) {
+        continue;
+      }
+
+      if ($home['therm_mode'] != 'schedule') {
+        $eqLogic->checkAndUpdateCmd('mode', $home['therm_mode']);
+        continue;
+      }
+
+      if (isset($home['schedules']) && count($home['schedules']) > 0) {
+        $mode = '';
+        foreach ($home['schedules'] as $schedule) {
+          if (!isset($schedule['selected']) || !$schedule['selected']) {
             continue;
           }
-          $Cmderrorinfo = $eqLogic->getCmd('info', 'error_status');
-          if (isset($Cmderrorinfo)) {
-            log::add('netatmo', 'debug', '[netatmo cloud] Erreur ' . $deviceerror['code'] . ' détectée sur l\'équipement ' . $deviceerror['id']);
-            $eqLogic->checkAndUpdateCmd("error_status", $deviceerror['code'] . ' ' . $error_desc[$deviceerror['code']]);
-          }
+          $mode .= $schedule['name'] . ',';
         }
-      }
-      if (isset($homestatus['home']) && isset($homestatus['home']['modules']) &&  count($homestatus['home']['modules']) > 0) {
-        foreach ($homestatus['home']['modules'] as $module) {
-          if ($module['type'] == "OTM" || $module['type'] == "NATherm1") {
-            $eqLogic = eqLogic::byLogicalId($ArrayAssocModuleIDtoRoom[$module['id']], 'netatmo');
-            if (is_object($eqLogic)) {
-              foreach ($eqLogic->getCmd('info') as $cmd) {
-                $logicalId = $cmd->getLogicalId();
-                if (isset($module[$logicalId]) && $cmd->getLogicalID() != "reachable") {
-                  $eqLogic->checkAndUpdateCmd($cmd, $module[$logicalId]);
-                }
-              }
-            }
-          }
-          $eqLogic = eqLogic::byLogicalId($module['id'], 'netatmo');
-          if (!is_object($eqLogic)) {
-            continue;
-          }
-          foreach ($eqLogic->getCmd('info') as $cmd) {
-            $logicalId = $cmd->getLogicalId();
-            if ($logicalId == 'state') {
-              $logicalId = 'status';
-            }
-            if ($logicalId == 'error_status') {
-              if ($logicalId == 'error_status' && !isset($ModulesError[$module['id']])) {
-                $eqLogic->checkAndUpdateCmd($cmd, '0 No error');
-              }
-            }
-            if (!isset($module[$logicalId])) {
-              continue;
-            }
-            $eqLogic->checkAndUpdateCmd($cmd, $module[$logicalId]);
-          }
-        }
-      }
-      if (isset($homestatus['home']) && isset($homestatus['home']['rooms']) &&  count($homestatus['home']['rooms']) > 0) {
-        foreach ($homestatus['home']['rooms'] as $room) {
-          $eqLogic = eqLogic::byLogicalId($room['id'], 'netatmo');
-          if (!is_object($eqLogic)) {
-            continue;
-          }
-          foreach ($eqLogic->getCmd('info') as $cmd) {
-            if (!isset($room[$cmd->getLogicalId()])) {
-              continue;
-            }
-            if ($cmd->getLogicalId() == 'therm_setpoint_mode' && $room[$cmd->getLogicalId()] != 'schedule' && isset($room['therm_setpoint_end_time'])) {
-              $eqLogic->checkAndUpdateCmd($cmd, $room[$cmd->getLogicalId()] . ' (' . __('fini à', __FILE__) . ' ' . date('H:i', $room['therm_setpoint_end_time']) . ')');
-              continue;
-            }
-            $eqLogic->checkAndUpdateCmd($cmd, $room[$cmd->getLogicalId()]);
-          }
-        }
+        $eqLogic->checkAndUpdateCmd('mode', trim($mode, ','));
       }
     }
   }
 
+  if (count($home_ids) == 0) {
+    return;
+  }
+
+  foreach ($home_ids as $home_id) {
+    $homestatus = netatmo::request('/homestatus', array('home_id' => $home_id));
+
+    if (isset($homestatus['errors']) && count($homestatus['errors']) > 0) {
+      $error_desc = array(
+        1 => "Unknown error",
+        2 => "Internal error",
+        3 => "Parser error",
+        4 => "Command unknown node module error",
+        5 => "Command invalid params",
+        6 => "Unreachable",
+      );
+      $ModulesError = array();
+      foreach ($homestatus['errors'] as $deviceerror) {
+        $ModulesError[$deviceerror['id']] = $deviceerror['code'];
+        $eqLogic = eqLogic::byLogicalId($deviceerror['id'], 'netatmo');
+        if (!is_object($eqLogic) || $eqLogic->getIsEnable() == 0) {
+          continue;
+        }
+        $Cmderrorinfo = $eqLogic->getCmd('info', 'error_status');
+        if (isset($Cmderrorinfo)) {
+          $desc = isset($error_desc[$deviceerror['code']]) ? $error_desc[$deviceerror['code']] : 'Unknown';
+          log::add('netatmo', 'debug', '[netatmo cloud] Erreur ' . $deviceerror['code'] . ' détectée sur l\'équipement ' . $deviceerror['id']);
+          $eqLogic->checkAndUpdateCmd("error_status", $deviceerror['code'] . ' ' . $desc);
+        }
+      }
+    }
+
+    if (isset($homestatus['home']) && isset($homestatus['home']['modules']) && count($homestatus['home']['modules']) > 0) {
+      foreach ($homestatus['home']['modules'] as $module) {
+
+        if ($module['type'] == "OTM" || $module['type'] == "NATherm1") {
+          if (isset($ArrayAssocModuleIDtoRoom[$module['id']])) {
+            $roomId = $ArrayAssocModuleIDtoRoom[$module['id']];
+            $eqLogic = eqLogic::byLogicalId($roomId, 'netatmo');
+            if (is_object($eqLogic) && $eqLogic->getIsEnable() == 1) {
+              foreach ($eqLogic->getCmd('info') as $cmd) {
+                $logicalId = $cmd->getLogicalId();
+                if (isset($module[$logicalId]) && $cmd->getLogicalId() != "reachable") {
+                  $eqLogic->checkAndUpdateCmd($cmd, $module[$logicalId]);
+                }
+              }
+            }
+          } else {
+            log::add('netatmo', 'debug', "Module {$module['id']} sans room_id (type {$module['type']})");
+          }
+        }
+
+        $eqLogic = eqLogic::byLogicalId($module['id'], 'netatmo');
+        if (!is_object($eqLogic) || $eqLogic->getIsEnable() == 0) {
+          continue;
+        }
+
+        foreach ($eqLogic->getCmd('info') as $cmd) {
+          $logicalId = $cmd->getLogicalId();
+          if ($logicalId == 'state') {
+            $logicalId = 'status';
+          }
+          if ($cmd->getLogicalId() == 'error_status') {
+            if (!isset($ModulesError[$module['id']])) {
+              $eqLogic->checkAndUpdateCmd($cmd, '0 No error');
+            }
+            continue;
+          }
+          if (!isset($module[$logicalId])) {
+            continue;
+          }
+          $eqLogic->checkAndUpdateCmd($cmd, $module[$logicalId]);
+        }
+      }
+    }
+
+    if (isset($homestatus['home']) && isset($homestatus['home']['rooms']) && count($homestatus['home']['rooms']) > 0) {
+      foreach ($homestatus['home']['rooms'] as $room) {
+        $eqLogic = eqLogic::byLogicalId($room['id'], 'netatmo');
+        if (!is_object($eqLogic) || $eqLogic->getIsEnable() == 0) {
+          continue;
+        }
+        foreach ($eqLogic->getCmd('info') as $cmd) {
+          $lid = $cmd->getLogicalId();
+          if (!isset($room[$lid])) {
+            continue;
+          }
+          if ($lid == 'therm_setpoint_mode' && $room[$lid] != 'schedule' && isset($room['therm_setpoint_end_time'])) {
+            $eqLogic->checkAndUpdateCmd($cmd, $room[$lid] . ' (' . __('fini à', __FILE__) . ' ' . date('H:i', $room['therm_setpoint_end_time']) . ')');
+            continue;
+          }
+          $eqLogic->checkAndUpdateCmd($cmd, $room[$lid]);
+        }
+      }
+    }
+  }
+}
+
+
   public static function cronHourly() {
+    if (count(self::getEnabledEqLogics('security')) == 0) {
+      return;
+    }
     if (config::byKey('mode', 'netatmo') != 'internal') {
       sleep(rand(0, 120));
     }
@@ -262,6 +347,7 @@ class netatmo extends eqLogic {
 
   public static function sync() {
     netatmo_weather::sync();
+    netatmo_aircare::sync();
     netatmo_security::sync();
     netatmo_energy::sync();
     self::setWebhook();
@@ -333,12 +419,12 @@ class netatmo extends eqLogic {
   }
 
   public function getImage() {
-    if(method_exists($this,'getCustomImage')){
-         $customImage = $this->getCustomImage();
-         if($customImage !== null){
-            return $customImage;
-         }
+    if (method_exists($this, 'getCustomImage')) {
+      $customImage = $this->getCustomImage();
+      if ($customImage !== null) {
+        return $customImage;
       }
+    }
     if (file_exists(__DIR__ . '/../config/devices/' .  $this->getConfiguration('device') . '.png')) {
       return 'plugins/netatmo/core/config/devices/' .  $this->getConfiguration('device') . '.png';
     }
@@ -363,6 +449,9 @@ class netatmoCmd extends cmd {
     if ($this->getLogicalId() == 'refresh') {
       if ($eqLogic->getConfiguration('type') == 'weather') {
         netatmo_weather::refresh();
+      }
+      if ($eqLogic->getConfiguration('type') == 'aircare') {
+        netatmo_aircare::refresh();
       }
       if ($eqLogic->getConfiguration('type') == 'security') {
         netatmo_security::refresh();

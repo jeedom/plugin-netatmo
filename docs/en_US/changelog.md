@@ -6,6 +6,24 @@
 >
 >As a reminder if there is no information on the update, it means that it only concerns the updating of documentation, translation or text.
 
+- 
+- 
+
+
+# 06/08/2025
+
+- Bug fixes
+- Migration des appels API de api.netatmo.net vers api.netatmo.com
+
+# 18/10/2024
+
+- Fixed warnings
+- Better management of disabled equipment
+
+# 06/10/2024
+
+- Fixed warnings
+
 # 05/19/2024
 
 - Bugfix

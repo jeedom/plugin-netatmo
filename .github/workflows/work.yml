@@ -13,3 +13,14 @@ name : 'Full Workflows Plugin Jeedom'
 jobs:
   plugin:
     uses: jeedom/workflows/.github/workflows/plugin.yml@main
+  requests:
+    name: Netatmo requests and webhooks
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install PHP CLI
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends php-cli
+      - name: Test refresh requests and webhooks
+        run: python3 tests/test_requests.py

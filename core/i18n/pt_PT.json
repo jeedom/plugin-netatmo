@@ -1,112 +1,109 @@
 {
-    "plugins\/netatmo\/plugin_info\/configuration.php": {
-        "Envoyer configuration au market": "Enviar configuração ao mercado",
-        "Envoyer": "Enviar",
-        "Association": "Associação",
-        "Liée": "Amarrado",
-        "Synchronisation": "Sincronização",
-        "Synchroniser mes équipements": "Sincronizar o meu equipamento",
-        "Configuration envoyée avec succès": "Configuração enviada com sucesso",
-        "Synchronisation réussie": "Sincronização bem-sucedida"
+    "plugins\/netatmo\/core\/ajax\/netatmo.ajax.php": {
+        "401 - Accès non autorisé": "401 - Acesso não autorizado",
+        "Aucune methode correspondante à : ": "Nenhum método correspondente a:"
+    },
+    "plugins\/netatmo\/core\/class\/netatmo.class.php": {
+        "Erreur lors de la requete à Netatmo : ": "Erro ao solicitar Netatmo:",
+        "Rafraichir": "Legal",
+        "fini à": "terminou em"
+    },
+    "plugins\/netatmo\/core\/class\/netatmo_energy.class.php": {
+        "Programmation": "Programação"
+    },
+    "plugins\/netatmo\/core\/class\/netatmo_security.class.php": {
+        "Derniere fois": "Última vez",
+        "Présence": "Presença"
+    },
+    "plugins\/netatmo\/core\/php\/jeeNetatmo.php": {
+        "Enlevé": "Seqüestrado",
+        "Mouvement": "Movimento",
+        "Ouvert": "Aberto",
+        "Petit mouvement": "Pequeno movimento"
+    },
+    "plugins\/netatmo\/desktop\/js\/netatmo.js": {
+        "Afficher": "Display",
+        "Choisir une icône": "Escolha um ícone",
+        "Configuration avancée": "Configuração avançada",
+        "Historiser": "Historicizar",
+        "Inverser": "Reverter",
+        "Max": "Máx.",
+        "Min": "Mínimo",
+        "Nom de la commande": "Nome do comando",
+        "Santé Netatmo": "Saúde do Netatmo",
+        "Supprimer la commande": "Excluir pedido",
+        "Synchronisation réussie": "Sincronização bem-sucedida",
+        "Tester": "Teste",
+        "Unité": "Unidade"
     },
     "plugins\/netatmo\/desktop\/modal\/health.php": {
         "401 - Accès non autorisé": "401 - Acesso não autorizado",
-        "Module": "Módulo",
-        "ID": "EU IA",
         "Batterie": "Bateria",
-        "Dernière communication": "Última comunicação",
         "Date création": "Data de criação",
+        "Dernière communication": "Última comunicação",
+        "ID": "EU IA",
+        "Module": "Módulo",
         "OK": "Certo",
         "Secteur": "Setor"
     },
     "plugins\/netatmo\/desktop\/php\/netatmo.php": {
         "401 - Accès non autorisé": "401 - Acesso não autorizado",
-        "Gestion": "Gestão",
-        "Synchronisation": "Sincronização",
-        "Configuration": "Configuração",
-        "Santé": "Saúde",
-        "Mes équipements Netatmo": "Meu equipamento Netatmo",
-        "Rechercher": "Pesquisa",
-        "Équipement visible": "Equipamento visível",
-        "Équipement non visible": "Equipamento não visível",
-        "Configuration avancée": "Configuração avançada",
-        "Sauvegarder": "Salvar",
-        "Supprimer": "Remover",
-        "Equipement": "Equipamento",
-        "Commandes": "Comandos",
-        "Paramètres généraux": "Configurações Gerais",
-        "Nom de l'équipement": "Nome do equipamento",
-        "Objet parent": "Objeto pai",
-        "Aucun": "Nemhum",
-        "Catégorie": "Categoria",
-        "Options": "Opções",
+        "Actions": "Ações",
         "Activer": "Ativar",
-        "Visible": "Visivél",
-        "Paramètres spécifiques": "Configurações específicas",
-        "Type": "Tipo",
-        "Station": "Estação",
+        "Anémomètre": "Anemômetro",
+        "Aucun": "Nemhum",
+        "Bridge": "Ponte",
+        "Bridge type": "Tipo de ponte",
+        "Capteur de porte": "Sensor de porta",
+        "Catégorie": "Categoria",
+        "Commandes": "Comandos",
+        "Configuration": "Configuração",
+        "Configuration avancée": "Configuração avançada",
+        "Détecteur de fumée": "Detector de fumaça",
+        "Equipement": "Equipamento",
+        "Firmware": "Firmware",
+        "Gestion": "Gestão",
+        "Identifiant": "Login",
+        "Informations": "Informação",
+        "Maison": "Casa",
+        "Mes équipements Netatmo": "Meu equipamento Netatmo",
         "Module extérieur": "Módulo externo",
         "Module intérieur": "Módulo interno",
         "Module pluie": "Módulo de chuva",
-        "Anémomètre": "Anemômetro",
-        "Welcome": "Bem-vindo",
+        "Nom": "Nome",
+        "Nom de l'équipement": "Nome do equipamento",
+        "Nombre d'équipement": "Número de equipamentos",
+        "Objet parent": "Objeto pai",
+        "Options": "Opções",
+        "Paramètres généraux": "Configurações Gerais",
+        "Paramètres spécifiques": "Configurações específicas",
         "Présence": "Presença",
-        "Détecteur de fumée": "Detector de fumaça",
+        "Qualité de l'air": "Qualité de l'air",
+        "Rechercher": "Pesquisa",
+        "Santé": "Saúde",
+        "Sauvegarder": "Salvar",
         "Sirène": "Sereia",
-        "Capteur de porte": "Sensor de porta",
-        "Maison": "Casa",
+        "Station": "Estação",
+        "Supprimer": "Remover",
+        "Synchronisation": "Sincronização",
         "Thermostat": "Termostato",
         "Thermostat Opentherm": "Termostato Opentherm",
-        "Vanne": "Válvula",
-        "Qualité de l'air": "Qualité de l'air",
-        "Informations": "Informação",
-        "Identifiant": "Login",
-        "Firmware": "Firmware",
-        "Bridge type": "Tipo de ponte",
-        "Bridge": "Ponte",
-        "Nombre d'équipement": "Número de equipamentos",
-        "Nom": "Nome",
+        "Type": "Tipo",
         "Valeur": "Valor",
-        "Actions": "Ações"
+        "Vanne": "Válvula",
+        "Visible": "Visivél",
+        "Welcome": "Bem-vindo",
+        "Équipement non visible": "Equipamento não visível",
+        "Équipement visible": "Equipamento visível"
     },
-    "plugins\/netatmo\/desktop\/js\/netatmo.js": {
-        "Santé Netatmo": "Saúde do Netatmo",
+    "plugins\/netatmo\/plugin_info\/configuration.php": {
+        "Association": "Associação",
+        "Configuration envoyée avec succès": "Configuração enviada com sucesso",
+        "Envoyer": "Enviar",
+        "Envoyer configuration au market": "Enviar configuração ao mercado",
+        "Liée": "Amarrado",
+        "Synchronisation": "Sincronização",
         "Synchronisation réussie": "Sincronização bem-sucedida",
-        "Nom de la commande": "Nome do comando",
-        "Choisir une icône": "Escolha um ícone",
-        "Afficher": "Display",
-        "Historiser": "Historicizar",
-        "Inverser": "Reverter",
-        "Min": "Mínimo",
-        "Max": "Máx.",
-        "Unité": "Unidade",
-        "Configuration avancée": "Configuração avançada",
-        "Tester": "Teste",
-        "Supprimer la commande": "Excluir pedido"
-    },
-    "plugins\/netatmo\/core\/php\/jeeNetatmo.php": {
-        "Mouvement": "Movimento",
-        "Petit mouvement": "Pequeno movimento",
-        "Enlevé": "Seqüestrado",
-        "Ouvert": "Aberto"
-    },
-    "plugins\/netatmo\/core\/ajax\/netatmo.ajax.php": {
-        "401 - Accès non autorisé": "401 - Acesso não autorizado",
-        "Aucune methode correspondante à : ": "Nenhum método correspondente a:"
-    },
-    "plugins\/netatmo\/core\/class\/netatmo_energy.class.php": {
-        "Programmation": "Programação"
-    },
-    "plugins\/netatmo\/core\/class\/netatmo.class.php": {
-        "fini à": "terminou em",
-        "Erreur lors de la requete à Netatmo : ": "Erro ao solicitar Netatmo:",
-        "Rafraichir": "Legal"
-    },
-    "plugins\/netatmo\/core\/class\/netatmo_security.class.php": {
-        "Présence": "Presença",
-        "Derniere fois": "Última vez"
-    },
-    "info.json": {
-        "Plugin pour recuperer les équipements Netatmo (Weather,Energie,Securité). A travers le cloud Jeedom. Attention pour l'instant il n'est pas possible d'avoir le flux des cameras.": "Plugin para recuperar equipamentos Netatmo (Clima, Energia, Segurança). Através da nuvem Jeedom. Atenção no momento não é possível ter o fluxo das câmeras"
+        "Synchroniser mes équipements": "Sincronizar o meu equipamento"
     }
 }

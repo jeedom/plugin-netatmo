@@ -308,9 +308,25 @@ public static function refreshClassNetatmo($homesdata = null) {
       $url .= '&options=' . urlencode(json_encode($_data));
     }
     $request_http = new com_http($url);
+    $cloudToken = null;
+    if (is_callable(array('repo_market', 'getCloudToken'))) {
+      try {
+        $cloudToken = repo_market::getCloudToken();
+      } catch (Exception $e) {
+        if ($e->getCode() !== 401) {
+          throw $e;
+        }
+      }
+    }
+    if ($cloudToken) {
+      if (strtolower((string) parse_url($request_http->getUrl(), PHP_URL_SCHEME)) !== 'https') {
+        throw new Exception(__('Le service Cloud doit utiliser HTTPS.', __FILE__));
+      }
+      $request_http->setNoSslCheck(false);
+    }
     $request_http->setHeader(array(
       'Content-Type: application/json',
-      'Autorization: ' . sha512(mb_strtolower(config::byKey('market::username')) . ':' . config::byKey('market::password'))
+      $cloudToken ? 'Authorization: Bearer ' . $cloudToken : 'Autorization: ' . sha512(mb_strtolower(config::byKey('market::username')) . ':' . config::byKey('market::password'))
     ));
     if ($_type == 'POST') {
       log::add('netatmo', 'debug', '[netatmo cloud] request : ' . $_path);

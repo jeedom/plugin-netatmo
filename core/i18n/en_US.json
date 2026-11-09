@@ -5,6 +5,7 @@
     },
     "plugins\/netatmo\/core\/class\/netatmo.class.php": {
         "Erreur lors de la requete à Netatmo : ": "Error when requesting Netatmo:",
+        "Le service Cloud doit utiliser HTTPS.": "The cloud service must use HTTPS.",
         "Rafraichir": "Refresh",
         "fini à": "finished at"
     },

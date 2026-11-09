@@ -43,8 +43,14 @@ class netatmo extends eqLogic {
   /*     * ***********************Methode static*************************** */
 
   public static function sendJeedomConfig() {
+    $apiKey = jeedom::getApiKey('netatmo');
+    $url = network::getNetworkAccess('external');
+    if (class_exists('repo_market') && class_exists('marketClient', false)) {
+      marketClient::request('PUT', '/boxes/{boxId}/netatmo', array('apiKey' => $apiKey, 'url' => $url));
+      return;
+    }
     $market = repo_market::getJsonRpc();
-    if (!$market->sendRequest('netatmo::config', array('netatmo::apikey' => jeedom::getApiKey('netatmo'), 'netatmo::url' => network::getNetworkAccess('external')))) {
+    if (!$market->sendRequest('netatmo::config', array('netatmo::apikey' => $apiKey, 'netatmo::url' => $url))) {
       throw new Exception($market->getError(), $market->getErrorCode());
     }
   }
